@@ -30426,6 +30426,13 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
+    changeIdentity: function(identity){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.CHANGE_IDENTITY,
+            identity:identity
+        })
+    },
+
     addItem: function(item){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.ADD_ITEM,
@@ -30454,7 +30461,7 @@ var AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/app-constants.js":160,"../dispatchers/app-dispatcher.js":161}],153:[function(require,module,exports){
+},{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164}],153:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30537,7 +30544,7 @@ var Cart =
     });
 module.exports = Cart;
 
-},{"../components/app-decrease.js":156,"../components/app-increase.js":157,"../components/app-removefromcart.js":158,"../stores/app-store.js":164,"react":151}],155:[function(require,module,exports){
+},{"../components/app-decrease.js":156,"../components/app-increase.js":158,"../components/app-removefromcart.js":160,"../stores/app-store.js":167,"react":151}],155:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -30565,7 +30572,7 @@ var Catalog =
     });
 module.exports = Catalog;
 
-},{"../components/app-addtocart.js":153,"../stores/app-store.js":164,"react":151}],156:[function(require,module,exports){
+},{"../components/app-addtocart.js":153,"../stores/app-store.js":167,"react":151}],156:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30581,6 +30588,49 @@ var Decrease =
 module.exports = Decrease;
 
 },{"../actions/app-actions.js":152,"react":151}],157:[function(require,module,exports){
+var React = require('react');
+var UserStore = require('../stores/user-store');
+var ChangeIdentity = require('../components/change-identity');
+
+
+function getIdentities(){
+    return {
+        current_identity: UserStore.getCurrentIdentity(),
+        identities:UserStore.getIdentities()
+    };
+}
+
+var Identities =
+    React.createClass({displayName: "Identities",
+        getInitialState: function(){
+            return getIdentities();
+        },
+        _onChange:function(){
+            this.setState(getIdentities())
+        },
+        componentWillMount:function(){
+            UserStore.addChangeListener(this._onChange)
+        },
+        render: function (){
+            var identities = this.state.identities.map(function(identity){
+                return React.createElement("li", null, React.createElement("b", null, identity.organization), " - ", identity.name, " ", React.createElement(ChangeIdentity, {identity: identity}, "Switch"))
+            })
+
+            return (
+                React.createElement("div", null, 
+                    React.createElement("h3", null, React.createElement("b", null, this.state.current_identity.organization), " - ", this.state.current_identity.name), 
+                    React.createElement("ul", null, 
+                    identities
+                    )
+                )
+            )
+        }
+
+    })
+
+module.exports = Identities;
+
+},{"../components/change-identity":162,"../stores/user-store":170,"react":151}],158:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30595,7 +30645,46 @@ var Increase =
     });
 module.exports = Increase;
 
-},{"../actions/app-actions.js":152,"react":151}],158:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],159:[function(require,module,exports){
+var React = require('react');
+var PageStore = require('../stores/page-store');
+var UserStore = require('../stores/user-store');
+
+
+function getPage(){
+    return {
+        page:PageStore.getPageState(),
+        filter:UserStore.getCurrentIdentity().organization
+    };
+}
+
+var Page =
+    React.createClass({displayName: "Page",
+        getInitialState: function(){
+            return getPage();
+        },
+        _onChange:function(){
+            this.setState(getPage())
+        },
+        componentWillMount:function(){
+            UserStore.addChangeListener(this._onChange)
+        },
+        render: function (){
+
+            return (
+                React.createElement("div", null, 
+                    this.state.page._id, React.createElement("br", null), 
+                    this.state.page.pageRef, React.createElement("br", null), 
+                    this.state.filter
+                )
+            )
+        }
+
+    })
+
+module.exports = Page;
+
+},{"../stores/page-store":169,"../stores/user-store":170,"react":151}],160:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30610,11 +30699,14 @@ var RemoveFromCart =
     });
 module.exports = RemoveFromCart;
 
-},{"../actions/app-actions.js":152,"react":151}],159:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Catalog = require('../components/app-catalog');
 var Cart = require('../components/app-cart');
+var Identity = require('../components/app-identity');
+var Page = require('../components/app-page');
+
 var APP =
     React.createClass({displayName: "APP",
         render:function(){
@@ -30622,7 +30714,10 @@ var APP =
                React.createElement("div", null, 
                     React.createElement("h1", null, "Let's Shop"), 
                     React.createElement(Catalog, null), 
-                   React.createElement(Cart, null)
+                   React.createElement(Cart, null), 
+                   React.createElement("h1", null, "Graffiti"), 
+                    React.createElement(Page, null), 
+                   React.createElement(Identity, null)
                )
                )
 
@@ -30630,15 +30725,34 @@ var APP =
     });
 module.exports = APP;
 
-},{"../components/app-cart":154,"../components/app-catalog":155,"react":151}],160:[function(require,module,exports){
+},{"../components/app-cart":154,"../components/app-catalog":155,"../components/app-identity":157,"../components/app-page":159,"react":151}],162:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppActions = require('../actions/app-actions.js');
+var ChangeIdentity =
+    React.createClass({displayName: "ChangeIdentity",
+        handleClick:function(){
+            AppActions.changeIdentity(this.props.identity);
+        },
+        render:function(){
+            return React.createElement("button", {onClick: this.handleClick}, "Switch")
+        }
+    });
+module.exports = ChangeIdentity;
+
+},{"../actions/app-actions.js":152,"react":151}],163:[function(require,module,exports){
 module.exports = {
     ADD_ITEM: 'ADD_ITEM',
     REMOVE_ITEM: 'REMOVE_ITEM',
     INCREASE_ITEM: 'INCREASE_ITEM',
-    DECREASE_ITEM: 'DECREASE_ITEM'
+    DECREASE_ITEM: 'DECREASE_ITEM',
+
+    ADD_COMMENT: 'ADD_COMMENT',
+    ADD_REPLY: 'ADD_REPLY',
+    CHANGE_IDENTITY: 'CHANGE_IDENTITY'
 };
 
-},{}],161:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -30655,7 +30769,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":162,"react/lib/merge":140}],162:[function(require,module,exports){
+},{"./dispatcher":165,"react/lib/merge":140}],165:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -30713,7 +30827,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":1,"react/lib/merge":140}],163:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":140}],166:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var APP = require('./components/app');
@@ -30724,7 +30838,7 @@ React.render(
     document.getElementById('main')
 );
 
-},{"./components/app":159,"react":151}],164:[function(require,module,exports){
+},{"./components/app":161,"react":151}],167:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -30732,7 +30846,6 @@ var BaseStore = require('./base-store');
 var _ = require('lodash');
 
 var CHANGE_EVENT = "change";
-
 
 var _catalog = [
     {id:1, title: 'Widget #1', cost: 1},
@@ -30815,7 +30928,7 @@ var AppStore = merge(BaseStore, {
 
 module.exports = AppStore;
 
-},{"../constants/app-constants":160,"../dispatchers/app-dispatcher":161,"./base-store":165,"lodash":4,"react/lib/merge":140}],165:[function(require,module,exports){
+},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}],168:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -30839,4 +30952,84 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":140}]},{},[163])
+},{"events":2,"react/lib/merge":140}],169:[function(require,module,exports){
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var AppConstants = require('../constants/app-constants');
+var merge = require('react/lib/merge');
+var BaseStore = require('./base-store');
+var _ = require('lodash');
+
+var CHANGE_EVENT = "page";
+
+var _pageState = {
+    _id: '1299h44nbd3yhsai2u',
+    pageRef: 'localhost:63342'
+};
+
+var PageStore = merge(BaseStore,{
+
+    getPageState: function(){
+        return _pageState;
+    },
+
+    dispatcherIndex:AppDispatcher.register(function(payload){
+        var action = payload.action;
+
+        PageStore.emitChange();
+
+        return true;
+    })
+})
+
+module.exports = PageStore;
+
+
+},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}],170:[function(require,module,exports){
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var AppConstants = require('../constants/app-constants');
+var merge = require('react/lib/merge');
+var BaseStore = require('./base-store');
+var _ = require('lodash');
+
+var CHANGE_EVENT = "user";
+
+var _user = [
+    {name: 'graff-sammccord', organization: 'Graffiti'},
+    {name:'hn-sammccord',organization:'HackerNews'},
+    {name: 'fs-sammccord',organization: 'Fullstack'}
+];
+
+var _current_identity = {name: 'graff-sammccord', organization: 'Graffiti'};
+
+var _changeIdentity = function(newIdentity){
+    _current_identity =  newIdentity;
+};
+
+var UserStore = merge(BaseStore,{
+
+    getIdentities: function(){
+        return _user;
+    },
+
+    getCurrentIdentity: function(){
+        return _current_identity;
+    },
+
+    dispatcherIndex:AppDispatcher.register(function(payload){
+        var action = payload.action;
+
+        switch(action.actionType){
+            case AppConstants.CHANGE_IDENTITY:
+                _changeIdentity(payload.action.identity);
+                break;
+
+        }
+        UserStore.emitChange();
+
+        return true;
+    })
+});
+
+module.exports = UserStore;
+
+},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}]},{},[166])

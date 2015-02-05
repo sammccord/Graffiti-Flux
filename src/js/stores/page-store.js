@@ -7,13 +7,8 @@ var _ = require('lodash');
 var CHANGE_EVENT = "page";
 
 var _pageState = {
-    _id: '1299hnbdyhsaiu',
-    pageRef: 'String',
-    filter: 'Graffiti'
-};
-
-var _changeFilter = function (newFilter) {
-    _pageState.filter = newFilter;
+    _id: '1299h44nbd3yhsai2u',
+    pageRef: 'localhost:63342'
 };
 
 var PageStore = merge(BaseStore,{
@@ -24,12 +19,6 @@ var PageStore = merge(BaseStore,{
 
     dispatcherIndex:AppDispatcher.register(function(payload){
         var action = payload.action;
-
-        switch(action.actionType){
-            case AppConstants.CHANGE_PAGE_FILTER:
-                _changeFilter(payload.action.filter);
-                break;
-        }
 
         PageStore.emitChange();
 

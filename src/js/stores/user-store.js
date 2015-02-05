@@ -6,13 +6,13 @@ var _ = require('lodash');
 
 var CHANGE_EVENT = "user";
 
-var _user = {
-    'Graffiti': 'graff-sammccord',
-    'HackerNews':'hn-sammccord',
-    'Fullstack': 'fs-sammccord'
-};
+var _user = [
+    {name: 'graff-sammccord', organization: 'Graffiti'},
+    {name:'hn-sammccord',organization:'HackerNews'},
+    {name: 'fs-sammccord',organization: 'Fullstack'}
+];
 
-var _current_identity = 'Graffiti';
+var _current_identity = {name: 'graff-sammccord', organization: 'Graffiti'};
 
 var _changeIdentity = function(newIdentity){
     _current_identity =  newIdentity;
@@ -25,7 +25,7 @@ var UserStore = merge(BaseStore,{
     },
 
     getCurrentIdentity: function(){
-        return _user[_current_identity];
+        return _current_identity;
     },
 
     dispatcherIndex:AppDispatcher.register(function(payload){
