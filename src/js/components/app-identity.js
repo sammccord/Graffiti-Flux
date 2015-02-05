@@ -23,7 +23,10 @@ var Identities =
         },
         render: function (){
             var identities = this.state.identities.map(function(identity){
-                return <li><b>{identity.organization}</b> - {identity.name}&nbsp;<ChangeIdentity identity={identity}>Switch</ChangeIdentity></li>
+                return <li key={Math.random().toString()}>
+                    <b>{identity.organization}</b> - {identity.name}&nbsp;
+                    <ChangeIdentity identity={identity}>Switch</ChangeIdentity>
+                </li>
             })
 
             return (
