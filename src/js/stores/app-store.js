@@ -6,7 +6,6 @@ var _ = require('lodash');
 
 var CHANGE_EVENT = "change";
 
-
 var _catalog = [
     {id:1, title: 'Widget #1', cost: 1},
     {id:2, title: 'Widget #2', cost: 2},

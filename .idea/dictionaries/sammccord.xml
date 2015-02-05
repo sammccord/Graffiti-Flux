@@ -2,6 +2,7 @@
   <dictionary name="sammccord">
     <words>
       <w>browserify</w>
+      <w>lodash</w>
     </words>
   </dictionary>
 </component>
