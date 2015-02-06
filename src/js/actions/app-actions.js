@@ -8,11 +8,12 @@ var AppActions = {
             identity:identity
         })
     },
-    addComment : function(id,comment){
+    addComment : function(id,user,text){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.ADD_COMMENT,
-            id: id,
-            comment:comment
+            id:id,
+            user: user,
+            text:text
         })
     }
 }

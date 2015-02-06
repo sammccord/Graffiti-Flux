@@ -23,6 +23,9 @@ var Sprays =
         componentWillMount:function(){
             UserStore.addChangeListener(this._onChange);
         },
+        componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange);
+        },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
                 return <Spray key={Math.random().toString()} spray={spray} />

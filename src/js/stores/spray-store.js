@@ -109,10 +109,15 @@ var _sprays = [
     }
     ];
 
-function _addComment (id,comment) {
+function _addComment (id,user,text) {
+    console.log(id);
     _sprays.forEach(function(spray){
         if(spray._id === id){
-            spray.comments.push(comment);
+            spray.comments.push({
+                name: user.name,
+                text: text
+            });
+            console.log(spray);
         }
     })
 }
@@ -133,7 +138,7 @@ var SprayStore = merge(BaseStore, {
 
         switch(action.actionType){
             case AppConstants.ADD_COMMENT:
-                _addComment(payload.action.comment);
+                _addComment(payload.action.id,payload.action.user,payload.action.text);
                 break;
         }
 

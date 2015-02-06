@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
-var Identity = require('../components/User/app-identity');
-var Page = require('../components/Page/app-page');
+var Identity = require('../components/User/identity');
+var Page = require('../components/Page/page');
 
 var APP =
     React.createClass({

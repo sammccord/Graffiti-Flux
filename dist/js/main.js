@@ -30432,20 +30432,76 @@ var AppActions = {
             identity:identity
         })
     },
-    addComment : function(id,comment){
+    addComment : function(id,user,text){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.ADD_COMMENT,
-            id: id,
-            comment:comment
+            id:id,
+            user: user,
+            text:text
         })
     }
 }
 
 module.exports = AppActions;
 
-},{"../constants/app-constants.js":161,"../dispatchers/app-dispatcher.js":162}],153:[function(require,module,exports){
+},{"../constants/app-constants.js":162,"../dispatchers/app-dispatcher.js":163}],153:[function(require,module,exports){
 var React = require('react');
-var Replies = require('../Comments/app-replies');
+
+var UserStore = require('../../stores/user-store');
+
+function getCurrentIdentity(){
+    return {
+        current_identity: UserStore.getCurrentIdentity()
+    };
+}
+
+var CommentForm =
+    React.createClass({displayName: "CommentForm",
+        getInitialState: function(){
+            return getCurrentIdentity();
+        },
+        _onChange:function(){
+            this.setState(getCurrentIdentity());
+        },
+        componentWillMount:function(){
+            UserStore.addChangeListener(this._onChange);
+        },
+        componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange);
+        },
+        handleSubmit: function(e){
+            e.preventDefault();
+            var text = this.refs.text.getDOMNode().value.trim();
+            if (!text) {
+                return;
+            }
+            // TODO: send request to the server
+            this.props.onCommentSubmit(this.state.current_identity,text);
+            this.refs.text.getDOMNode().value = '';
+            return;
+        },
+        render: function(){
+
+            var formProps = {
+                placeholder: 'Leave a comment',
+                type: 'text',
+                ref: 'text'
+            };
+
+            return (
+                React.createElement("form", {onSubmit: this.handleSubmit}, 
+                    React.createElement("input", {placeholder: "Leave a comment", type: "text", ref: "text"}), 
+                    React.createElement("button", {type: "submit"}, "Submit")
+                )
+            )
+        }
+    })
+
+module.exports = CommentForm;
+
+},{"../../stores/user-store":169,"react":151}],154:[function(require,module,exports){
+var React = require('react');
+var Replies = require('../Comments/replies');
 
 var Comments =
     React.createClass({displayName: "Comments",
@@ -30468,7 +30524,7 @@ var Comments =
 
 module.exports = Comments;
 
-},{"../Comments/app-replies":154,"react":151}],154:[function(require,module,exports){
+},{"../Comments/replies":155,"react":151}],155:[function(require,module,exports){
 var React = require('react');
 
 var Replies =
@@ -30494,12 +30550,12 @@ var Replies =
 
 module.exports = Replies;
 
-},{"react":151}],155:[function(require,module,exports){
+},{"react":151}],156:[function(require,module,exports){
 var React = require('react');
 var PageStore = require('../../stores/page-store');
 var UserStore = require('../../stores/user-store');
 
-var Sprays = require('../Spray/app-sprays');
+var Sprays = require('../Spray/sprays');
 
 
 function getPage(){
@@ -30528,10 +30584,15 @@ var Page =
 
 module.exports = Page;
 
-},{"../../stores/page-store":166,"../../stores/user-store":168,"../Spray/app-sprays":157,"react":151}],156:[function(require,module,exports){
+},{"../../stores/page-store":167,"../../stores/user-store":169,"../Spray/sprays":158,"react":151}],157:[function(require,module,exports){
 var React = require('react');
+
+var AppActions = require('../../actions/app-actions.js');
+
 var SprayStore = require('../../stores/spray-store');
-var Comments = require('../Comments/app-comments');
+
+var Comments = require('../Comments/comments');
+var CommentForm = require('../Comments/comment-form');
 
 function getComments(){
     return {
@@ -30542,13 +30603,20 @@ function getComments(){
 var Spray =
     React.createClass({displayName: "Spray",
         getInitialState: function(){
-            return getComments().bind(this);
+            return getComments.bind(this)();
         },
         _onChange:function(){
-            this.setState(getComments().bind(this));
+            this.setState(getComments.bind(this)());
         },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange)
+        },
+        componentDidUnmount:function(){
+            SprayStore.removeChangeListener(this._onChange);
+        },
+        handleCommentSubmit: function(user,text){
+            var id = this.props.spray._id;
+            AppActions.addComment(id,user, text);
         },
         render: function (){
             return (
@@ -30557,8 +30625,8 @@ var Spray =
                     React.createElement("h4", null, this.props.spray.targetText), 
                     React.createElement("ul", null, 
                         React.createElement(Comments, {comments: this.state.comments})
-                    )
-
+                    ), 
+                    React.createElement(CommentForm, {onCommentSubmit: this.handleCommentSubmit})
                 )
             )
         }
@@ -30567,12 +30635,12 @@ var Spray =
 
 module.exports = Spray;
 
-},{"../../stores/spray-store":167,"../Comments/app-comments":153,"react":151}],157:[function(require,module,exports){
+},{"../../actions/app-actions.js":152,"../../stores/spray-store":168,"../Comments/comment-form":153,"../Comments/comments":154,"react":151}],158:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
 
-var Spray = require('./app-spray');
+var Spray = require('./spray');
 
 
 function getSprays(organization){
@@ -30593,6 +30661,9 @@ var Sprays =
         componentWillMount:function(){
             UserStore.addChangeListener(this._onChange);
         },
+        componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange);
+        },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
                 return React.createElement(Spray, {key: Math.random().toString(), spray: spray})
@@ -30611,7 +30682,22 @@ var Sprays =
 
 module.exports = Sprays;
 
-},{"../../stores/spray-store":167,"../../stores/user-store":168,"./app-spray":156,"react":151}],158:[function(require,module,exports){
+},{"../../stores/spray-store":168,"../../stores/user-store":169,"./spray":157,"react":151}],159:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var AppActions = require('../../actions/app-actions.js');
+var ChangeIdentity =
+    React.createClass({displayName: "ChangeIdentity",
+        handleClick:function(){
+            AppActions.changeIdentity(this.props.identity);
+        },
+        render:function(){
+            return React.createElement("button", {onClick: this.handleClick}, "Switch")
+        }
+    });
+module.exports = ChangeIdentity;
+
+},{"../../actions/app-actions.js":152,"react":151}],160:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var ChangeIdentity = require('./change-identity');
@@ -30657,26 +30743,11 @@ var Identities =
 
 module.exports = Identities;
 
-},{"../../stores/user-store":168,"./change-identity":159,"react":151}],159:[function(require,module,exports){
+},{"../../stores/user-store":169,"./change-identity":159,"react":151}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var AppActions = require('../../actions/app-actions.js');
-var ChangeIdentity =
-    React.createClass({displayName: "ChangeIdentity",
-        handleClick:function(){
-            AppActions.changeIdentity(this.props.identity);
-        },
-        render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "Switch")
-        }
-    });
-module.exports = ChangeIdentity;
-
-},{"../../actions/app-actions.js":152,"react":151}],160:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var Identity = require('../components/User/app-identity');
-var Page = require('../components/Page/app-page');
+var Identity = require('../components/User/identity');
+var Page = require('../components/Page/page');
 
 var APP =
     React.createClass({displayName: "APP",
@@ -30693,14 +30764,14 @@ var APP =
     });
 module.exports = APP;
 
-},{"../components/Page/app-page":155,"../components/User/app-identity":158,"react":151}],161:[function(require,module,exports){
+},{"../components/Page/page":156,"../components/User/identity":160,"react":151}],162:[function(require,module,exports){
 module.exports = {
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_REPLY: 'ADD_REPLY',
     CHANGE_IDENTITY: 'CHANGE_IDENTITY'
 };
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -30717,7 +30788,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":163,"react/lib/merge":140}],163:[function(require,module,exports){
+},{"./dispatcher":164,"react/lib/merge":140}],164:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -30775,7 +30846,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":1,"react/lib/merge":140}],164:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":140}],165:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var APP = require('./components/app');
@@ -30786,7 +30857,7 @@ React.render(
     document.getElementById('main')
 );
 
-},{"./components/app":160,"react":151}],165:[function(require,module,exports){
+},{"./components/app":161,"react":151}],166:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -30810,7 +30881,7 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":140}],166:[function(require,module,exports){
+},{"events":2,"react/lib/merge":140}],167:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -30842,7 +30913,7 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}],167:[function(require,module,exports){
+},{"../constants/app-constants":162,"../dispatchers/app-dispatcher":163,"./base-store":166,"lodash":4,"react/lib/merge":140}],168:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -30954,10 +31025,15 @@ var _sprays = [
     }
     ];
 
-function _addComment (id,comment) {
+function _addComment (id,user,text) {
+    console.log(id);
     _sprays.forEach(function(spray){
         if(spray._id === id){
-            spray.comments.push(comment);
+            spray.comments.push({
+                name: user.name,
+                text: text
+            });
+            console.log(spray);
         }
     })
 }
@@ -30978,7 +31054,7 @@ var SprayStore = merge(BaseStore, {
 
         switch(action.actionType){
             case AppConstants.ADD_COMMENT:
-                _addComment(payload.action.comment);
+                _addComment(payload.action.id,payload.action.user,payload.action.text);
                 break;
         }
 
@@ -30991,7 +31067,7 @@ module.exports = SprayStore;
 
 
 
-},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}],168:[function(require,module,exports){
+},{"../constants/app-constants":162,"../dispatchers/app-dispatcher":163,"./base-store":166,"lodash":4,"react/lib/merge":140}],169:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -31039,4 +31115,4 @@ var UserStore = merge(BaseStore,{
 
 module.exports = UserStore;
 
-},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}]},{},[164])
+},{"../constants/app-constants":162,"../dispatchers/app-dispatcher":163,"./base-store":166,"lodash":4,"react/lib/merge":140}]},{},[165])

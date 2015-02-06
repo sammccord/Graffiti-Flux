@@ -1,6 +1,11 @@
 var React = require('react');
+
+var AppActions = require('../../actions/app-actions.js');
+
 var SprayStore = require('../../stores/spray-store');
+
 var Comments = require('../Comments/comments');
+var CommentForm = require('../Comments/comment-form');
 
 function getComments(){
     return {
@@ -11,13 +16,20 @@ function getComments(){
 var Spray =
     React.createClass({
         getInitialState: function(){
-            return getComments().bind(this);
+            return getComments.bind(this)();
         },
         _onChange:function(){
-            this.setState(getComments().bind(this));
+            this.setState(getComments.bind(this)());
         },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange)
+        },
+        componentDidUnmount:function(){
+            SprayStore.removeChangeListener(this._onChange);
+        },
+        handleCommentSubmit: function(user,text){
+            var id = this.props.spray._id;
+            AppActions.addComment(id,user, text);
         },
         render: function (){
             return (
@@ -27,7 +39,7 @@ var Spray =
                     <ul>
                         <Comments comments={this.state.comments}/>
                     </ul>
-
+                    <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
                 </li>
             )
         }

@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppActions = require('../../actions/actions.js');
+var AppActions = require('../../actions/app-actions.js');
 var ChangeIdentity =
     React.createClass({
         handleClick:function(){
