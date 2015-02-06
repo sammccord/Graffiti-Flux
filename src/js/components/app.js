@@ -10,7 +10,7 @@ var APP =
                <div>
                    <h1>Graffiti</h1>
                    <Identity />
-                    <Page />
+                   <Page />
                </div>
                )
 
