@@ -20,6 +20,12 @@ var PageStore = merge(BaseStore,{
     dispatcherIndex:AppDispatcher.register(function(payload){
         var action = payload.action;
 
+        switch(action.actionType){
+            case AppConstants.INITIALIZE_PAGE:
+                console.log('INITIALIZE PAGE');
+                break;
+        }
+
         PageStore.emitChange();
 
         return true;

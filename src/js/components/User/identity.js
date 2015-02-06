@@ -21,13 +21,16 @@ var Identities =
         componentWillMount:function(){
             UserStore.addChangeListener(this._onChange)
         },
+        componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange)
+        },
         render: function (){
             var identities = this.state.identities.map(function(identity){
                 return <li key={Math.random().toString()}>
                     <b>{identity.organization}</b> - {identity.name}&nbsp;
-                    <ChangeIdentity identity={identity}>Switch</ChangeIdentity>
+                    <ChangeIdentity currentIdentity={this.state.current_identity} identity={identity}>Switch</ChangeIdentity>
                 </li>
-            })
+            }.bind(this));
 
             return (
                 <div>

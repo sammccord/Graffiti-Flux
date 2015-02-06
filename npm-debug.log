@@ -1,0 +1,128 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/sammccord/.nvm/v0.10.33/bin/node',
+1 verbose cli   '/Users/sammccord/.nvm/v0.10.33/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'jquery' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 warn package.json Graffiti-Flux@1.0.0 No description
+5 warn package.json Graffiti-Flux@1.0.0 No repository field.
+6 warn package.json Graffiti-Flux@1.0.0 No README data
+7 warn package.json events@1.0.2 events is also the name of a node core module.
+8 warn package.json path@0.11.14 path is also the name of a node core module.
+9 verbose readDependencies using package.json deps
+10 verbose cache add [ 'jquery', null ]
+11 verbose cache add name=undefined spec="jquery" args=["jquery",null]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: 'jquery',
+12 verbose parsed url   path: 'jquery',
+12 verbose parsed url   href: 'jquery' }
+13 silly lockFile 6f2ab963-jquery jquery
+14 verbose lock jquery /Users/sammccord/.npm/6f2ab963-jquery.lock
+15 silly lockFile 6f2ab963-jquery jquery
+16 silly lockFile 6f2ab963-jquery jquery
+17 verbose addNamed [ 'jquery', '' ]
+18 verbose addNamed [ null, '*' ]
+19 silly lockFile 039e748d-jquery jquery@
+20 verbose lock jquery@ /Users/sammccord/.npm/039e748d-jquery.lock
+21 silly addNameRange { name: 'jquery', range: '*', hasData: false }
+22 verbose request where is /jquery
+23 verbose request registry https://registry.npmjs.org/
+24 verbose request id 545612e6c7dedcca
+25 verbose url raw /jquery
+26 verbose url resolving [ 'https://registry.npmjs.org/', './jquery' ]
+27 verbose url resolved https://registry.npmjs.org/jquery
+28 verbose request where is https://registry.npmjs.org/jquery
+29 info trying registry request attempt 1 at 14:31:09
+30 verbose etag "6P9Q2E3JFJX5K8RSEE27GPDT2"
+31 http GET https://registry.npmjs.org/jquery
+32 http 200 https://registry.npmjs.org/jquery
+33 silly registry.get cb [ 200,
+33 silly registry.get   { date: 'Fri, 06 Feb 2015 19:31:10 GMT',
+33 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+33 silly registry.get     etag: '"1ZD1IHGQA5AZMXIE7RCI2C01"',
+33 silly registry.get     'content-type': 'application/json',
+33 silly registry.get     'cache-control': 'max-age=60',
+33 silly registry.get     'content-length': '52942',
+33 silly registry.get     'accept-ranges': 'bytes',
+33 silly registry.get     via: '1.1 varnish',
+33 silly registry.get     age: '36',
+33 silly registry.get     'x-served-by': 'cache-iad2139-IAD',
+33 silly registry.get     'x-cache': 'HIT',
+33 silly registry.get     'x-cache-hits': '1',
+33 silly registry.get     'x-timer': 'S1423251070.483763,VS0,VE0',
+33 silly registry.get     vary: 'Accept',
+33 silly registry.get     'keep-alive': 'timeout=10, max=50',
+33 silly registry.get     connection: 'Keep-Alive' } ]
+34 silly addNameRange number 2 { name: 'jquery', range: '*', hasData: true }
+35 silly addNameRange versions [ 'jquery',
+35 silly addNameRange   [ '1.5.1',
+35 silly addNameRange     '1.6.2',
+35 silly addNameRange     '1.6.3',
+35 silly addNameRange     '1.7.2',
+35 silly addNameRange     '1.7.3',
+35 silly addNameRange     '1.8.2',
+35 silly addNameRange     '1.8.3',
+35 silly addNameRange     '2.1.0-beta2',
+35 silly addNameRange     '2.1.0-beta3',
+35 silly addNameRange     '1.11.0-beta3',
+35 silly addNameRange     '1.11.0-rc1',
+35 silly addNameRange     '2.1.0-rc1',
+35 silly addNameRange     '1.11.0',
+35 silly addNameRange     '2.1.0',
+35 silly addNameRange     '2.1.1-beta1',
+35 silly addNameRange     '1.11.1-beta1',
+35 silly addNameRange     '2.1.1-rc1',
+35 silly addNameRange     '1.11.1-rc1',
+35 silly addNameRange     '2.1.1-rc2',
+35 silly addNameRange     '1.11.1-rc2',
+35 silly addNameRange     '2.1.1',
+35 silly addNameRange     '1.11.1',
+35 silly addNameRange     '1.9.1',
+35 silly addNameRange     '2.1.2',
+35 silly addNameRange     '1.11.2',
+35 silly addNameRange     '2.1.3' ] ]
+36 verbose addNamed [ 'jquery', '2.1.3' ]
+37 verbose addNamed [ '2.1.3', '2.1.3' ]
+38 silly lockFile 6fbd5787-jquery-2-1-3 jquery@2.1.3
+39 verbose lock jquery@2.1.3 /Users/sammccord/.npm/6fbd5787-jquery-2-1-3.lock
+40 silly lockFile 38b3ffac-pmjs-org-jquery-jquery-2-1-3-tgz https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+41 verbose lock https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz /Users/sammccord/.npm/38b3ffac-pmjs-org-jquery-jquery-2-1-3-tgz.lock
+42 verbose addRemoteTarball [ 'https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz',
+42 verbose addRemoteTarball   '6ec55204673d505d39432c5bf5cfad10e1dbad2e' ]
+43 info retry fetch attempt 1 at 14:31:10
+44 verbose fetch to= /var/folders/16/4qfh4w850r399v3w2vkh6rbm0000gn/T/npm-13935-xOO2O-6p/registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+45 http GET https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+46 http 200 https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+47 silly lockFile 38b3ffac-pmjs-org-jquery-jquery-2-1-3-tgz https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+48 silly lockFile 38b3ffac-pmjs-org-jquery-jquery-2-1-3-tgz https://registry.npmjs.org/jquery/-/jquery-2.1.3.tgz
+49 silly lockFile 6fbd5787-jquery-2-1-3 jquery@2.1.3
+50 silly lockFile 6fbd5787-jquery-2-1-3 jquery@2.1.3
+51 silly lockFile 039e748d-jquery jquery@
+52 silly lockFile 039e748d-jquery jquery@
+53 error Error: EACCES, mkdir '/Users/sammccord/.npm/jquery/2.1.3'
+53 error  { [Error: EACCES, mkdir '/Users/sammccord/.npm/jquery/2.1.3']
+53 error   errno: 3,
+53 error   code: 'EACCES',
+53 error   path: '/Users/sammccord/.npm/jquery/2.1.3',
+53 error   parent: 'Graffiti-Flux' }
+54 error Please try running this command again as root/Administrator.
+55 error System Darwin 14.1.0
+56 error command "/Users/sammccord/.nvm/v0.10.33/bin/node" "/Users/sammccord/.nvm/v0.10.33/bin/npm" "install" "--save" "jquery"
+57 error cwd /Users/sammccord/Documents/Github/Graffiti-Flux
+58 error node -v v0.10.33
+59 error npm -v 1.4.28
+60 error path /Users/sammccord/.npm/jquery/2.1.3
+61 error code EACCES
+62 error errno 3
+63 error stack Error: EACCES, mkdir '/Users/sammccord/.npm/jquery/2.1.3'
+64 verbose exit [ 3, true ]

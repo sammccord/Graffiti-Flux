@@ -17,6 +17,13 @@ var Page =
         getInitialState: function(){
             return getPage();
         },
+        _onChange:function(){
+            console.log('PAGE INITIALIZED OR CHANGED');
+            this.setState(getPage())
+        },
+        componentWillMount:function(){
+            PageStore.addChangeListener(this._onChange);
+        },
         render: function (){
             return (
                 <div>

@@ -2,6 +2,11 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
+    initializePage:function(){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.INITIALIZE_PAGE
+        })
+    },
     changeIdentity: function(identity){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.CHANGE_IDENTITY,
@@ -16,6 +21,11 @@ var AppActions = {
             text:text
         })
     }
-}
+};
+
+chrome.extension.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        AppActions[request.action](request.err,request.data);
+    });
 
 module.exports = AppActions;

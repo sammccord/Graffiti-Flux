@@ -142,7 +142,7 @@ var SprayStore = merge(BaseStore, {
                 break;
         }
 
-        AppStore.emitChange();
+        SprayStore.emitChange();
         return true;
     })
 })

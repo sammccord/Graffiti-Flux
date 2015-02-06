@@ -23,7 +23,6 @@ gulp.task('buildCSS', function () {
 });
 
 gulp.task('compress', function() {
-
     gulp.src('src/js/main.js')
         .pipe(browserify({transform: 'reactify'}))
         .pipe(concat('main.js'))
