@@ -1,8 +1,8 @@
 var React = require('react');
-var UserStore = require('../stores/user-store');
-var SprayStore = require('../stores/spray-store');
+var UserStore = require('../../stores/user-store');
+var SprayStore = require('../../stores/spray-store');
 
-var Spray = require('../components/Spray/app-spray');
+var Spray = require('./app-spray');
 
 
 function getSprays(organization){

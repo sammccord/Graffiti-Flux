@@ -8,6 +8,7 @@ var CHANGE_EVENT = "sprays";
 
 var _sprays = [
         {
+            _id: '1b2iu89dhu',
             organization: 'Graffiti',
             targetText: 'An example ',
             comments: [
@@ -32,6 +33,7 @@ var _sprays = [
             ]
         },
     {
+        _id: '7dcgs900bba',
         organization: 'Graffiti',
         targetText: 'More text ',
         comments: [
@@ -56,6 +58,7 @@ var _sprays = [
         ]
     },
     {
+        _id: '08sgbvnghjs',
         organization: 'HackerNews',
         targetText: 'An example ',
         comments: [
@@ -80,6 +83,7 @@ var _sprays = [
         ]
     },
     {
+        _id: 'q43456ygfnk',
         organization: 'Fullstack',
         targetText: 'An example ',
         comments: [
@@ -105,8 +109,12 @@ var _sprays = [
     }
     ];
 
-function _addComment (index,comment) {
-    _sprays[index].comments.push(comment);
+function _addComment (id,comment) {
+    _sprays.forEach(function(spray){
+        if(spray._id === id){
+            spray.comments.push(comment);
+        }
+    })
 }
 
 function _addReply(index, reply){

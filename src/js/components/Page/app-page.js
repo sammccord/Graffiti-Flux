@@ -1,8 +1,8 @@
 var React = require('react');
-var PageStore = require('../stores/page-store');
-var UserStore = require('../stores/user-store');
+var PageStore = require('../../stores/page-store');
+var UserStore = require('../../stores/user-store');
 
-var Sprays = require('../components/Spray/app-sprays');
+var Sprays = require('../Spray/app-sprays');
 
 
 function getPage(){

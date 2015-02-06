@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40c948ce-3618-4d60-988c-9b18e105fd82" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-comments.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-identity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-page.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-replies.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-spray.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/app-sprays.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/js/components/change-identity.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/actions/app-actions.js" afterPath="$PROJECT_DIR$/src/js/actions/app-actions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Comments/app-comments.js" afterPath="$PROJECT_DIR$/src/js/components/Comments/app-comments.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/User/app-identity.js" afterPath="$PROJECT_DIR$/src/js/components/User/app-identity.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Page/app-page.js" afterPath="$PROJECT_DIR$/src/js/components/Page/app-page.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/app-spray.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/app-spray.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/app-sprays.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/app-sprays.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/app.js" afterPath="$PROJECT_DIR$/src/js/components/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/User/change-identity.js" afterPath="$PROJECT_DIR$/src/js/components/User/change-identity.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/main.js" afterPath="$PROJECT_DIR$/dist/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/stores/spray-store.js" afterPath="$PROJECT_DIR$/src/js/stores/spray-store.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Graffiti-Flux.iws" />
@@ -33,7 +35,7 @@
     <favorites_list name="Graffiti-Flux" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5993266">
+    <splitter split-orientation="horizontal" split-proportion="0.50754714">
       <split-first>
         <leaf>
           <file leaf-file-name="app-constants.js" pinned="false" current-in-tab="false">
@@ -46,11 +48,61 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/js/components/app.js">
+          <file leaf-file-name="app-page.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/Page/app-page.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.24096386" vertical-offset="0" max-vertical-offset="747">
-                  <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
+                  <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="change-identity.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/User/change-identity.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+                  <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app-sprays.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/Spray/app-sprays.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
+                  <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app-spray.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/Spray/app-spray.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+                  <caret line="2" column="51" selection-start-line="2" selection-start-column="51" selection-end-line="2" selection-end-column="51" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app-comments.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/js/components/Comments/app-comments.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.34632036" vertical-offset="0" max-vertical-offset="693">
+                  <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app-identity.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/User/app-identity.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
+                  <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
                   <folding />
                 </state>
               </provider>
@@ -63,8 +115,8 @@
           <file leaf-file-name="app-actions.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/js/actions/app-actions.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="645">
-                  <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+                  <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
                   <folding />
                 </state>
               </provider>
@@ -73,8 +125,8 @@
           <file leaf-file-name="page-store.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/js/stores/page-store.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="525">
-                  <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+                  <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
                   <folding />
                 </state>
               </provider>
@@ -83,7 +135,7 @@
           <file leaf-file-name="user-store.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/js/stores/user-store.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="765">
+                <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="765">
                   <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
                   <folding />
                 </state>
@@ -93,13 +145,12 @@
           <file leaf-file-name="spray-store.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/js/stores/spray-store.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2248996" vertical-offset="12" max-vertical-offset="1020">
-                  <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+                <state vertical-scroll-proportion="1.099567" vertical-offset="438" max-vertical-offset="1425">
+                  <caret line="137" column="9" selection-start-line="137" selection-start-column="9" selection-end-line="137" selection-end-column="9" />
                   <folding>
-                    <element signature="e#384#1004#0" expanded="false" />
-                    <element signature="e#1108#1652#0" expanded="false" />
-                    <element signature="e#1755#2299#0" expanded="false" />
-                    <element signature="e#2401#2945#0" expanded="false" />
+                    <element signature="e#1167#1711#0" expanded="false" />
+                    <element signature="e#1842#2386#0" expanded="false" />
+                    <element signature="e#2516#3060#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -133,10 +184,8 @@
         <option value="$PROJECT_DIR$/src/js/stores/app-store.js" />
         <option value="$PROJECT_DIR$/src/js/stores/user-store.js" />
         <option value="$PROJECT_DIR$/src/js/components/app-addtocart.js" />
-        <option value="$PROJECT_DIR$/src/js/actions/app-actions.js" />
         <option value="$PROJECT_DIR$/src/js/components/change-identity.js" />
         <option value="$PROJECT_DIR$/src/js/stores/page-store.js" />
-        <option value="$PROJECT_DIR$/src/js/stores/spray-store.js" />
         <option value="$PROJECT_DIR$/src/js/components/app-page.js" />
         <option value="$PROJECT_DIR$/src/js/components/app-comment.js" />
         <option value="$PROJECT_DIR$/src/js/components/app-spray.js" />
@@ -146,11 +195,14 @@
         <option value="$PROJECT_DIR$/src/js/components/app-comments.js" />
         <option value="$PROJECT_DIR$/src/js/components/app-replies.js" />
         <option value="$PROJECT_DIR$/src/js/constants/app-constants.js" />
+        <option value="$PROJECT_DIR$/src/js/actions/app-actions.js" />
+        <option value="$PROJECT_DIR$/src/js/stores/spray-store.js" />
         <option value="$PROJECT_DIR$/src/js/components/app.js" />
         <option value="$PROJECT_DIR$/src/js/components/User/app-identity.js" />
+        <option value="$PROJECT_DIR$/src/js/components/Page/app-page.js" />
+        <option value="$PROJECT_DIR$/src/js/components/User/change-identity.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/app-sprays.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/app-spray.js" />
-        <option value="$PROJECT_DIR$/src/js/components/Page/app-page.js" />
         <option value="$PROJECT_DIR$/src/js/components/Comments/app-comments.js" />
       </list>
     </option>
@@ -601,7 +653,7 @@
     </task>
     <servers />
   </component>
-  <component name="TodoView" selected-index="1">
+  <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
       <are-packages-shown value="false" />
       <are-modules-shown value="false" />
@@ -625,21 +677,21 @@
     <frame x="-309" y="-1080" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16271722" sideWeight="0.23186529" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32970297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23715416" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29108912" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23715416" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2746988" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32970297" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16271722" sideWeight="0.23259053" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29051384" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24960506" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16271722" sideWeight="0.7681347" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16271722" sideWeight="0.76740944" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32970297" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32970297" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2746988" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -674,10 +726,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#384#1004#0" expanded="false" />
-            <element signature="e#1108#1652#0" expanded="false" />
-            <element signature="e#1755#2299#0" expanded="false" />
-            <element signature="e#2401#2945#0" expanded="false" />
+            <element signature="e#1167#1711#0" expanded="false" />
+            <element signature="e#1842#2386#0" expanded="false" />
+            <element signature="e#2516#3060#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -727,10 +778,9 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#384#1004#0" expanded="false" />
-            <element signature="e#1108#1652#0" expanded="false" />
-            <element signature="e#1755#2299#0" expanded="false" />
-            <element signature="e#2401#2945#0" expanded="false" />
+            <element signature="e#1167#1711#0" expanded="false" />
+            <element signature="e#1842#2386#0" expanded="false" />
+            <element signature="e#2516#3060#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -921,22 +971,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/actions/app-actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
-          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/stores/page-store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
-          <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/stores/user-store.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
@@ -945,16 +979,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/stores/page-store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/actions/app-actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/stores/spray-store.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2248996" vertical-offset="12" max-vertical-offset="1020">
-          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        <state vertical-scroll-proportion="1.099567" vertical-offset="438" max-vertical-offset="1425">
+          <caret line="137" column="9" selection-start-line="137" selection-start-column="9" selection-end-line="137" selection-end-column="9" />
           <folding>
-            <element signature="e#384#1004#0" expanded="false" />
-            <element signature="e#1108#1652#0" expanded="false" />
-            <element signature="e#1755#2299#0" expanded="false" />
-            <element signature="e#2401#2945#0" expanded="false" />
+            <element signature="e#1167#1711#0" expanded="false" />
+            <element signature="e#1842#2386#0" expanded="false" />
+            <element signature="e#2516#3060#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/components/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08032128" vertical-offset="0" max-vertical-offset="747">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/components/Comments/app-replies.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08032128" vertical-offset="0" max-vertical-offset="747">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -966,66 +1031,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/User/change-identity.js">
+    <entry file="file://$PROJECT_DIR$/src/js/components/User/app-identity.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.04016064" vertical-offset="0" max-vertical-offset="747">
-          <caret line="2" column="54" selection-start-line="2" selection-start-column="54" selection-end-line="2" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/Comments/app-replies.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22088353" vertical-offset="0" max-vertical-offset="747">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/Comments/app-comments.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.02008032" vertical-offset="0" max-vertical-offset="747">
-          <caret line="1" column="46" selection-start-line="1" selection-start-column="46" selection-end-line="1" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
+          <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/Page/app-page.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18072289" vertical-offset="0" max-vertical-offset="747">
-          <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
+          <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/app-spray.js">
+    <entry file="file://$PROJECT_DIR$/src/js/components/User/change-identity.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10040161" vertical-offset="0" max-vertical-offset="747">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/Spray/app-sprays.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08032128" vertical-offset="0" max-vertical-offset="747">
-          <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
+          <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/User/app-identity.js">
+    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/app-spray.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20080322" vertical-offset="0" max-vertical-offset="747">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+          <caret line="2" column="51" selection-start-line="2" selection-start-column="51" selection-end-line="2" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/app.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/.bin/gulp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24096386" vertical-offset="0" max-vertical-offset="747">
-          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="2469" max-vertical-offset="3270">
+          <caret line="180" column="7" selection-start-line="180" selection-start-column="7" selection-end-line="180" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/components/Comments/app-comments.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34632036" vertical-offset="0" max-vertical-offset="693">
+          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
           <folding />
         </state>
       </provider>

@@ -30432,149 +30432,20 @@ var AppActions = {
             identity:identity
         })
     },
-
-    addItem: function(item){
+    addComment : function(id,comment){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.ADD_ITEM,
-            item:item
-        })
-    },
-    removeItem: function(index){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.REMOVE_ITEM,
-            index:index
-        })
-    },
-    increaseItem: function(item){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.INCREASE_ITEM,
-            item:item
-        })
-    },
-    decreaseItem: function(index){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.DECREASE_ITEM,
-            index:index
+            actionType: AppConstants.ADD_COMMENT,
+            id: id,
+            comment:comment
         })
     }
 }
 
 module.exports = AppActions;
 
-},{"../constants/app-constants.js":167,"../dispatchers/app-dispatcher.js":168}],153:[function(require,module,exports){
-/** @jsx React.DOM */
+},{"../constants/app-constants.js":161,"../dispatchers/app-dispatcher.js":162}],153:[function(require,module,exports){
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var AddToCart =
-    React.createClass({displayName: "AddToCart",
-        handleClick:function(){
-            AppActions.addItem(this.props.item);
-        },
-        render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "Add To cart")
-        }
-    });
-module.exports = AddToCart;
-
-},{"../actions/app-actions.js":152,"react":151}],154:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var AppStore = require('../stores/app-store.js');
-var RemoveFromCart = require('../components/app-removefromcart.js');
-var Increase = require('../components/app-increase.js');
-var Decrease = require('../components/app-decrease.js');
-
-
-function cartItems(){
-    return {items: AppStore.getCart()}
-}
-
-var Cart =
-    React.createClass({displayName: "Cart",
-        getInitialState:function(){
-            return cartItems();
-        },
-        componentWillMount:function(){
-            AppStore.addChangeListener(this._onChange)
-        },
-        _onChange:function(){
-            this.setState(cartItems())
-        },
-        render:function(){
-            var total=0;
-            var items = this.state.items.map(function(item, i){
-                var subtotal = item.cost*item.qty;
-                total+=subtotal;
-                return (
-                    React.createElement("tr", {key: i}, 
-                        React.createElement("td", null, React.createElement(RemoveFromCart, {index: i})), 
-                        React.createElement("td", null, item.title), 
-                        React.createElement("td", null, item.qty), 
-                        React.createElement("td", null, 
-                            React.createElement(Increase, {index: i}), 
-                            React.createElement(Decrease, {index: i})
-                        ), 
-                        React.createElement("td", null, "$", subtotal)
-                    )
-                )
-            })
-            return (
-                React.createElement("table", {className: "table table-hover"}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null), 
-                            React.createElement("th", null, "Item"), 
-                            React.createElement("th", null, "Qty"), 
-                            React.createElement("th", null), 
-                            React.createElement("th", null, "Subtotal")
-                        )
-                    ), 
-                    React.createElement("tbody", null, 
-              items
-                    ), 
-                    React.createElement("tfoot", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("td", {colSpan: "4", className: "text-right"}, "Total"), 
-                            React.createElement("td", null, "$", total)
-                        )
-                    )
-                )
-            )
-        }
-    });
-module.exports = Cart;
-
-},{"../components/app-decrease.js":157,"../components/app-increase.js":159,"../components/app-removefromcart.js":161,"../stores/app-store.js":171,"react":151}],155:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var AppStore = require('../stores/app-store.js');
-var AddToCart = require('../components/app-addtocart.js');
-
-function getCatalog(){
-    return {items: AppStore.getCatalog()}
-}
-
-var Catalog =
-    React.createClass({displayName: "Catalog",
-        getInitialState:function(){
-            return getCatalog();
-        },
-        render:function(){
-            var items = this.state.items.map(function(item){
-                return React.createElement("tr", null, React.createElement("td", null, item.title), React.createElement("td", null, "$", item.cost), React.createElement("td", null, React.createElement(AddToCart, {item: item})))
-            })
-            return (
-                React.createElement("table", {className: "table table-hover"}, 
-          items
-                )
-            )
-        }
-    });
-module.exports = Catalog;
-
-},{"../components/app-addtocart.js":153,"../stores/app-store.js":171,"react":151}],156:[function(require,module,exports){
-var React = require('react');
-var Replies = require('../components/app-replies');
+var Replies = require('../Comments/app-replies');
 
 var Comments =
     React.createClass({displayName: "Comments",
@@ -30597,25 +30468,153 @@ var Comments =
 
 module.exports = Comments;
 
-},{"../components/app-replies":162,"react":151}],157:[function(require,module,exports){
-/** @jsx React.DOM */
+},{"../Comments/app-replies":154,"react":151}],154:[function(require,module,exports){
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var Decrease =
-    React.createClass({displayName: "Decrease",
-        handleClick:function(){
-            AppActions.decreaseItem(this.props.index);
-        },
-        render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "-")
-        }
-    });
-module.exports = Decrease;
 
-},{"../actions/app-actions.js":152,"react":151}],158:[function(require,module,exports){
+var Replies =
+    React.createClass({displayName: "Replies",
+        render: function (){
+            var replies;
+            if(this.props.replies && this.props.replies.length){
+                replies = this.props.replies.map(function(reply){
+                    return React.createElement("li", null, 
+                        React.createElement("h4", null, reply.name), 
+                        React.createElement("p", null, reply.text)
+                    )
+                })
+            }
+            return (
+                React.createElement("ul", null, 
+                    replies
+                )
+            )
+        }
+
+    })
+
+module.exports = Replies;
+
+},{"react":151}],155:[function(require,module,exports){
 var React = require('react');
-var UserStore = require('../stores/user-store');
-var ChangeIdentity = require('../components/change-identity');
+var PageStore = require('../../stores/page-store');
+var UserStore = require('../../stores/user-store');
+
+var Sprays = require('../Spray/app-sprays');
+
+
+function getPage(){
+    return {
+        page:PageStore.getPageState(),
+        filter:UserStore.getCurrentIdentity()
+    };
+}
+
+var Page =
+    React.createClass({displayName: "Page",
+        getInitialState: function(){
+            return getPage();
+        },
+        render: function (){
+            return (
+                React.createElement("div", null, 
+                    this.state.page._id, React.createElement("br", null), 
+                    this.state.page.pageRef, React.createElement("br", null), 
+                    React.createElement(Sprays, {organization: this.state.filter.organization})
+                )
+            )
+        }
+
+    });
+
+module.exports = Page;
+
+},{"../../stores/page-store":166,"../../stores/user-store":168,"../Spray/app-sprays":157,"react":151}],156:[function(require,module,exports){
+var React = require('react');
+var SprayStore = require('../../stores/spray-store');
+var Comments = require('../Comments/app-comments');
+
+function getComments(){
+    return {
+        comments:this.props.spray.comments
+    };
+}
+
+var Spray =
+    React.createClass({displayName: "Spray",
+        getInitialState: function(){
+            return getComments().bind(this);
+        },
+        _onChange:function(){
+            this.setState(getComments().bind(this));
+        },
+        componentWillMount:function(){
+            SprayStore.addChangeListener(this._onChange)
+        },
+        render: function (){
+            return (
+                React.createElement("li", null, 
+                    React.createElement("h4", null, this.props.spray.organization), 
+                    React.createElement("h4", null, this.props.spray.targetText), 
+                    React.createElement("ul", null, 
+                        React.createElement(Comments, {comments: this.state.comments})
+                    )
+
+                )
+            )
+        }
+
+    })
+
+module.exports = Spray;
+
+},{"../../stores/spray-store":167,"../Comments/app-comments":153,"react":151}],157:[function(require,module,exports){
+var React = require('react');
+var UserStore = require('../../stores/user-store');
+var SprayStore = require('../../stores/spray-store');
+
+var Spray = require('./app-spray');
+
+
+function getSprays(organization){
+    console.log(organization);
+    return {
+        sprays:SprayStore.getSprays(organization)
+    };
+}
+
+var Sprays =
+    React.createClass({displayName: "Sprays",
+        getInitialState: function(){
+            return getSprays(this.props.organization);
+        },
+        _onChange:function(){
+            this.setState(getSprays(UserStore.getCurrentIdentity().organization));
+        },
+        componentWillMount:function(){
+            UserStore.addChangeListener(this._onChange);
+        },
+        render: function (){
+            var sprays = this.state.sprays.map(function(spray){
+                return React.createElement(Spray, {key: Math.random().toString(), spray: spray})
+            });
+
+            return (
+                React.createElement("div", null, 
+                        React.createElement("ul", null, 
+                            sprays
+                        )
+                )
+            )
+        }
+
+    })
+
+module.exports = Sprays;
+
+},{"../../stores/spray-store":167,"../../stores/user-store":168,"./app-spray":156,"react":151}],158:[function(require,module,exports){
+var React = require('react');
+var UserStore = require('../../stores/user-store');
+var ChangeIdentity = require('./change-identity');
 
 
 function getIdentities(){
@@ -30658,169 +30657,26 @@ var Identities =
 
 module.exports = Identities;
 
-},{"../components/change-identity":166,"../stores/user-store":175,"react":151}],159:[function(require,module,exports){
+},{"../../stores/user-store":168,"./change-identity":159,"react":151}],159:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var Increase =
-    React.createClass({displayName: "Increase",
+var AppActions = require('../../actions/app-actions.js');
+var ChangeIdentity =
+    React.createClass({displayName: "ChangeIdentity",
         handleClick:function(){
-            AppActions.increaseItem(this.props.index);
+            AppActions.changeIdentity(this.props.identity);
         },
         render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "+")
+            return React.createElement("button", {onClick: this.handleClick}, "Switch")
         }
     });
-module.exports = Increase;
+module.exports = ChangeIdentity;
 
-},{"../actions/app-actions.js":152,"react":151}],160:[function(require,module,exports){
-var React = require('react');
-var PageStore = require('../stores/page-store');
-var UserStore = require('../stores/user-store');
-
-var Sprays = require('../components/app-sprays');
-
-
-function getPage(){
-    return {
-        page:PageStore.getPageState(),
-        filter:UserStore.getCurrentIdentity()
-    };
-}
-
-var Page =
-    React.createClass({displayName: "Page",
-        getInitialState: function(){
-            return getPage();
-        },
-        render: function (){
-            return (
-                React.createElement("div", null, 
-                    this.state.page._id, React.createElement("br", null), 
-                    this.state.page.pageRef, React.createElement("br", null), 
-                    React.createElement(Sprays, {organization: this.state.filter.organization})
-                )
-            )
-        }
-
-    });
-
-module.exports = Page;
-
-},{"../components/app-sprays":164,"../stores/page-store":173,"../stores/user-store":175,"react":151}],161:[function(require,module,exports){
+},{"../../actions/app-actions.js":152,"react":151}],160:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var RemoveFromCart =
-    React.createClass({displayName: "RemoveFromCart",
-        handleClick:function(){
-            AppActions.removeItem(this.props.index);
-        },
-        render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "x")
-        }
-    });
-module.exports = RemoveFromCart;
-
-},{"../actions/app-actions.js":152,"react":151}],162:[function(require,module,exports){
-var React = require('react');
-
-var Replies =
-    React.createClass({displayName: "Replies",
-        render: function (){
-            var replies;
-            if(this.props.replies && this.props.replies.length){
-                replies = this.props.replies.map(function(reply){
-                    return React.createElement("li", null, 
-                        React.createElement("h4", null, reply.name), 
-                        React.createElement("p", null, reply.text)
-                    )
-                })
-            }
-            return (
-                React.createElement("ul", null, 
-                    replies
-                )
-            )
-        }
-
-    })
-
-module.exports = Replies;
-
-},{"react":151}],163:[function(require,module,exports){
-var React = require('react');
-var Comments = require('../components/app-comments');
-
-var Spray =
-    React.createClass({displayName: "Spray",
-        render: function (){
-            return (
-                React.createElement("li", null, 
-                    React.createElement("h4", null, this.props.spray.organization), 
-                    React.createElement("h4", null, this.props.spray.targetText), 
-                    React.createElement("ul", null, 
-                        React.createElement(Comments, {comments: this.props.spray.comments})
-                    )
-                )
-            )
-        }
-
-    })
-
-module.exports = Spray;
-
-},{"../components/app-comments":156,"react":151}],164:[function(require,module,exports){
-var React = require('react');
-var UserStore = require('../stores/user-store');
-var SprayStore = require('../stores/spray-store');
-
-var Spray = require('../components/app-spray');
-
-
-function getSprays(organization){
-    console.log(organization);
-    return {
-        sprays:SprayStore.getSprays(organization)
-    };
-}
-
-var Sprays =
-    React.createClass({displayName: "Sprays",
-        getInitialState: function(){
-            return getSprays(this.props.organization);
-        },
-        _onChange:function(){
-            this.setState(getSprays(UserStore.getCurrentIdentity().organization));
-        },
-        componentWillMount:function(){
-            UserStore.addChangeListener(this._onChange);
-        },
-        render: function (){
-            var sprays = this.state.sprays.map(function(spray){
-                return React.createElement(Spray, {key: Math.random().toString(), spray: spray})
-            });
-
-            return (
-                React.createElement("div", null, 
-                        React.createElement("ul", null, 
-                            sprays
-                        )
-                )
-            )
-        }
-
-    })
-
-module.exports = Sprays;
-
-},{"../components/app-spray":163,"../stores/spray-store":174,"../stores/user-store":175,"react":151}],165:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var Catalog = require('../components/app-catalog');
-var Cart = require('../components/app-cart');
-var Identity = require('../components/app-identity');
-var Page = require('../components/app-page');
+var Identity = require('../components/User/app-identity');
+var Page = require('../components/Page/app-page');
 
 var APP =
     React.createClass({displayName: "APP",
@@ -30837,34 +30693,14 @@ var APP =
     });
 module.exports = APP;
 
-},{"../components/app-cart":154,"../components/app-catalog":155,"../components/app-identity":158,"../components/app-page":160,"react":151}],166:[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react');
-var AppActions = require('../actions/app-actions.js');
-var ChangeIdentity =
-    React.createClass({displayName: "ChangeIdentity",
-        handleClick:function(){
-            AppActions.changeIdentity(this.props.identity);
-        },
-        render:function(){
-            return React.createElement("button", {onClick: this.handleClick}, "Switch")
-        }
-    });
-module.exports = ChangeIdentity;
-
-},{"../actions/app-actions.js":152,"react":151}],167:[function(require,module,exports){
+},{"../components/Page/app-page":155,"../components/User/app-identity":158,"react":151}],161:[function(require,module,exports){
 module.exports = {
-    ADD_ITEM: 'ADD_ITEM',
-    REMOVE_ITEM: 'REMOVE_ITEM',
-    INCREASE_ITEM: 'INCREASE_ITEM',
-    DECREASE_ITEM: 'DECREASE_ITEM',
-
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_REPLY: 'ADD_REPLY',
     CHANGE_IDENTITY: 'CHANGE_IDENTITY'
 };
 
-},{}],168:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -30881,7 +30717,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":169,"react/lib/merge":140}],169:[function(require,module,exports){
+},{"./dispatcher":163,"react/lib/merge":140}],163:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -30939,7 +30775,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":1,"react/lib/merge":140}],170:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":140}],164:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var APP = require('./components/app');
@@ -30950,97 +30786,7 @@ React.render(
     document.getElementById('main')
 );
 
-},{"./components/app":165,"react":151}],171:[function(require,module,exports){
-var AppDispatcher = require('../dispatchers/app-dispatcher');
-var AppConstants = require('../constants/app-constants');
-var merge = require('react/lib/merge');
-var BaseStore = require('./base-store');
-var _ = require('lodash');
-
-var CHANGE_EVENT = "change";
-
-var _catalog = [
-    {id:1, title: 'Widget #1', cost: 1},
-    {id:2, title: 'Widget #2', cost: 2},
-    {id:3, title: 'Widget #3', cost: 3}
-];
-
-var _cartItems = [];
-
-
-function _removeItem(index){
-    _cartItems[index].inCart = false;
-    _cartItems.splice(index, 1);
-}
-
-function _increaseItem(index){
-    _cartItems[index].qty++;
-}
-
-function _decreaseItem(index){
-    if(_cartItems[index].qty>1){
-        _cartItems[index].qty--;
-    }
-    else {
-        _removeItem(index);
-    }
-}
-
-
-function _addItem(item){
-    if(!item.inCart){
-        item['qty'] = 1;
-        item['inCart'] = true;
-        _cartItems.push(item);
-    }
-    else {
-        _cartItems.forEach(function(cartItem, i){
-            if(cartItem.id===item.id){
-                _increaseItem(i);
-            }
-        });
-    }
-}
-
-
-var AppStore = merge(BaseStore, {
-
-    getCart:function(){
-        return _cartItems
-    },
-
-    getCatalog:function(){
-        return _catalog
-    },
-
-    dispatcherIndex:AppDispatcher.register(function(payload){
-        var action = payload.action; // this is our action from handleViewAction
-        switch(action.actionType){
-            case AppConstants.ADD_ITEM:
-                _addItem(payload.action.item);
-                break;
-
-            case AppConstants.REMOVE_ITEM:
-                _removeItem(payload.action.index);
-                break;
-
-            case AppConstants.INCREASE_ITEM:
-                _increaseItem(payload.action.index);
-                break;
-
-            case AppConstants.DECREASE_ITEM:
-                _decreaseItem(payload.action.index);
-                break;
-        }
-        AppStore.emitChange();
-
-        return true;
-    })
-})
-
-module.exports = AppStore;
-
-},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],172:[function(require,module,exports){
+},{"./components/app":160,"react":151}],165:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -31064,7 +30810,7 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":140}],173:[function(require,module,exports){
+},{"events":2,"react/lib/merge":140}],166:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -31096,7 +30842,7 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],174:[function(require,module,exports){
+},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}],167:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -31107,6 +30853,7 @@ var CHANGE_EVENT = "sprays";
 
 var _sprays = [
         {
+            _id: '1b2iu89dhu',
             organization: 'Graffiti',
             targetText: 'An example ',
             comments: [
@@ -31131,6 +30878,7 @@ var _sprays = [
             ]
         },
     {
+        _id: '7dcgs900bba',
         organization: 'Graffiti',
         targetText: 'More text ',
         comments: [
@@ -31155,6 +30903,7 @@ var _sprays = [
         ]
     },
     {
+        _id: '08sgbvnghjs',
         organization: 'HackerNews',
         targetText: 'An example ',
         comments: [
@@ -31179,6 +30928,7 @@ var _sprays = [
         ]
     },
     {
+        _id: 'q43456ygfnk',
         organization: 'Fullstack',
         targetText: 'An example ',
         comments: [
@@ -31204,8 +30954,12 @@ var _sprays = [
     }
     ];
 
-function _addComment (index,comment) {
-    _sprays[index].comments.push(comment);
+function _addComment (id,comment) {
+    _sprays.forEach(function(spray){
+        if(spray._id === id){
+            spray.comments.push(comment);
+        }
+    })
 }
 
 function _addReply(index, reply){
@@ -31237,7 +30991,7 @@ module.exports = SprayStore;
 
 
 
-},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],175:[function(require,module,exports){
+},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}],168:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -31285,4 +31039,4 @@ var UserStore = merge(BaseStore,{
 
 module.exports = UserStore;
 
-},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}]},{},[170])
+},{"../constants/app-constants":161,"../dispatchers/app-dispatcher":162,"./base-store":165,"lodash":4,"react/lib/merge":140}]},{},[164])
