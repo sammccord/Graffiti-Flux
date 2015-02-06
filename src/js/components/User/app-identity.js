@@ -1,6 +1,6 @@
 var React = require('react');
 var UserStore = require('../stores/user-store');
-var ChangeIdentity = require('../components/change-identity');
+var ChangeIdentity = require('../components/User/change-identity');
 
 
 function getIdentities(){

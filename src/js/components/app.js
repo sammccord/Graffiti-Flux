@@ -1,8 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var Catalog = require('../components/app-catalog');
-var Cart = require('../components/app-cart');
-var Identity = require('../components/app-identity');
+var Identity = require('../components/User/app-identity');
 var Page = require('../components/app-page');
 
 var APP =

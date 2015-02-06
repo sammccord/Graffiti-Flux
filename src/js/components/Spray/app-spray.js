@@ -1,5 +1,5 @@
 var React = require('react');
-var Comments = require('../components/app-comments');
+var Comments = require('../components/Comments/app-comments');
 
 var Spray =
     React.createClass({

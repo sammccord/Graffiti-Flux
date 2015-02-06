@@ -2,7 +2,7 @@ var React = require('react');
 var PageStore = require('../stores/page-store');
 var UserStore = require('../stores/user-store');
 
-var Sprays = require('../components/app-sprays');
+var Sprays = require('../components/Spray/app-sprays');
 
 
 function getPage(){

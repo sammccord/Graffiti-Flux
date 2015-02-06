@@ -1,5 +1,5 @@
 var React = require('react');
-var Replies = require('../components/app-replies');
+var Replies = require('../components/Comments/app-replies');
 
 var Comments =
     React.createClass({
