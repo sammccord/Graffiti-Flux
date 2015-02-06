@@ -8,6 +8,7 @@ var CHANGE_EVENT = "sprays";
 
 var _sprays = [
         {
+            organization: 'Graffiti',
             targetText: 'An example ',
             comments: [
                 {
@@ -29,7 +30,79 @@ var _sprays = [
                     text: 'Lich King, I slay that.'
                 }
             ]
-        }
+        },
+    {
+        organization: 'Graffiti',
+        targetText: 'More text ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    },
+    {
+        organization: 'HackerNews',
+        targetText: 'An example ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    },
+    {
+        organization: 'Fullstack',
+        targetText: 'An example ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    }
     ];
 
 function _addComment (index,comment) {
@@ -41,8 +114,10 @@ function _addReply(index, reply){
 }
 
 var SprayStore = merge(BaseStore, {
-    getSprays: function(){
-        return _sprays;
+    getSprays: function(organization){
+        return _sprays.filter(function(spray){
+            return spray.organization === organization;
+        });
     },
 
     dispatcherIndex:AppDispatcher.register(function(payload){

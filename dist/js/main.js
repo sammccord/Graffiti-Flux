@@ -30461,7 +30461,7 @@ var AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164}],153:[function(require,module,exports){
+},{"../constants/app-constants.js":167,"../dispatchers/app-dispatcher.js":168}],153:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30544,7 +30544,7 @@ var Cart =
     });
 module.exports = Cart;
 
-},{"../components/app-decrease.js":156,"../components/app-increase.js":158,"../components/app-removefromcart.js":160,"../stores/app-store.js":167,"react":151}],155:[function(require,module,exports){
+},{"../components/app-decrease.js":157,"../components/app-increase.js":159,"../components/app-removefromcart.js":161,"../stores/app-store.js":171,"react":151}],155:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppStore = require('../stores/app-store.js');
@@ -30572,7 +30572,32 @@ var Catalog =
     });
 module.exports = Catalog;
 
-},{"../components/app-addtocart.js":153,"../stores/app-store.js":167,"react":151}],156:[function(require,module,exports){
+},{"../components/app-addtocart.js":153,"../stores/app-store.js":171,"react":151}],156:[function(require,module,exports){
+var React = require('react');
+var Replies = require('../components/app-replies');
+
+var Comments =
+    React.createClass({displayName: "Comments",
+        render: function (){
+            var comments = this.props.comments.map(function(comment){
+                return React.createElement("li", {key: Math.random().toString()}, 
+                    React.createElement("h4", null, comment.name), 
+                    React.createElement("p", null, comment.text), 
+                    React.createElement(Replies, {replies: comment.replies})
+                );
+            });
+            return (
+                React.createElement("ul", null, 
+                    comments
+                )
+            )
+        }
+
+    });
+
+module.exports = Comments;
+
+},{"../components/app-replies":162,"react":151}],157:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30587,7 +30612,7 @@ var Decrease =
     });
 module.exports = Decrease;
 
-},{"../actions/app-actions.js":152,"react":151}],157:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],158:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../stores/user-store');
 var ChangeIdentity = require('../components/change-identity');
@@ -30613,7 +30638,10 @@ var Identities =
         },
         render: function (){
             var identities = this.state.identities.map(function(identity){
-                return React.createElement("li", null, React.createElement("b", null, identity.organization), " - ", identity.name, " ", React.createElement(ChangeIdentity, {identity: identity}, "Switch"))
+                return React.createElement("li", {key: Math.random().toString()}, 
+                    React.createElement("b", null, identity.organization), " - ", identity.name, " ", 
+                    React.createElement(ChangeIdentity, {identity: identity}, "Switch")
+                )
             })
 
             return (
@@ -30630,7 +30658,7 @@ var Identities =
 
 module.exports = Identities;
 
-},{"../components/change-identity":162,"../stores/user-store":170,"react":151}],158:[function(require,module,exports){
+},{"../components/change-identity":166,"../stores/user-store":175,"react":151}],159:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30645,16 +30673,18 @@ var Increase =
     });
 module.exports = Increase;
 
-},{"../actions/app-actions.js":152,"react":151}],159:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],160:[function(require,module,exports){
 var React = require('react');
 var PageStore = require('../stores/page-store');
 var UserStore = require('../stores/user-store');
+
+var Sprays = require('../components/app-sprays');
 
 
 function getPage(){
     return {
         page:PageStore.getPageState(),
-        filter:UserStore.getCurrentIdentity().organization
+        filter:UserStore.getCurrentIdentity()
     };
 }
 
@@ -30663,28 +30693,21 @@ var Page =
         getInitialState: function(){
             return getPage();
         },
-        _onChange:function(){
-            this.setState(getPage())
-        },
-        componentWillMount:function(){
-            UserStore.addChangeListener(this._onChange)
-        },
         render: function (){
-
             return (
                 React.createElement("div", null, 
                     this.state.page._id, React.createElement("br", null), 
                     this.state.page.pageRef, React.createElement("br", null), 
-                    this.state.filter
+                    React.createElement(Sprays, {organization: this.state.filter.organization})
                 )
             )
         }
 
-    })
+    });
 
 module.exports = Page;
 
-},{"../stores/page-store":169,"../stores/user-store":170,"react":151}],160:[function(require,module,exports){
+},{"../components/app-sprays":164,"../stores/page-store":173,"../stores/user-store":175,"react":151}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30699,7 +30722,99 @@ var RemoveFromCart =
     });
 module.exports = RemoveFromCart;
 
-},{"../actions/app-actions.js":152,"react":151}],161:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],162:[function(require,module,exports){
+var React = require('react');
+
+var Replies =
+    React.createClass({displayName: "Replies",
+        render: function (){
+            var replies;
+            if(this.props.replies && this.props.replies.length){
+                replies = this.props.replies.map(function(reply){
+                    return React.createElement("li", null, 
+                        React.createElement("h4", null, reply.name), 
+                        React.createElement("p", null, reply.text)
+                    )
+                })
+            }
+            return (
+                React.createElement("ul", null, 
+                    replies
+                )
+            )
+        }
+
+    })
+
+module.exports = Replies;
+
+},{"react":151}],163:[function(require,module,exports){
+var React = require('react');
+var Comments = require('../components/app-comments');
+
+var Spray =
+    React.createClass({displayName: "Spray",
+        render: function (){
+            return (
+                React.createElement("li", null, 
+                    React.createElement("h4", null, this.props.spray.organization), 
+                    React.createElement("h4", null, this.props.spray.targetText), 
+                    React.createElement("ul", null, 
+                        React.createElement(Comments, {comments: this.props.spray.comments})
+                    )
+                )
+            )
+        }
+
+    })
+
+module.exports = Spray;
+
+},{"../components/app-comments":156,"react":151}],164:[function(require,module,exports){
+var React = require('react');
+var UserStore = require('../stores/user-store');
+var SprayStore = require('../stores/spray-store');
+
+var Spray = require('../components/app-spray');
+
+
+function getSprays(organization){
+    console.log(organization);
+    return {
+        sprays:SprayStore.getSprays(organization)
+    };
+}
+
+var Sprays =
+    React.createClass({displayName: "Sprays",
+        getInitialState: function(){
+            return getSprays(this.props.organization);
+        },
+        _onChange:function(){
+            this.setState(getSprays(UserStore.getCurrentIdentity().organization));
+        },
+        componentWillMount:function(){
+            UserStore.addChangeListener(this._onChange);
+        },
+        render: function (){
+            var sprays = this.state.sprays.map(function(spray){
+                return React.createElement(Spray, {key: Math.random().toString(), spray: spray})
+            });
+
+            return (
+                React.createElement("div", null, 
+                        React.createElement("ul", null, 
+                            sprays
+                        )
+                )
+            )
+        }
+
+    })
+
+module.exports = Sprays;
+
+},{"../components/app-spray":163,"../stores/spray-store":174,"../stores/user-store":175,"react":151}],165:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Catalog = require('../components/app-catalog');
@@ -30712,12 +30827,9 @@ var APP =
         render:function(){
            return (
                React.createElement("div", null, 
-                    React.createElement("h1", null, "Let's Shop"), 
-                    React.createElement(Catalog, null), 
-                   React.createElement(Cart, null), 
                    React.createElement("h1", null, "Graffiti"), 
-                    React.createElement(Page, null), 
-                   React.createElement(Identity, null)
+                   React.createElement(Identity, null), 
+                    React.createElement(Page, null)
                )
                )
 
@@ -30725,7 +30837,7 @@ var APP =
     });
 module.exports = APP;
 
-},{"../components/app-cart":154,"../components/app-catalog":155,"../components/app-identity":157,"../components/app-page":159,"react":151}],162:[function(require,module,exports){
+},{"../components/app-cart":154,"../components/app-catalog":155,"../components/app-identity":158,"../components/app-page":160,"react":151}],166:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../actions/app-actions.js');
@@ -30740,7 +30852,7 @@ var ChangeIdentity =
     });
 module.exports = ChangeIdentity;
 
-},{"../actions/app-actions.js":152,"react":151}],163:[function(require,module,exports){
+},{"../actions/app-actions.js":152,"react":151}],167:[function(require,module,exports){
 module.exports = {
     ADD_ITEM: 'ADD_ITEM',
     REMOVE_ITEM: 'REMOVE_ITEM',
@@ -30752,7 +30864,7 @@ module.exports = {
     CHANGE_IDENTITY: 'CHANGE_IDENTITY'
 };
 
-},{}],164:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -30769,7 +30881,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":165,"react/lib/merge":140}],165:[function(require,module,exports){
+},{"./dispatcher":169,"react/lib/merge":140}],169:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -30827,7 +30939,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":1,"react/lib/merge":140}],166:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":140}],170:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var APP = require('./components/app');
@@ -30838,7 +30950,7 @@ React.render(
     document.getElementById('main')
 );
 
-},{"./components/app":161,"react":151}],167:[function(require,module,exports){
+},{"./components/app":165,"react":151}],171:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -30928,7 +31040,7 @@ var AppStore = merge(BaseStore, {
 
 module.exports = AppStore;
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}],168:[function(require,module,exports){
+},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],172:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -30952,7 +31064,7 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":140}],169:[function(require,module,exports){
+},{"events":2,"react/lib/merge":140}],173:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -30984,7 +31096,148 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}],170:[function(require,module,exports){
+},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],174:[function(require,module,exports){
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var AppConstants = require('../constants/app-constants');
+var merge = require('react/lib/merge');
+var BaseStore = require('./base-store');
+var _ = require('lodash');
+
+var CHANGE_EVENT = "sprays";
+
+var _sprays = [
+        {
+            organization: 'Graffiti',
+            targetText: 'An example ',
+            comments: [
+                {
+                    name: 'First guy',
+                    text: 'White hat, I wear that.',
+                    replies: [
+                        {
+                            name: 'Fourth guy',
+                            text: 'Princess Bubblegum, I eat that.'
+                        }
+                    ]
+                },
+                {
+                    name: 'Second guy',
+                    text: 'Ice King, I melt that.'
+                },
+                {
+                    name: 'Third guy',
+                    text: 'Lich King, I slay that.'
+                }
+            ]
+        },
+    {
+        organization: 'Graffiti',
+        targetText: 'More text ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    },
+    {
+        organization: 'HackerNews',
+        targetText: 'An example ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    },
+    {
+        organization: 'Fullstack',
+        targetText: 'An example ',
+        comments: [
+            {
+                name: 'First guy',
+                text: 'White hat, I wear that.',
+                replies: [
+                    {
+                        name: 'Fourth guy',
+                        text: 'Princess Bubblegum, I eat that.'
+                    }
+                ]
+            },
+            {
+                name: 'Second guy',
+                text: 'Ice King, I melt that.'
+            },
+            {
+                name: 'Third guy',
+                text: 'Lich King, I slay that.'
+            }
+        ]
+    }
+    ];
+
+function _addComment (index,comment) {
+    _sprays[index].comments.push(comment);
+}
+
+function _addReply(index, reply){
+
+}
+
+var SprayStore = merge(BaseStore, {
+    getSprays: function(organization){
+        return _sprays.filter(function(spray){
+            return spray.organization === organization;
+        });
+    },
+
+    dispatcherIndex:AppDispatcher.register(function(payload){
+        var action = payload.action;
+
+        switch(action.actionType){
+            case AppConstants.ADD_COMMENT:
+                _addComment(payload.action.comment);
+                break;
+        }
+
+        AppStore.emitChange();
+        return true;
+    })
+})
+
+module.exports = SprayStore;
+
+
+
+},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}],175:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -31032,4 +31285,4 @@ var UserStore = merge(BaseStore,{
 
 module.exports = UserStore;
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":168,"lodash":4,"react/lib/merge":140}]},{},[166])
+},{"../constants/app-constants":167,"../dispatchers/app-dispatcher":168,"./base-store":172,"lodash":4,"react/lib/merge":140}]},{},[170])

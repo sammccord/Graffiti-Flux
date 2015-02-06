@@ -10,12 +10,9 @@ var APP =
         render:function(){
            return (
                <div>
-                    <h1>Let's Shop</h1>
-                    <Catalog />
-                   <Cart />
                    <h1>Graffiti</h1>
-                    <Page />
                    <Identity />
+                    <Page />
                </div>
                )
 
