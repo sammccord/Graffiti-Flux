@@ -8,6 +8,7 @@ var CHANGE_EVENT = "sprays";
 
 var _sprays = [
         {
+            _id: '1b2iu89dhu',
             organization: 'Graffiti',
             targetText: 'An example ',
             comments: [
@@ -32,6 +33,7 @@ var _sprays = [
             ]
         },
     {
+        _id: '7dcgs900bba',
         organization: 'Graffiti',
         targetText: 'More text ',
         comments: [
@@ -56,6 +58,7 @@ var _sprays = [
         ]
     },
     {
+        _id: '08sgbvnghjs',
         organization: 'HackerNews',
         targetText: 'An example ',
         comments: [
@@ -80,6 +83,7 @@ var _sprays = [
         ]
     },
     {
+        _id: 'q43456ygfnk',
         organization: 'Fullstack',
         targetText: 'An example ',
         comments: [
@@ -105,8 +109,17 @@ var _sprays = [
     }
     ];
 
-function _addComment (index,comment) {
-    _sprays[index].comments.push(comment);
+function _addComment (id,user,text) {
+    console.log(id);
+    _sprays.forEach(function(spray){
+        if(spray._id === id){
+            spray.comments.push({
+                name: user.name,
+                text: text
+            });
+            console.log(spray);
+        }
+    })
 }
 
 function _addReply(index, reply){
@@ -125,7 +138,7 @@ var SprayStore = merge(BaseStore, {
 
         switch(action.actionType){
             case AppConstants.ADD_COMMENT:
-                _addComment(payload.action.comment);
+                _addComment(payload.action.id,payload.action.user,payload.action.text);
                 break;
         }
 

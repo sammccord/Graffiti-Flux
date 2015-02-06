@@ -8,29 +8,12 @@ var AppActions = {
             identity:identity
         })
     },
-
-    addItem: function(item){
+    addComment : function(id,user,text){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.ADD_ITEM,
-            item:item
-        })
-    },
-    removeItem: function(index){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.REMOVE_ITEM,
-            index:index
-        })
-    },
-    increaseItem: function(item){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.INCREASE_ITEM,
-            item:item
-        })
-    },
-    decreaseItem: function(index){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.DECREASE_ITEM,
-            index:index
+            actionType: AppConstants.ADD_COMMENT,
+            id:id,
+            user: user,
+            text:text
         })
     }
 }

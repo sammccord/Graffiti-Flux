@@ -1,8 +1,8 @@
 var React = require('react');
-var UserStore = require('../stores/user-store');
-var SprayStore = require('../stores/spray-store');
+var UserStore = require('../../stores/user-store');
+var SprayStore = require('../../stores/spray-store');
 
-var Spray = require('../components/app-spray');
+var Spray = require('./spray');
 
 
 function getSprays(organization){
@@ -22,6 +22,9 @@ var Sprays =
         },
         componentWillMount:function(){
             UserStore.addChangeListener(this._onChange);
+        },
+        componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange);
         },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
