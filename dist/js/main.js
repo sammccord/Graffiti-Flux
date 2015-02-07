@@ -39656,10 +39656,12 @@ var AppActions = {
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        AppActions[request.action](request.err,request.data);
+        console.log(request.data);
+        AppActions[request.action](request.data);
     });
 
 module.exports = AppActions;
+
 
 },{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164}],154:[function(require,module,exports){
 var React = require('react');
@@ -40084,11 +40086,15 @@ var React = require('react');
 var $ = require('jquery');
 
 $('body').prepend('<div id="graffiti-app"></div>');
+$('#graffiti-app').css({
+    position:'fixed'
+});
 
 React.render(
     React.createElement(APP, null),
     document.getElementById('graffiti-app')
 );
+
 
 },{"./components/app":162,"jquery":4,"react":152}],167:[function(require,module,exports){
 var merge = require('react/lib/merge');
@@ -40139,7 +40145,7 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                console.log('INITIALIZE PAGE');
+                console.log(payload.action);
                 break;
         }
 
@@ -40155,6 +40161,7 @@ module.exports = PageStore;
 },{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":167,"lodash":5,"react/lib/merge":141}],169:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
+
 var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
 var _ = require('lodash');

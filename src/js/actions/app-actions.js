@@ -25,7 +25,8 @@ var AppActions = {
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        AppActions[request.action](request.err,request.data);
+        console.log(request.data);
+        AppActions[request.action](request.data);
     });
 
 module.exports = AppActions;

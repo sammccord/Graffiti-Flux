@@ -1,51 +1,90 @@
-//PUT YOUR IP ADDRESS HERE with http:// in front of it. It's important.
 var Graffiti = new Graffiti('http://192.168.1.24:9000');
 
-var user = [];
-
-chrome.storage.local.clear();
+var user = {
+    identities:[],
+    defaultIdentity: {}
+};
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status && changeInfo.status == 'complete') {
+    //if (changeInfo.status && changeInfo.status == 'complete') {
         chrome.tabs.sendMessage(tabId, {
             //message
             action: 'initializePage',
             err: null,
-            data: null
+            data: user
         }, function(response) {
             if (response) console.log(response);
         });
-    }
+    //}
 });
 
-function getIdentity() {
-    chrome.storage.local.get('identities', function(identities) {
-        console.log(identities);
-        user = identities;
-        if(typeof user === 'object'){
-            return user;
+getIdentities();
+
+function getIdentities() {
+    chrome.storage.sync.get('user', function(data) {
+        if(!data.user){
+            console.log('no data user');
+            chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{
-            return JSON.parse(user);
+            console.log(data.user);
+            user = JSON.parse(data.user);
         }
     });
 }
 
-function addIdentity(origin,name,cb) {
-    user.push({
-        origin:name
+function addIdentity(organization,name) {
+    var newIdentity = {};
+    var isNew = true;
+    user.identities.forEach(function(identity){
+        if(identity.organization === organization){
+            identity.name = name;
+            isNew = false;
+        }
     });
-    console.log(user);
-    chrome.storage.local.set({'identities':JSON.stringify(user)});
+    if(isNew){
+        newIdentity['organization'] = organization;
+        newIdentity['name'] = name;
+        user.identities.push(newIdentity);
+    }
+
+    if(!user.defaultIdentity.name){
+        user.defaultIdentity = newIdentity;
+    }
+    chrome.storage.sync.set({'user':JSON.stringify(user)});
 }
+
+function setDefaultIdentity(organization,name){
+    user.defaultIdentity['organization'] = organization;
+    user.defaultIdentity['name'] = name;
+    chrome.storage.sync.set({'user':user});
+}
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+            'Old value was "%s", new value is "%s".',
+            key,
+            namespace,
+            storageChange.oldValue,
+            storageChange.newValue);
+    }
+});
 
 chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
         if(request.action === 'getIdentities'){
+            console.log('GETTING IDENTITIES');
+            getIdentities();
+            sendResponse(user);
+        }
+        if(request.action === 'setDefaultIdentity'){
+            setDefaultIdentity(request.organization,request.name);
             sendResponse(user);
         }
         if(request.action === 'addIdentity'){
-            addIdentity(request.data.origin,request.data.name);
+            addIdentity(request.organization,request.name);
             sendResponse(user);
         }
     });

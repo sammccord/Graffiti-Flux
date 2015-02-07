@@ -22,7 +22,7 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                console.log('INITIALIZE PAGE');
+                console.log(payload.action);
                 break;
         }
 

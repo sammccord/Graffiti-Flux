@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
+
 var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
 var _ = require('lodash');

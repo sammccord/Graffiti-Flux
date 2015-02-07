@@ -133,7 +133,8 @@
   position: fixed !important;
   width: 400px;
   right: 0;
-  z-index: 99999999999; }
+  z-index: 99999999999;
+  background-color: rgba(255, 255, 255, 0.4); }
   #graffiti-app .shadow-z-1, #graffiti-app .card, #graffiti-app .snackbar {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }
   #graffiti-app .shadow-z-2, #graffiti-app body .well, #graffiti-app body .jumbotron, #graffiti-app .container .well, #graffiti-app .container .jumbotron, #graffiti-app .container-fluid .well, #graffiti-app .container-fluid .jumbotron, #graffiti-app .btn-raised, #graffiti-app .btn-group, #graffiti-app .btn-group-vertical, #graffiti-app .btn-group.btn-group-raised, #graffiti-app .btn-group-vertical.btn-group-raised, #graffiti-app .modal-content {
