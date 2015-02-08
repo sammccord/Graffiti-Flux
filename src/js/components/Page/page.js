@@ -1,4 +1,7 @@
 var React = require('react');
+
+var ExtActions = require('../../actions/ext-actions');
+
 var PageStore = require('../../stores/page-store');
 var UserStore = require('../../stores/user-store');
 
@@ -22,6 +25,7 @@ var Page =
             this.setState(getPage())
         },
         componentWillMount:function(){
+            ExtActions.getPageState();
             PageStore.addChangeListener(this._onChange);
         },
         render: function (){

@@ -39633,6 +39633,12 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
+    getIdentities:function(user){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.GET_IDENTITIES,
+            user:user
+        })
+    },
     initializePage:function(){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.INITIALIZE_PAGE
@@ -39654,16 +39660,38 @@ var AppActions = {
     }
 };
 
-chrome.extension.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        console.log(request.data);
-        AppActions[request.action](request.data);
-    });
-
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":163,"../dispatchers/app-dispatcher.js":164}],154:[function(require,module,exports){
+},{"../constants/app-constants.js":164,"../dispatchers/app-dispatcher.js":165}],154:[function(require,module,exports){
+var AppActions = require('./app-actions');
+
+function sendMessage (payload) {
+    chrome.runtime.sendMessage(payload);
+}
+
+var ExtActions = {
+    getIdentities:function(){
+        sendMessage({
+            action:'getIdentities'
+        })
+    },
+    getPageState:function(url,organization){
+        console.log('GETTING PAGE STATE');
+    }
+};
+
+chrome.extension.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log('EXT-ACTION',request);
+        AppActions[request.action](request.data);
+    });
+
+
+module.exports = ExtActions;
+
+
+},{"./app-actions":153}],155:[function(require,module,exports){
 var React = require('react');
 
 var UserStore = require('../../stores/user-store');
@@ -39718,7 +39746,7 @@ var CommentForm =
 
 module.exports = CommentForm;
 
-},{"../../stores/user-store":170,"react":152}],155:[function(require,module,exports){
+},{"../../stores/user-store":171,"react":152}],156:[function(require,module,exports){
 var React = require('react');
 var Replies = require('../Comments/replies');
 
@@ -39743,7 +39771,7 @@ var Comments =
 
 module.exports = Comments;
 
-},{"../Comments/replies":156,"react":152}],156:[function(require,module,exports){
+},{"../Comments/replies":157,"react":152}],157:[function(require,module,exports){
 var React = require('react');
 
 var Replies =
@@ -39769,8 +39797,11 @@ var Replies =
 
 module.exports = Replies;
 
-},{"react":152}],157:[function(require,module,exports){
+},{"react":152}],158:[function(require,module,exports){
 var React = require('react');
+
+var ExtActions = require('../../actions/ext-actions');
+
 var PageStore = require('../../stores/page-store');
 var UserStore = require('../../stores/user-store');
 
@@ -39794,6 +39825,7 @@ var Page =
             this.setState(getPage())
         },
         componentWillMount:function(){
+            ExtActions.getPageState();
             PageStore.addChangeListener(this._onChange);
         },
         render: function (){
@@ -39810,7 +39842,8 @@ var Page =
 
 module.exports = Page;
 
-},{"../../stores/page-store":168,"../../stores/user-store":170,"../Spray/sprays":159,"react":152}],158:[function(require,module,exports){
+
+},{"../../actions/ext-actions":154,"../../stores/page-store":169,"../../stores/user-store":171,"../Spray/sprays":160,"react":152}],159:[function(require,module,exports){
 var React = require('react');
 
 var AppActions = require('../../actions/app-actions.js');
@@ -39861,7 +39894,7 @@ var Spray =
 
 module.exports = Spray;
 
-},{"../../actions/app-actions.js":153,"../../stores/spray-store":169,"../Comments/comment-form":154,"../Comments/comments":155,"react":152}],159:[function(require,module,exports){
+},{"../../actions/app-actions.js":153,"../../stores/spray-store":170,"../Comments/comment-form":155,"../Comments/comments":156,"react":152}],160:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
@@ -39908,7 +39941,7 @@ var Sprays =
 
 module.exports = Sprays;
 
-},{"../../stores/spray-store":169,"../../stores/user-store":170,"./spray":158,"react":152}],160:[function(require,module,exports){
+},{"../../stores/spray-store":170,"../../stores/user-store":171,"./spray":159,"react":152}],161:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../../actions/app-actions.js');
@@ -39925,10 +39958,11 @@ var ChangeIdentity =
     });
 module.exports = ChangeIdentity;
 
-},{"../../actions/app-actions.js":153,"react":152}],161:[function(require,module,exports){
+},{"../../actions/app-actions.js":153,"react":152}],162:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var ChangeIdentity = require('./change-identity');
+var ExtActions = require('../../actions/ext-actions');
 
 
 function getIdentities(){
@@ -39947,6 +39981,7 @@ var Identities =
             this.setState(getIdentities())
         },
         componentWillMount:function(){
+            ExtActions.getIdentities();
             UserStore.addChangeListener(this._onChange)
         },
         componentDidUnmount:function(){
@@ -39974,7 +40009,8 @@ var Identities =
 
 module.exports = Identities;
 
-},{"../../stores/user-store":170,"./change-identity":160,"react":152}],162:[function(require,module,exports){
+
+},{"../../actions/ext-actions":154,"../../stores/user-store":171,"./change-identity":161,"react":152}],163:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Identity = require('../components/User/identity');
@@ -39995,21 +40031,22 @@ var APP =
     });
 module.exports = APP;
 
-},{"../components/Page/page":157,"../components/User/identity":161,"react":152}],163:[function(require,module,exports){
+},{"../components/Page/page":158,"../components/User/identity":162,"react":152}],164:[function(require,module,exports){
 module.exports = {
+    GET_IDENTITIES: 'GET_IDENTITIES',
     INITIALIZE_PAGE: 'INITIALIZE_PAGE',
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_REPLY: 'ADD_REPLY',
     CHANGE_IDENTITY: 'CHANGE_IDENTITY'
 };
 
-},{}],164:[function(require,module,exports){
+
+},{}],165:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
 var AppDispatcher = merge(Dispatcher.prototype, {
     handleViewAction: function (action) {
-        console.log('ABOUT TO DISPATCH');
         this.dispatch({
             source: 'VIEW_ACTION',
             action: action
@@ -40020,7 +40057,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":165,"react/lib/merge":141}],165:[function(require,module,exports){
+},{"./dispatcher":166,"react/lib/merge":141}],166:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -40067,7 +40104,6 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
      * @param  {object} payload The data from the action.
      */
     dispatch: function(payload) {
-        console.log(payload);
         _callbacks.forEach(function(callback) {
             _addPromise(callback, payload);
         });
@@ -40078,7 +40114,8 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 
 module.exports = Dispatcher;
 
-},{"es6-promise":1,"react/lib/merge":141}],166:[function(require,module,exports){
+
+},{"es6-promise":1,"react/lib/merge":141}],167:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var APP = require('./components/app');
@@ -40096,7 +40133,7 @@ React.render(
 );
 
 
-},{"./components/app":162,"jquery":4,"react":152}],167:[function(require,module,exports){
+},{"./components/app":163,"jquery":4,"react":152}],168:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -40120,10 +40157,11 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":141}],168:[function(require,module,exports){
+},{"events":2,"react/lib/merge":141}],169:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
+var UserStore = require('./user-store');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
 
@@ -40145,20 +40183,20 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                console.log(payload.action);
+                console.log('INITIALIZING PAGE');
+                console.log('CURRENT IDENTITY',UserStore.getCurrentIdentity());
+                PageStore.emitChange();
                 break;
         }
 
-        PageStore.emitChange();
-
         return true;
     })
-})
+});
 
 module.exports = PageStore;
 
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":167,"lodash":5,"react/lib/merge":141}],169:[function(require,module,exports){
+},{"../constants/app-constants":164,"../dispatchers/app-dispatcher":165,"./base-store":168,"./user-store":171,"lodash":5,"react/lib/merge":141}],170:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
@@ -40313,7 +40351,7 @@ module.exports = SprayStore;
 
 
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":167,"lodash":5,"react/lib/merge":141}],170:[function(require,module,exports){
+},{"../constants/app-constants":164,"../dispatchers/app-dispatcher":165,"./base-store":168,"lodash":5,"react/lib/merge":141}],171:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -40322,13 +40360,9 @@ var _ = require('lodash');
 
 var CHANGE_EVENT = "user";
 
-var _user = [
-    {name: 'graff-sammccord', organization: 'Graffiti'},
-    {name:'hn-sammccord',organization:'HackerNews'},
-    {name: 'fs-sammccord',organization: 'Fullstack'}
-];
+var _identities = [];
 
-var _current_identity = {name: 'graff-sammccord', organization: 'Graffiti'};
+var _current_identity = {};
 
 var _changeIdentity = function(newIdentity){
     _current_identity =  newIdentity;
@@ -40337,7 +40371,7 @@ var _changeIdentity = function(newIdentity){
 var UserStore = merge(BaseStore,{
 
     getIdentities: function(){
-        return _user;
+        return _identities;
     },
 
     getCurrentIdentity: function(){
@@ -40348,12 +40382,19 @@ var UserStore = merge(BaseStore,{
         var action = payload.action;
 
         switch(action.actionType){
+            case AppConstants.GET_IDENTITIES:
+                console.log('IDENTITIES DISPATCHED',payload.action);
+                _identities = payload.action.user.identities;
+                _current_identity = payload.action.user.defaultIdentity;
+                UserStore.emitChange();
+                break;
+
             case AppConstants.CHANGE_IDENTITY:
                 _changeIdentity(payload.action.identity);
+                UserStore.emitChange();
                 break;
 
         }
-        UserStore.emitChange();
 
         return true;
     })
@@ -40361,4 +40402,5 @@ var UserStore = merge(BaseStore,{
 
 module.exports = UserStore;
 
-},{"../constants/app-constants":163,"../dispatchers/app-dispatcher":164,"./base-store":167,"lodash":5,"react/lib/merge":141}]},{},[166])
+
+},{"../constants/app-constants":164,"../dispatchers/app-dispatcher":165,"./base-store":168,"lodash":5,"react/lib/merge":141}]},{},[167])

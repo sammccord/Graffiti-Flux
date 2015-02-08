@@ -2,6 +2,12 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
+    getIdentities:function(user){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.GET_IDENTITIES,
+            user:user
+        })
+    },
     initializePage:function(){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.INITIALIZE_PAGE
@@ -22,11 +28,5 @@ var AppActions = {
         })
     }
 };
-
-chrome.extension.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        console.log(request.data);
-        AppActions[request.action](request.data);
-    });
 
 module.exports = AppActions;

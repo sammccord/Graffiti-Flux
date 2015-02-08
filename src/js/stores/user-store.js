@@ -6,13 +6,9 @@ var _ = require('lodash');
 
 var CHANGE_EVENT = "user";
 
-var _user = [
-    {name: 'graff-sammccord', organization: 'Graffiti'},
-    {name:'hn-sammccord',organization:'HackerNews'},
-    {name: 'fs-sammccord',organization: 'Fullstack'}
-];
+var _identities = [];
 
-var _current_identity = {name: 'graff-sammccord', organization: 'Graffiti'};
+var _current_identity = {};
 
 var _changeIdentity = function(newIdentity){
     _current_identity =  newIdentity;
@@ -21,7 +17,7 @@ var _changeIdentity = function(newIdentity){
 var UserStore = merge(BaseStore,{
 
     getIdentities: function(){
-        return _user;
+        return _identities;
     },
 
     getCurrentIdentity: function(){
@@ -32,12 +28,19 @@ var UserStore = merge(BaseStore,{
         var action = payload.action;
 
         switch(action.actionType){
+            case AppConstants.GET_IDENTITIES:
+                console.log('IDENTITIES DISPATCHED',payload.action);
+                _identities = payload.action.user.identities;
+                _current_identity = payload.action.user.defaultIdentity;
+                UserStore.emitChange();
+                break;
+
             case AppConstants.CHANGE_IDENTITY:
                 _changeIdentity(payload.action.identity);
+                UserStore.emitChange();
                 break;
 
         }
-        UserStore.emitChange();
 
         return true;
     })

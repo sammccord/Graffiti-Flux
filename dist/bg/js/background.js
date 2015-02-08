@@ -6,7 +6,7 @@ var user = {
 };
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    //if (changeInfo.status && changeInfo.status == 'complete') {
+    if (changeInfo.status && changeInfo.status == 'complete') {
         chrome.tabs.sendMessage(tabId, {
             //message
             action: 'initializePage',
@@ -15,10 +15,36 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         }, function(response) {
             if (response) console.log(response);
         });
-    //}
+    }
 });
 
+
 getIdentities();
+
+//// Content Script Message Handling //////
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    var action = message.action;
+    console.log(user);
+    switch(action){
+        case 'getIdentities':
+            chrome.tabs.sendMessage(sender.tab.id,{
+                action:action,
+                data:user
+            });
+            break;
+        default:
+            Graffiti[message.action.split(':')[0]]()[message.method](message.args, function(err, data) {
+                chrome.tabs.sendMessage(sender.tab.id, {
+                    action: message.action,
+                    data: data,
+                    err: err
+                });
+            })
+    }
+})
+
+//// Identity Functions /////
 
 function getIdentities() {
     chrome.storage.sync.get('user', function(data) {

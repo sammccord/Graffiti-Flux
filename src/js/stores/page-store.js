@@ -1,6 +1,7 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
+var UserStore = require('./user-store');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
 
@@ -22,14 +23,14 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                console.log(payload.action);
+                console.log('INITIALIZING PAGE');
+                console.log('CURRENT IDENTITY',UserStore.getCurrentIdentity());
+                PageStore.emitChange();
                 break;
         }
 
-        PageStore.emitChange();
-
         return true;
     })
-})
+});
 
 module.exports = PageStore;

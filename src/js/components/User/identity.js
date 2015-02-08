@@ -1,6 +1,7 @@
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var ChangeIdentity = require('./change-identity');
+var ExtActions = require('../../actions/ext-actions');
 
 
 function getIdentities(){
@@ -19,6 +20,7 @@ var Identities =
             this.setState(getIdentities())
         },
         componentWillMount:function(){
+            ExtActions.getIdentities();
             UserStore.addChangeListener(this._onChange)
         },
         componentDidUnmount:function(){
