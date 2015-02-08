@@ -21,18 +21,16 @@ var Page =
             return getPage();
         },
         _onChange:function(){
-            console.log('PAGE INITIALIZED OR CHANGED');
             this.setState(getPage())
         },
         componentWillMount:function(){
-            ExtActions.getPageState();
             PageStore.addChangeListener(this._onChange);
         },
         render: function (){
             return (
                 <div>
                     {this.state.page._id}<br />
-                    {this.state.page.pageRef}<br />
+                    {this.state.page.ref}<br />
                     <Sprays organization={this.state.filter.organization} />
                 </div>
             )

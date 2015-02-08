@@ -39639,15 +39639,22 @@ var AppActions = {
             user:user
         })
     },
-    initializePage:function(){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.INITIALIZE_PAGE
-        })
-    },
     changeIdentity: function(identity){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.CHANGE_IDENTITY,
             identity:identity
+        })
+    },
+    initializePage:function(default_identity){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.INITIALIZE_PAGE,
+            default_identity:default_identity
+        })
+    },
+    getPage:function(page){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.GET_PAGE,
+            page:page
         })
     },
     addComment : function(id,user,text){
@@ -39676,14 +39683,22 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    getPageState:function(url,organization){
-        console.log('GETTING PAGE STATE');
+    getPage:function(url,organization){
+        console.log('GETTING PAGE STATE',arguments);
+        sendMessage({
+            action:'getPage',
+            endpoint: 'Page',
+            method:'GET',
+            args:{
+                page:url
+            }
+        })
     }
 };
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log('EXT-ACTION',request);
+        console.log('ON MESSAGE',request)
         AppActions[request.action](request.data);
     });
 
@@ -39821,18 +39836,16 @@ var Page =
             return getPage();
         },
         _onChange:function(){
-            console.log('PAGE INITIALIZED OR CHANGED');
             this.setState(getPage())
         },
         componentWillMount:function(){
-            ExtActions.getPageState();
             PageStore.addChangeListener(this._onChange);
         },
         render: function (){
             return (
                 React.createElement("div", null, 
                     this.state.page._id, React.createElement("br", null), 
-                    this.state.page.pageRef, React.createElement("br", null), 
+                    this.state.page.ref, React.createElement("br", null), 
                     React.createElement(Sprays, {organization: this.state.filter.organization})
                 )
             )
@@ -40031,10 +40044,12 @@ var APP =
     });
 module.exports = APP;
 
+
 },{"../components/Page/page":158,"../components/User/identity":162,"react":152}],164:[function(require,module,exports){
 module.exports = {
     GET_IDENTITIES: 'GET_IDENTITIES',
     INITIALIZE_PAGE: 'INITIALIZE_PAGE',
+    GET_PAGE: 'GET_PAGE',
     ADD_COMMENT: 'ADD_COMMENT',
     ADD_REPLY: 'ADD_REPLY',
     CHANGE_IDENTITY: 'CHANGE_IDENTITY'
@@ -40160,6 +40175,9 @@ module.exports = BaseStore;
 },{"events":2,"react/lib/merge":141}],169:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
+
+var ExtActions = require('../actions/ext-actions');
+
 var merge = require('react/lib/merge');
 var UserStore = require('./user-store');
 var BaseStore = require('./base-store');
@@ -40168,8 +40186,9 @@ var _ = require('lodash');
 var CHANGE_EVENT = "page";
 
 var _pageState = {
-    _id: '1299h44nbd3yhsai2u',
-    pageRef: 'localhost:63342'
+    _id: '',
+    organization: '',
+    ref: ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+')
 };
 
 var PageStore = merge(BaseStore,{
@@ -40183,9 +40202,14 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                console.log('INITIALIZING PAGE');
-                console.log('CURRENT IDENTITY',UserStore.getCurrentIdentity());
+                _pageState.organization = action.default_identity.organization;
+
+                ExtActions.getPage(_pageState.ref,_pageState.organization);
+
                 PageStore.emitChange();
+                break;
+            case AppConstants.GET_PAGE:
+                console.log('GOT_PAGE',action);
                 break;
         }
 
@@ -40196,7 +40220,7 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../constants/app-constants":164,"../dispatchers/app-dispatcher":165,"./base-store":168,"./user-store":171,"lodash":5,"react/lib/merge":141}],170:[function(require,module,exports){
+},{"../actions/ext-actions":154,"../constants/app-constants":164,"../dispatchers/app-dispatcher":165,"./base-store":168,"./user-store":171,"lodash":5,"react/lib/merge":141}],170:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 

@@ -8,15 +8,22 @@ var AppActions = {
             user:user
         })
     },
-    initializePage:function(){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.INITIALIZE_PAGE
-        })
-    },
     changeIdentity: function(identity){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.CHANGE_IDENTITY,
             identity:identity
+        })
+    },
+    initializePage:function(default_identity){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.INITIALIZE_PAGE,
+            default_identity:default_identity
+        })
+    },
+    getPage:function(page){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.GET_PAGE,
+            page:page
         })
     },
     addComment : function(id,user,text){

@@ -11,7 +11,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             //message
             action: 'initializePage',
             err: null,
-            data: user
+            data: user.defaultIdentity
         }, function(response) {
             if (response) console.log(response);
         });
@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             });
             break;
         default:
-            Graffiti[message.action.split(':')[0]]()[message.method](message.args, function(err, data) {
+            Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: message.action,
                     data: data,

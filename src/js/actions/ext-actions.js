@@ -10,14 +10,22 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    getPageState:function(url,organization){
-        console.log('GETTING PAGE STATE');
+    getPage:function(url,organization){
+        console.log('GETTING PAGE STATE',arguments);
+        sendMessage({
+            action:'getPage',
+            endpoint: 'Page',
+            method:'GET',
+            args:{
+                page:url
+            }
+        })
     }
 };
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log('EXT-ACTION',request);
+        console.log('ON MESSAGE',request)
         AppActions[request.action](request.data);
     });
 
