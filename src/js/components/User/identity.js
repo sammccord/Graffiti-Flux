@@ -36,7 +36,6 @@ var Identities =
 
             return (
                 <div>
-                    <h3><b>{this.state.current_identity.organization}</b> - {this.state.current_identity.name}</h3>
                     <ul>
                     {identities}
                     </ul>

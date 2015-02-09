@@ -8,7 +8,6 @@ var APP =
         render:function(){
            return (
                <div>
-                   <h1>Graffiti</h1>
                    <Identity />
                    <Page />
                </div>

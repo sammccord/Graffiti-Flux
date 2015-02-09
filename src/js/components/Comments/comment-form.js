@@ -29,7 +29,7 @@ var CommentForm =
                 return;
             }
             // TODO: send request to the server
-            this.props.onCommentSubmit(this.state.current_identity,text);
+            this.props.onCommentSubmit(this.state.current_identity.name,text);
             this.refs.text.getDOMNode().value = '';
             return;
         },

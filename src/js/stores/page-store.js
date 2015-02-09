@@ -2,8 +2,10 @@ var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
 var ExtActions = require('../actions/ext-actions');
+var AppActions = require('../actions/app-actions');
 
 var merge = require('react/lib/merge');
+var SprayStore = require('./spray-store');
 var UserStore = require('./user-store');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
@@ -37,6 +39,8 @@ var PageStore = merge(BaseStore,{
                 break;
             case AppConstants.GET_PAGE:
                 console.log('GOT_PAGE',action);
+                _pageState._id = action.page._id;
+                AppActions.loadSprays(action.page.sprays);
                 break;
         }
 

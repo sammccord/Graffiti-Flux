@@ -26,12 +26,10 @@ var AppActions = {
             page:page
         })
     },
-    addComment : function(id,user,text){
+    loadSprays: function(sprays){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.ADD_COMMENT,
-            id:id,
-            user: user,
-            text:text
+            actionType: AppConstants.LOAD_SPRAYS,
+            sprays:sprays
         })
     }
 };

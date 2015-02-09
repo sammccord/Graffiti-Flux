@@ -1,6 +1,6 @@
 var React = require('react');
 
-var AppActions = require('../../actions/app-actions.js');
+var ExtActions = require('../../actions/ext-actions.js');
 
 var SprayStore = require('../../stores/spray-store');
 
@@ -28,8 +28,8 @@ var Spray =
             SprayStore.removeChangeListener(this._onChange);
         },
         handleCommentSubmit: function(user,text){
-            var id = this.props.spray._id;
-            AppActions.addComment(id,user, text);
+            var spray_id = this.props.spray._id;
+            ExtActions.addComment(spray_id,user,text);
         },
         render: function (){
             return (

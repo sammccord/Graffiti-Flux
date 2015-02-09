@@ -5,30 +5,29 @@ var SprayStore = require('../../stores/spray-store');
 var Spray = require('./spray');
 
 
-function getSprays(organization){
-    console.log(organization);
+function getSprays(){
     return {
-        sprays:SprayStore.getSprays(organization)
+        sprays:SprayStore.getSprays()
     };
 }
 
 var Sprays =
     React.createClass({
         getInitialState: function(){
-            return getSprays(this.props.organization);
+            return getSprays();
         },
         _onChange:function(){
-            this.setState(getSprays(UserStore.getCurrentIdentity().organization));
+            this.setState(getSprays());
         },
         componentWillMount:function(){
-            UserStore.addChangeListener(this._onChange);
+            SprayStore.addChangeListener(this._onChange);
         },
         componentDidUnmount:function(){
-            UserStore.removeChangeListener(this._onChange);
+            SprayStore.removeChangeListener(this._onChange);
         },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
-                return <Spray key={Math.random().toString()} spray={spray} />
+                return <Spray key={spray._id} spray={spray} />
             });
 
             return (
@@ -40,6 +39,6 @@ var Sprays =
             )
         }
 
-    })
+    });
 
 module.exports = Sprays;

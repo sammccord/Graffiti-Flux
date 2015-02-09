@@ -1,9 +1,15 @@
-var Graffiti = new Graffiti('http://192.168.2.5:9000');
+var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var socket = io.connect('http://192.168.1.24:9000', {
+    transports: ['websocket'],
+    'force new connection': true
+});
 
 var user = {
     identities:[],
     defaultIdentity: {}
 };
+
+var rooms = [];
 
 chrome.storage.sync.clear();
 
