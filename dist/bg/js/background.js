@@ -1,9 +1,11 @@
-var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var Graffiti = new Graffiti('http://192.168.2.5:9000');
 
 var user = {
     identities:[],
     defaultIdentity: {}
 };
+
+chrome.storage.sync.clear();
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status && changeInfo.status == 'complete') {
@@ -59,7 +61,7 @@ function getIdentities() {
     });
 }
 
-function addIdentity(organization,name) {
+function addIdentity(organization,name,organization_id) {
     var newIdentity = {};
     var isNew = true;
     user.identities.forEach(function(identity){
@@ -71,6 +73,7 @@ function addIdentity(organization,name) {
     if(isNew){
         newIdentity['organization'] = organization;
         newIdentity['name'] = name;
+        newIdentity['organization_id'] =organization_id;
         user.identities.push(newIdentity);
     }
 
@@ -80,7 +83,7 @@ function addIdentity(organization,name) {
     chrome.storage.sync.set({'user':JSON.stringify(user)});
 }
 
-function setDefaultIdentity(organization,name){
+function setDefaultIdentity(organization,name,_id){
     user.defaultIdentity['organization'] = organization;
     user.defaultIdentity['name'] = name;
     chrome.storage.sync.set({'user':user});
@@ -110,7 +113,7 @@ chrome.runtime.onMessageExternal.addListener(
             sendResponse(user);
         }
         if(request.action === 'addIdentity'){
-            addIdentity(request.organization,request.name);
+            addIdentity(request.organization,request.name,request.organization_id);
             sendResponse(user);
         }
     });

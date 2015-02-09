@@ -10,14 +10,15 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    getPage:function(url,organization){
+    getPage:function(url,organization_id){
         console.log('GETTING PAGE STATE',arguments);
         sendMessage({
             action:'getPage',
             endpoint: 'Page',
             method:'GET',
             args:{
-                page:url
+                page:url,
+                organization_id:organization_id
             }
         })
     }

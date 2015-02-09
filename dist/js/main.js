@@ -39683,14 +39683,15 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    getPage:function(url,organization){
+    getPage:function(url,organization_id){
         console.log('GETTING PAGE STATE',arguments);
         sendMessage({
             action:'getPage',
             endpoint: 'Page',
             method:'GET',
             args:{
-                page:url
+                page:url,
+                organization_id:organization_id
             }
         })
     }
@@ -40188,6 +40189,7 @@ var CHANGE_EVENT = "page";
 var _pageState = {
     _id: '',
     organization: '',
+    organization_id: '',
     ref: ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+')
 };
 
@@ -40203,8 +40205,9 @@ var PageStore = merge(BaseStore,{
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
                 _pageState.organization = action.default_identity.organization;
+                _pageState.organization_id = action.default_identity.organization_id;
 
-                ExtActions.getPage(_pageState.ref,_pageState.organization);
+                ExtActions.getPage(_pageState.ref,_pageState.organization_id);
 
                 PageStore.emitChange();
                 break;

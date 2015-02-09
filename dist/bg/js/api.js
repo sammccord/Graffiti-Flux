@@ -1,19 +1,20 @@
 var Graffiti = function(api) {
     //Host URL for JSON rest API
     this.api = api;
-}
+};
 
 Graffiti.prototype.Page = function() {
     var self = this;
     return {
         GET: function(args, callback) {
             //args.domain
-            var params = ''
+            console.log(args);
+            var params = '';
             if (args.id) {
-                params = '?id=' + args.id
+                params += '?id=' + args.id
             }
             $.ajax({
-                url: self.api + '/api/pages/' + args.page + params,
+                url: self.api + '/api/org/' + args.organization_id +'/page/'+args.page+ params,
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
@@ -48,7 +49,7 @@ Graffiti.prototype.Page = function() {
 
         }
     }
-}
+};
 
 Graffiti.prototype.Spray = function() {
     var self = this;
