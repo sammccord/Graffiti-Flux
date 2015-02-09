@@ -3,6 +3,7 @@ var React = require('react');
 var ExtActions = require('../../actions/ext-actions.js');
 
 var SprayStore = require('../../stores/spray-store');
+var PageStore = require('../../stores/page-store');
 
 var Comments = require('../Comments/comments');
 var CommentForm = require('../Comments/comment-form');

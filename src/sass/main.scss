@@ -7,3 +7,22 @@
   z-index:99999999999;
   background-color:rgba(255,255,255,.4);
 }
+
+#graffiti-spray {
+  color: white;
+  background-color: #4898e2;
+  border: 1px solid white;
+}
+.graffiti-spray {
+  background-color: #d1e6f9;
+  cursor: pointer;
+  -webkit-transition: all .25s ease-in;
+  padding: 2px 4px;
+  &.graffiti-highlight {
+    background-color: #d1e6f9;
+  }
+  &.graffiti-focus {
+    background-color: #4898e2;
+    color: white;
+  }
+}

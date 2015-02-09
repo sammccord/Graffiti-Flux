@@ -1,17 +1,15 @@
 var Graffiti = new Graffiti('http://192.168.1.24:9000');
-var socket = io.connect('http://192.168.1.24:9000', {
-    transports: ['websocket'],
-    'force new connection': true
-});
+var graffiti_org_id = '54d8fb555148115815855a3f';
 
 var user = {
     identities:[],
     defaultIdentity: {}
 };
 
-var rooms = [];
+var _nameSpaces = {};
 
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
+
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status && changeInfo.status == 'complete') {
@@ -25,9 +23,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         });
     }
 });
-
-
-getIdentities();
 
 //// Content Script Message Handling //////
 
@@ -54,16 +49,21 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 //// Identity Functions /////
 
-function getIdentities() {
+function getIdentities(cb) {
     chrome.storage.sync.get('user', function(data) {
         if(!data.user){
             console.log('no data user');
+            //user.defaultIdentity.name = "test_user123";
+            //user.defaultIdentity.organization = 'Graffiti';
+            //user.defaultIdentity.organization_id = graffiti_org_id;
+            //user.identities.push(user.defaultIdentity);
             chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{
             console.log(data.user);
             user = JSON.parse(data.user);
         }
+        if(cb) cb();
     });
 }
 
@@ -81,6 +81,7 @@ function addIdentity(organization,name,organization_id) {
         newIdentity['name'] = name;
         newIdentity['organization_id'] =organization_id;
         user.identities.push(newIdentity);
+        console.log('SHOULD NAMESPACE',organization_id);
     }
 
     if(!user.defaultIdentity.name){
@@ -89,9 +90,10 @@ function addIdentity(organization,name,organization_id) {
     chrome.storage.sync.set({'user':JSON.stringify(user)});
 }
 
-function setDefaultIdentity(organization,name,_id){
+function setDefaultIdentity(organization,name,organization_id){
     user.defaultIdentity['organization'] = organization;
     user.defaultIdentity['name'] = name;
+    user.defaultIdentity['organization_id']=organization_id;
     chrome.storage.sync.set({'user':user});
 }
 

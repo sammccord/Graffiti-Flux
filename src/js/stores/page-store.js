@@ -1,6 +1,10 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
+var io = require('socket.io-client');
+var socket;
+
+
 var ExtActions = require('../actions/ext-actions');
 var AppActions = require('../actions/app-actions');
 
@@ -18,6 +22,23 @@ var _pageState = {
     organization_id: '',
     ref: ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+')
 };
+
+function joinRoom(_id){
+    socket = io.connect('http://192.168.1.24:9000', {
+        query: 'page='+_id,
+        path: '/socket.io-client',
+        transports: ['websocket'],
+        'force new connection': true
+    });
+
+    socket.on('update',function(page){
+        AppActions.loadSprays(page.sprays);
+    });
+
+    window.onbeforeunload = function(e) {
+        socket.disconnect();
+    };
+}
 
 var PageStore = merge(BaseStore,{
 
@@ -40,6 +61,9 @@ var PageStore = merge(BaseStore,{
             case AppConstants.GET_PAGE:
                 console.log('GOT_PAGE',action);
                 _pageState._id = action.page._id;
+
+                joinRoom(action.page._id);
+
                 AppActions.loadSprays(action.page.sprays);
                 break;
         }
