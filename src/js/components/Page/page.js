@@ -10,8 +10,7 @@ var Sprays = require('../Spray/sprays');
 
 function getPage(){
     return {
-        page:PageStore.getPageState(),
-        filter:UserStore.getCurrentIdentity()
+        page:PageStore.getPageState()
     };
 }
 
@@ -20,18 +19,11 @@ var Page =
         getInitialState: function(){
             return getPage();
         },
-        _onChange:function(){
-            this.setState(getPage())
-        },
-        componentWillMount:function(){
-            PageStore.addChangeListener(this._onChange);
-        },
         render: function (){
             return (
                 <div>
-                    {this.state.page._id}<br />
                     {this.state.page.ref}<br />
-                    <Sprays organization={this.state.filter.organization} />
+                    <Sprays />
                 </div>
             )
         }

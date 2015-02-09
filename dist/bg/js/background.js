@@ -8,8 +8,7 @@ var user = {
 
 var _nameSpaces = {};
 
-//chrome.storage.sync.clear();
-
+chrome.storage.sync.clear();
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status && changeInfo.status == 'complete') {
@@ -38,6 +37,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             break;
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
+                console.log(arguments);
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: message.action,
                     data: data,
