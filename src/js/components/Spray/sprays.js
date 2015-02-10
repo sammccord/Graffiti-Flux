@@ -3,6 +3,7 @@ var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
 
 var Spray = require('./spray');
+var FreshSpray = require('./fresh-spray');
 
 
 function getSprays(){
@@ -32,6 +33,7 @@ var Sprays =
 
             return (
                 <div>
+                        <FreshSpray />
                         <ul>
                             {sprays}
                         </ul>

@@ -22,6 +22,34 @@ var ExtActions = {
             }
         })
     },
+    addSpray : function(page_id,targetText,user,text){
+        console.log('ADDING COMMENT',arguments);
+        sendMessage({
+            action:'addSpray',
+            endpoint: 'Spray',
+            method: 'POST',
+            args:{
+                page_id:page_id,
+                targetText:targetText,
+                name:user,
+                text:text
+            }
+        })
+    },
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,name,text){
+        sendMessage({
+            action:'initializePage',
+            endpoint: 'Page',
+            method: 'POST',
+            args:{
+                org_id:org_id,
+                page:page_ref,
+                targetText:targetText,
+                name: name,
+                text:text
+            }
+        })
+    },
     addComment : function(spray_id,user,text){
         console.log('ADDING COMMENT',arguments);
         sendMessage({
@@ -39,7 +67,6 @@ var ExtActions = {
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log('ON MESSAGE',request);
         if(AppActions[request.action]) AppActions[request.action](request.data);
     });
 

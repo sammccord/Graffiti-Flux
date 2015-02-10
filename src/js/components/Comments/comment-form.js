@@ -35,12 +35,6 @@ var CommentForm =
         },
         render: function(){
 
-            var formProps = {
-                placeholder: 'Leave a comment',
-                type: 'text',
-                ref: 'text'
-            };
-
             return (
                 <form onSubmit={this.handleSubmit}>
                     <input placeholder="Leave a comment" type="text" ref="text" />

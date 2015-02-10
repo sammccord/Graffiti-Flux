@@ -1,14 +1,37 @@
-var Graffiti = new Graffiti('http://192.168.1.24:9000');
-var graffiti_org_id = '54d8fb555148115815855a3f';
+var Graffiti = new Graffiti('http://192.168.2.5:9000');
 
 var user = {
     identities:[],
     defaultIdentity: {}
 };
 
-var _nameSpaces = {};
+var _rooms = {};
 
 chrome.storage.sync.clear();
+
+function Room(_id,tab_id){
+    var socket;
+
+    socket = io.connect('http://192.168.2.5:9000', {
+        query: 'page='+_id,
+        path: '/socket.io-client',
+        transports: ['websocket'],
+        'force new connection': true
+    });
+
+    socket.on('update',function(page){
+        console.log('FROM SOCKET UPDATE',page);
+        chrome.tabs.sendMessage(tab_id,{
+            action:'getPage',
+            data:page
+        })
+    });
+
+    //window.onbeforeunload = function(e) {
+    //    socket.disconnect();
+    //};
+    return socket;
+}
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status && changeInfo.status == 'complete') {
@@ -38,6 +61,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
                 console.log(arguments);
+                if(action === 'getPage'){
+                    if(!err && data && _rooms[data.name]) _rooms[data.name].disconnect();
+                    if(!err && data._id) _rooms[data.name] = new Room(data._id,sender.tab.id);
+                }
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: message.action,
                     data: data,
@@ -81,7 +108,6 @@ function addIdentity(organization,name,organization_id) {
         newIdentity['name'] = name;
         newIdentity['organization_id'] =organization_id;
         user.identities.push(newIdentity);
-        console.log('SHOULD NAMESPACE',organization_id);
     }
 
     if(!user.defaultIdentity.name){

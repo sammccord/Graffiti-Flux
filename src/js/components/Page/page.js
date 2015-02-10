@@ -1,9 +1,6 @@
 var React = require('react');
 
-var ExtActions = require('../../actions/ext-actions');
-
 var PageStore = require('../../stores/page-store');
-var UserStore = require('../../stores/user-store');
 
 var Sprays = require('../Spray/sprays');
 
@@ -18,6 +15,15 @@ var Page =
     React.createClass({
         getInitialState: function(){
             return getPage();
+        },
+        _onChange:function(){
+            this.setState(getPage());
+        },
+        componentWillMount:function(){
+            PageStore.addChangeListener(this._onChange)
+        },
+        componentDidUnmount:function(){
+            PageStore.removeChangeListener(this._onChange);
         },
         render: function (){
             return (
