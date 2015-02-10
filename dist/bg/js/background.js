@@ -1,37 +1,33 @@
-var Graffiti = new Graffiti('http://192.168.2.5:9000');
+var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var socket = io.connect('http://192.168.1.24:9000', {
+    path: '/socket.io-client',
+    transports: ['websocket'],
+    'force new connection': true
+});
+
+var _rooms = {};
+
+socket.on('update',function(page){
+    if(!page) return false;
+    console.log('FROM SOCKET UPDATE',page);
+    chrome.tabs.sendMessage(_rooms[page._id],{
+        action:'getPage',
+        data:page
+    })
+});
+
+//window.onbeforeunload = function(e) {
+//    socket.emit('leave','page/12345')
+//};
 
 var user = {
     identities:[],
     defaultIdentity: {}
 };
 
-var _rooms = {};
+//chrome.storage.sync.clear();
 
-chrome.storage.sync.clear();
-
-function Room(_id,tab_id){
-    var socket;
-
-    socket = io.connect('http://192.168.2.5:9000', {
-        query: 'page='+_id,
-        path: '/socket.io-client',
-        transports: ['websocket'],
-        'force new connection': true
-    });
-
-    socket.on('update',function(page){
-        console.log('FROM SOCKET UPDATE',page);
-        chrome.tabs.sendMessage(tab_id,{
-            action:'getPage',
-            data:page
-        })
-    });
-
-    //window.onbeforeunload = function(e) {
-    //    socket.disconnect();
-    //};
-    return socket;
-}
+getIdentities();
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status && changeInfo.status == 'complete') {
@@ -41,7 +37,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             err: null,
             data: user.defaultIdentity
         }, function(response) {
-            if (response) console.log(response);
+            //if (response) console.log(response);
         });
     }
 });
@@ -50,7 +46,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     var action = message.action;
-    console.log(user);
     switch(action){
         case 'getIdentities':
             chrome.tabs.sendMessage(sender.tab.id,{
@@ -60,10 +55,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             break;
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
-                console.log(arguments);
+                console.log(message.endpoint+' API CALL - ',arguments);
                 if(action === 'getPage'){
-                    if(!err && data && _rooms[data.name]) _rooms[data.name].disconnect();
-                    if(!err && data._id) _rooms[data.name] = new Room(data._id,sender.tab.id);
+                    if(!err){
+                        _rooms[data._id] = sender.tab.id;
+                        socket.emit('join','page/'+data._id);
+                    }
                 }
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: message.action,
@@ -87,7 +84,6 @@ function getIdentities(cb) {
             chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{
-            console.log(data.user);
             user = JSON.parse(data.user);
         }
         if(cb) cb();
@@ -123,22 +119,21 @@ function setDefaultIdentity(organization,name,organization_id){
     chrome.storage.sync.set({'user':user});
 }
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-    for (key in changes) {
-        var storageChange = changes[key];
-        console.log('Storage key "%s" in namespace "%s" changed. ' +
-            'Old value was "%s", new value is "%s".',
-            key,
-            namespace,
-            storageChange.oldValue,
-            storageChange.newValue);
-    }
-});
+//chrome.storage.onChanged.addListener(function(changes, namespace) {
+//    for (key in changes) {
+//        var storageChange = changes[key];
+//        console.log('Storage key "%s" in namespace "%s" changed. ' +
+//            'Old value was "%s", new value is "%s".',
+//            key,
+//            namespace,
+//            storageChange.oldValue,
+//            storageChange.newValue);
+//    }
+//});
 
 chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
         if(request.action === 'getIdentities'){
-            console.log('GETTING IDENTITIES');
             getIdentities();
             sendResponse(user);
         }

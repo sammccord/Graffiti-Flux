@@ -19,6 +19,6 @@ var Replies =
             )
         }
 
-    })
+    });
 
 module.exports = Replies;

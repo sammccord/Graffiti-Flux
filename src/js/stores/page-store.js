@@ -40,14 +40,14 @@ var PageStore = merge(BaseStore,{
                 PageStore.emitChange();
                 break;
             case AppConstants.GET_PAGE:
-                console.log('GOT_PAGE',action);
-
+                console.log('GETTING PAGE',action);
                 if(!action.page){
-                    console.log('FRESH PAGE');
+                    console.log('!!!!!!!! FRESH PAGE');
                     _pageState.fresh = true;
                     AppActions.loadSprays([]);
                 }
                 else{
+                    console.log('LOADING NEW SPRAYS',action.page);
                     _pageState.fresh = false;
                     _pageState._id = action.page._id;
 

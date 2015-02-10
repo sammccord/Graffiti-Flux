@@ -13,12 +13,12 @@ function getFormData(){
     };
 }
 
-function createPageAddFreshSpray(page_ref,targetText,name,text){
-    ExtActions.createPageAddFreshSpray(page_ref,targetText,name,text);
+function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
 }
 
-function addFreshSpray(page_id,targetText,name,text){
-    ExtActions.addSpray(page_id,targetText,name,text);
+function addFreshSpray(page_id,targetText,user,text){
+    ExtActions.addSpray(page_id,targetText,user,text);
 }
 
 var FreshSpray =
@@ -44,10 +44,8 @@ var FreshSpray =
                 return;
             }
             var targetText = document.getElementById('graffiti-spray').getAttribute('data-graffiti-target');
-            console.log(targetText);
             $('#graffiti-spray').contents().unwrap();
 
-            // TODO: send request to the server
             if(this.state.page.fresh === true){
                 createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text);
             }
@@ -59,12 +57,11 @@ var FreshSpray =
             return;
         },
         render: function(){
-
             return (
-                <form onSubmit={this.handleSubmit}>
-                    <input placeholder="Initialize with a comment" type="text" ref="text" />
-                    <button className="btn btn-default" type="submit">Submit</button>
-                </form>
+                    <form onSubmit={this.handleSubmit}>
+                        <input placeholder="Initialize with a comment" type="text" ref="text" />
+                        <button className="btn btn-default" type="submit">Submit</button>
+                    </form>
             )
         }
     })

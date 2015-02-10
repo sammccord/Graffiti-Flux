@@ -39702,21 +39702,22 @@ var ExtActions = {
             args:{
                 page_id:page_id,
                 targetText:targetText,
-                name:user,
+                user:user,
                 text:text
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,name,text){
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text){
+        console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
             action:'initializePage',
             endpoint: 'Page',
             method: 'POST',
             args:{
                 org_id:org_id,
-                page:page_ref,
+                ref:page_ref,
                 targetText:targetText,
-                name: name,
+                user: user,
                 text:text
             }
         })
@@ -39843,9 +39844,10 @@ var Replies =
             )
         }
 
-    })
+    });
 
 module.exports = Replies;
+
 
 },{"react":152}],158:[function(require,module,exports){
 var React = require('react');
@@ -39905,12 +39907,12 @@ function getFormData(){
     };
 }
 
-function createPageAddFreshSpray(page_ref,targetText,name,text){
-    ExtActions.createPageAddFreshSpray(page_ref,targetText,name,text);
+function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
 }
 
-function addFreshSpray(page_id,targetText,name,text){
-    ExtActions.addSpray(page_id,targetText,name,text);
+function addFreshSpray(page_id,targetText,user,text){
+    ExtActions.addSpray(page_id,targetText,user,text);
 }
 
 var FreshSpray =
@@ -39936,10 +39938,8 @@ var FreshSpray =
                 return;
             }
             var targetText = document.getElementById('graffiti-spray').getAttribute('data-graffiti-target');
-            console.log(targetText);
             $('#graffiti-spray').contents().unwrap();
 
-            // TODO: send request to the server
             if(this.state.page.fresh === true){
                 createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text);
             }
@@ -39951,12 +39951,11 @@ var FreshSpray =
             return;
         },
         render: function(){
-
             return (
-                React.createElement("form", {onSubmit: this.handleSubmit}, 
-                    React.createElement("input", {placeholder: "Initialize with a comment", type: "text", ref: "text"}), 
-                    React.createElement("button", {className: "btn btn-default", type: "submit"}, "Submit")
-                )
+                    React.createElement("form", {onSubmit: this.handleSubmit}, 
+                        React.createElement("input", {placeholder: "Initialize with a comment", type: "text", ref: "text"}), 
+                        React.createElement("button", {className: "btn btn-default", type: "submit"}, "Submit")
+                    )
             )
         }
     })
@@ -39966,6 +39965,7 @@ module.exports = FreshSpray;
 
 },{"../../actions/ext-actions":154,"../../stores/page-store":170,"../../stores/user-store":172,"jquery":4,"react":152}],160:[function(require,module,exports){
 var React = require('react');
+var $ = require('jquery');
 
 var ExtActions = require('../../actions/ext-actions.js');
 
@@ -39975,25 +39975,41 @@ var PageStore = require('../../stores/page-store');
 var Comments = require('../Comments/comments');
 var CommentForm = require('../Comments/comment-form');
 
-function getComments(){
+function setSprayState(){
     return {
-        comments:this.props.spray.comments
+        spray:this.props.spray
     };
+}
+
+function highlightSpray(spray) {
+        console.log('HEY');
+        // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        var formatted = spray.targetText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        var regex = new RegExp("(" + formatted + ")", "gm")
+
+        $('p.graffiti-selectable:not(#graffiti-app *)').contents().filter(function () {
+            return this.nodeType === 3;
+        }).each(function () {
+            $(this).replaceWith($(this).text().replace(regex, '<span class="graffiti-spray" data-graffiti-id="' + spray._id + '">$1</span>'));
+        });
 }
 
 var Spray =
     React.createClass({displayName: "Spray",
         getInitialState: function(){
-            return getComments.bind(this)();
+            return setSprayState.bind(this)();
         },
         _onChange:function(){
-            this.setState(getComments.bind(this)());
+            this.setState(setSprayState.bind(this)());
         },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange)
         },
         componentDidUnmount:function(){
             SprayStore.removeChangeListener(this._onChange);
+        },
+        componentDidMount:function(){
+            highlightSpray(this.state.spray);
         },
         handleCommentSubmit: function(user,text){
             var spray_id = this.props.spray._id;
@@ -40005,7 +40021,7 @@ var Spray =
                     React.createElement("h4", null, this.props.spray.organization), 
                     React.createElement("h4", null, this.props.spray.targetText), 
                     React.createElement("ul", null, 
-                        React.createElement(Comments, {comments: this.state.comments})
+                        React.createElement(Comments, {comments: this.state.spray.comments})
                     ), 
                     React.createElement(CommentForm, {onCommentSubmit: this.handleCommentSubmit})
                 )
@@ -40017,7 +40033,7 @@ var Spray =
 module.exports = Spray;
 
 
-},{"../../actions/ext-actions.js":154,"../../stores/page-store":170,"../../stores/spray-store":171,"../Comments/comment-form":155,"../Comments/comments":156,"react":152}],161:[function(require,module,exports){
+},{"../../actions/ext-actions.js":154,"../../stores/page-store":170,"../../stores/spray-store":171,"../Comments/comment-form":155,"../Comments/comments":156,"jquery":4,"react":152}],161:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
@@ -40039,6 +40055,7 @@ var Sprays =
         },
         _onChange:function(){
             this.setState(getSprays());
+            console.log(this.state.sprays);
         },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange);
@@ -40257,6 +40274,14 @@ var APP = require('./components/app');
 var React = require('react');
 var $ = require('jquery');
 
+String.prototype.replaceCallback= function(regex,string,cb){
+    var ret = String.prototype.replace.call(this,regex,string);
+    if(typeof cb === 'function'){
+        cb.call(ret); // Call your callback
+    }
+    return ret;  // For chaining
+};
+
 $('body').prepend('<div id="graffiti-app"></div>');
 $('#graffiti-app').css({
     position:'fixed'
@@ -40276,13 +40301,10 @@ React.render(
         $(document).one('mouseup', function(e) {
             var selection = window.getSelection();
             if (selection.type === "Range") {
-                console.log(selection);
 
                 var string = selection.toString();
                 // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
                 var formatted = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                console.log(string);
-                console.log(formatted);
 
                 var regex = new RegExp("(" + formatted + ")", "gm");
                 // $(selection.focusNode.parentNode).html(function(_, html) {
@@ -40292,8 +40314,12 @@ React.render(
                 $(selection.focusNode.parentNode).contents().filter(function() {
                     return this.nodeType === 3;
                 }).each(function() {
-                    $(this).replaceWith($(this).text().replace(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>'));
+                    $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
+                        //positionButton();
+                    }));
                 });
+
+
             }
         });
     });
@@ -40377,14 +40403,14 @@ var PageStore = merge(BaseStore,{
                 PageStore.emitChange();
                 break;
             case AppConstants.GET_PAGE:
-                console.log('GOT_PAGE',action);
-
+                console.log('GETTING PAGE',action);
                 if(!action.page){
-                    console.log('FRESH PAGE');
+                    console.log('!!!!!!!! FRESH PAGE');
                     _pageState.fresh = true;
                     AppActions.loadSprays([]);
                 }
                 else{
+                    console.log('LOADING NEW SPRAYS',action.page);
                     _pageState.fresh = false;
                     _pageState._id = action.page._id;
 

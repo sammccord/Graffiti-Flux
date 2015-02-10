@@ -1,28 +1,34 @@
-#graffiti-app {
+#graffiti-app, .graffiti-app {
   @import 'material-bootstrap/material';
 
   position:fixed !important;
-  width: 400px;
+  width: 320px;
   right:0;
   z-index:99999999999;
   background-color:rgba(255,255,255,.4);
+
 }
 
 #graffiti-spray {
-  color: white;
-  background-color: #4898e2;
+  color: black;
+  background-color: #e0e0e0;
   border: 1px solid white;
 }
 .graffiti-spray {
-  background-color: #d1e6f9;
+  background-color: #bdbdbd;
   cursor: pointer;
   -webkit-transition: all .25s ease-in;
   padding: 2px 4px;
   &.graffiti-highlight {
-    background-color: #d1e6f9;
+    background-color: #9e9e9e;
   }
   &.graffiti-focus {
-    background-color: #4898e2;
+    background-color: #616161;
     color: white;
   }
+}
+
+#spray-button {
+  position:fixed;
+  z-index:99999999999;
 }

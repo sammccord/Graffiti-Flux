@@ -4,6 +4,14 @@ var APP = require('./components/app');
 var React = require('react');
 var $ = require('jquery');
 
+String.prototype.replaceCallback= function(regex,string,cb){
+    var ret = String.prototype.replace.call(this,regex,string);
+    if(typeof cb === 'function'){
+        cb.call(ret); // Call your callback
+    }
+    return ret;  // For chaining
+};
+
 $('body').prepend('<div id="graffiti-app"></div>');
 $('#graffiti-app').css({
     position:'fixed'
@@ -23,13 +31,10 @@ React.render(
         $(document).one('mouseup', function(e) {
             var selection = window.getSelection();
             if (selection.type === "Range") {
-                console.log(selection);
 
                 var string = selection.toString();
                 // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
                 var formatted = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                console.log(string);
-                console.log(formatted);
 
                 var regex = new RegExp("(" + formatted + ")", "gm");
                 // $(selection.focusNode.parentNode).html(function(_, html) {
@@ -39,8 +44,12 @@ React.render(
                 $(selection.focusNode.parentNode).contents().filter(function() {
                     return this.nodeType === 3;
                 }).each(function() {
-                    $(this).replaceWith($(this).text().replace(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>'));
+                    $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
+                        //positionButton();
+                    }));
                 });
+
+
             }
         });
     });

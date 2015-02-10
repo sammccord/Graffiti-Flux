@@ -31,21 +31,22 @@ var ExtActions = {
             args:{
                 page_id:page_id,
                 targetText:targetText,
-                name:user,
+                user:user,
                 text:text
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,name,text){
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text){
+        console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
             action:'initializePage',
             endpoint: 'Page',
             method: 'POST',
             args:{
                 org_id:org_id,
-                page:page_ref,
+                ref:page_ref,
                 targetText:targetText,
-                name: name,
+                user: user,
                 text:text
             }
         })

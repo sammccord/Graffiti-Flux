@@ -8,7 +8,7 @@ Graffiti.prototype.Page = function() {
     return {
         GET: function(args, callback) {
             //args.domain
-            console.log(args);
+            console.log('GETTING PAGE',args);
             var params = '';
             if (args.id) {
                 params += '?id=' + args.id
@@ -17,7 +17,7 @@ Graffiti.prototype.Page = function() {
                 url: self.api + '/api/org/' + args.organization_id +'/page/'+args.page+ params,
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
+                    console.log('GET PAGE SUCCESS',data);
                     callback(null, data)
                 },
                 error: function(xhr, status, err) {
@@ -28,15 +28,16 @@ Graffiti.prototype.Page = function() {
 
         },
         POST: function POST(args,callback) {
+            console.log(args);
             $.ajax({
                 type: "POST",
                 url: self.api + '/api/pages/',
                 data: args,
                 success: function(data) {
+                    console.log('POST PAGE SUCCESS',data);
                     callback(null, data)
                 },
                 error: function(xhr, status, err) {
-                    console.error(status, err.toString());
                     callback(err.toString())
                 },
                 dataType: 'json'
@@ -77,6 +78,7 @@ Graffiti.prototype.Spray = function() {
                     callback(null, data)
                 },
                 error: function(xhr, status, err) {
+                    console.log('POST SPRAY SUCCESS',data);
                     console.error(status, err.toString());
                     callback(err.toString())
                 },
@@ -105,7 +107,7 @@ Graffiti.prototype.Comment = function() {
                 url: self.api + '/api/comments/',
                 data: args,
                 success: function(data) {
-                    console.log(data);
+                    console.log('POST COMMENT SUCCESS',data);
                     callback(null, data)
                 },
                 error: function(xhr, status, err) {
