@@ -73,8 +73,18 @@ html, iframe {
   position: fixed;
   z-index: 99999999999; }
 
-#graffiti-dash {
+#graffiti-dash .mui-paper {
   background-color: white; }
-  #graffiti-dash .mui-tab-template {
+  #graffiti-dash .mui-paper .mui-paper-container .user-organizations {
     box-sizing: border-box;
-    padding: 20px 40px; }
+    padding: 20px; }
+#graffiti-dash .addOrganization .mui-paper-container {
+  box-sizing: border-box;
+  padding: 20px; }
+#graffiti-dash .mui-tab-template {
+  box-sizing: border-box;
+  padding: 20px 40px; }
+#graffiti-dash .graffiti-hide {
+  display: none; }
+#graffiti-dash .addOrganization {
+  margin-top: 40px; }

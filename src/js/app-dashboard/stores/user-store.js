@@ -35,11 +35,6 @@ var UserStore = merge(BaseStore,{
                 UserStore.emitChange();
                 break;
 
-            case AppConstants.CHANGE_IDENTITY:
-                _changeIdentity(payload.action.identity);
-                UserStore.emitChange();
-                break;
-
         }
 
         return true;

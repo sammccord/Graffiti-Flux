@@ -8,6 +8,7 @@ var UserStore = require('../../stores/user-store');
 var ExtActions = require('../../actions/ext-actions');
 
 var IdentityBody = require('./identity-body');
+var BodyShim = require('./body-shim');
 
 
 function getIdentities(){
@@ -32,23 +33,28 @@ var Identities =
         componentDidUnmount:function(){
             UserStore.removeChangeListener(this._onChange)
         },
-        log:function(e,key,payload){
+        showBody:function(e,key,payload){
             console.log(arguments);
         },
         render: function (){
+            var bodies = this.state.identities.map(function(identity,index){
+                return <IdentityBody index={index} identity={identity} />;
+            });
 
             var tabs = this.state.identities.map(function(identity){
-                var body = <h1><IdentityBody identity={identity} /></h1>;
+                var body = <BodyShim identity={identity}/>;
 
-                return <Tab label={identity.organization} children={body}></Tab>
+                return <Tab label={identity.organization} children={body}>
+                </Tab>
             }.bind(this));
 
             return (
             <Paper zDepth={1}>
-                <Tabs>
+                <Tabs onChange={this.showBody}>
                     {tabs}
                 </Tabs>
-                </Paper>
+                {bodies}
+            </Paper>
             )
         }
 

@@ -20,6 +20,16 @@ var UserStore = merge(BaseStore,{
         return _identities;
     },
 
+    getIdentityById: function(id){
+        var found = {};
+        _identities.forEach(function(identity){
+          if(identity.organization_id === id){
+              found = identity;
+          }
+        });
+        return found;
+    },
+
     getCurrentIdentity: function(){
         return _current_identity;
     },

@@ -50439,7 +50439,7 @@ var AppActions = {
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":261,"../dispatchers/app-dispatcher.js":262}],240:[function(require,module,exports){
+},{"../constants/app-constants.js":264,"../dispatchers/app-dispatcher.js":265}],240:[function(require,module,exports){
 var AppActions = require('./app-actions');
 
 function sendMessage (payload) {
@@ -50528,10 +50528,10 @@ var AppActions = {
             user:user
         })
     },
-    changeIdentity: function(identity){
+    queryCode:function(organization){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.CHANGE_IDENTITY,
-            identity:identity
+            actionType: AppConstants.QUERY_CODE,
+            organization:organization
         })
     }
 };
@@ -50539,7 +50539,7 @@ var AppActions = {
 module.exports = AppActions;
 
 
-},{"../constants/dash-constants.js":245,"../dispatchers/app-dispatcher.js":247}],242:[function(require,module,exports){
+},{"../constants/dash-constants.js":247,"../dispatchers/app-dispatcher.js":249}],242:[function(require,module,exports){
 var DashActions = require('./dash-actions');
 
 function sendMessage (payload) {
@@ -50552,9 +50552,30 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    changeIdentity:function(){
+    setDefaultIdentity:function(organization,name,organization_id){
         sendMessage({
-            action:'changeIdentity'
+            action:'setDefaultIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    addIdentity:function(organization,name,organization_id){
+        sendMessage({
+            action:'addIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    queryCode:function(code){
+        sendMessage({
+            action:'queryCode',
+            endpoint:'Organization',
+            method:'GET',
+            args:{
+                code:code
+            }
         })
     }
 };
@@ -50569,6 +50590,106 @@ module.exports = ExtActions;
 
 
 },{"./dash-actions":241}],243:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var mui = require('material-ui');
+
+var ExtActions = require('../../actions/ext-actions');
+var OrganizationStore = require('../../stores/organization-store');
+
+var FlatButton = mui.FlatButton;
+var TextField = mui.TextField;
+var Paper = mui.Paper;
+
+function OrganizationQuery (){
+    return {
+        foundOrg:OrganizationStore.foundOrg()
+    }
+}
+
+var AddOrganization =
+    React.createClass({displayName: "AddOrganization",
+        getInitialState:function(){
+            return OrganizationQuery();
+        },
+        _onChange:function(){
+            this.setState(OrganizationQuery());
+        },
+        componentWillMount:function(){
+            OrganizationStore.addChangeListener(this._onChange)
+        },
+        componentDidUnmount:function(){
+            OrganizationStore.removeChangeListener(this._onChange)
+        },
+        handleSubmit:function(e){
+            e.preventDefault();
+            var code = document.getElementById('orgCode').value;
+            if (!code) {
+                return;
+            }
+            document.getElementById('orgCode').value = '';
+            ExtActions.queryCode(code);
+            return;
+        },
+        handleJoinGroup:function(e){
+            e.preventDefault();
+            var name = document.getElementById('joinAs').value;
+            if (!name) {
+                return;
+            }
+            console.log(this.state.foundOrg);
+            ExtActions.addIdentity(this.state.foundOrg.name,name,this.state.foundOrg._id);
+            this.setState({
+                foundOrg:{}
+            });
+            return;
+        },
+        render:function(){
+            var hide = this.state.foundOrg.name ? 'graffiti-show' : 'graffiti-hide';
+
+            return React.createElement(Paper, {className: "addOrganization", zDepth: 1}, 
+                React.createElement("form", {onSubmit: this.handleSubmit}, 
+                    React.createElement(TextField, {
+                        id: "orgCode", 
+                        hintText: "Code", 
+                        disabled: this.state.foundOrg.name, 
+                        floatingLabelText: "Code"}), 
+                    React.createElement(FlatButton, {className: !hide, type: "submit", label: "Submit", primary: true})
+                ), 
+                React.createElement("div", {className: hide}, 
+                    React.createElement("h3", null, this.state.foundOrg.name), 
+                    React.createElement("p", null, this.state.foundOrg.name ? this.state.foundOrg.pages.length:0, " active pages"), 
+                    React.createElement(TextField, {
+                        id: "joinAs", 
+                        hintText: "Join as", 
+                        floatingLabelText: "Join as"}), 
+                    React.createElement(FlatButton, {onClick: this.handleJoinGroup, type: "submit", label: "Join", primary: true})
+                    )
+            )
+        }
+    });
+module.exports = AddOrganization;
+
+},{"../../actions/ext-actions":242,"../../stores/organization-store":252,"material-ui":8,"react":238}],244:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require('react');
+var mui = require('material-ui');
+
+var $ = require('jquery');
+
+var BodyShim =
+    React.createClass({displayName: "BodyShim",
+        render:function(){
+            $('.user-organizations').addClass('graffiti-hide');
+            $('.'+this.props.identity.organization_id).removeClass('graffiti-hide');
+
+            console.log(this.props.identity);
+            return React.createElement("div", {className: "graffiti-hide"})
+        }
+    });
+module.exports = BodyShim;
+
+},{"jquery":4,"material-ui":8,"react":238}],245:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var mui = require('material-ui');
@@ -50591,30 +50712,51 @@ var IdentityBody =
                 disabled:false
             })
         },
-        handleSubmit:function(){
-
+        changeName:function(e){
+            e.preventDefault();
+            var userName = document.getElementById(this.props.identity.organization_id).value;
+            if (!userName) {
+                return;
+            }
+            ExtActions.addIdentity(this.props.identity.organization,userName,this.props.identity.organization_id);
+            this.setState({
+                disabled:true
+            });
+            return;
+        },
+        setDefault:function(){
+            ExtActions.setDefaultIdentity(this.props.identity.organization,this.props.identity.name,this.props.identity.organization_id);
+            console.log(this.props.identity.organization,this.props.identity.name,this.props.identity.organization_id);
         },
         render:function(){
-            var showHideClass = this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
+            var showClass = this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
+            var hideClass = !this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
 
-            return React.createElement("div", null, 
-                React.createElement("form", {onSubmit: this.handleSubmit}, 
+            var classStr = 'user-organizations';
+            if(this.props.index > 0){
+                classStr += ' graffiti-hide'
+            }
+            console.log('render body',this.props.identity.organization_id);
+            classStr += ' '+this.props.identity.organization_id;
+
+            return React.createElement("div", {className: classStr}, 
+                React.createElement("form", {onSubmit: this.changeName}, 
                     React.createElement(TextField, {
+                        id: this.props.identity.organization_id, 
                         hintText: "Disabled Hint Text", 
                         disabled: this.state.disabled, 
                         defaultValue: this.props.identity.name, 
                         floatingLabelText: "Username"}), 
-                    React.createElement(FlatButton, {className: showHideClass, type: "submit", label: "Submit", primary: true}), 
-                    React.createElement(Icon, {onClick: this.unlockUsername, icon: "action-settings"})
+                    React.createElement(FlatButton, {className: showClass, type: "submit", label: "Submit", primary: true}), 
+                    React.createElement(Icon, {className: hideClass, onClick: this.unlockUsername, icon: "action-settings"})
                 ), 
-                React.createElement("h1", null, this.props.identity.organization_id), 
-                React.createElement(FlatButton, {label: "Set Default", primary: true})
+                React.createElement(FlatButton, {onClick: this.setDefault, label: "Set Default", primary: true})
             )
         }
     });
 module.exports = IdentityBody;
 
-},{"../../actions/ext-actions":242,"material-ui":8,"react":238}],244:[function(require,module,exports){
+},{"../../actions/ext-actions":242,"material-ui":8,"react":238}],246:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     Paper = mui.Paper,
@@ -50625,6 +50767,7 @@ var UserStore = require('../../stores/user-store');
 var ExtActions = require('../../actions/ext-actions');
 
 var IdentityBody = require('./identity-body');
+var BodyShim = require('./body-shim');
 
 
 function getIdentities(){
@@ -50649,23 +50792,28 @@ var Identities =
         componentDidUnmount:function(){
             UserStore.removeChangeListener(this._onChange)
         },
-        log:function(e,key,payload){
+        showBody:function(e,key,payload){
             console.log(arguments);
         },
         render: function (){
+            var bodies = this.state.identities.map(function(identity,index){
+                return React.createElement(IdentityBody, {index: index, identity: identity});
+            });
 
             var tabs = this.state.identities.map(function(identity){
-                var body = React.createElement("h1", null, React.createElement(IdentityBody, {identity: identity}));
+                var body = React.createElement(BodyShim, {identity: identity});
 
-                return React.createElement(Tab, {label: identity.organization, children: body})
+                return React.createElement(Tab, {label: identity.organization, children: body}
+                )
             }.bind(this));
 
             return (
             React.createElement(Paper, {zDepth: 1}, 
-                React.createElement(Tabs, null, 
+                React.createElement(Tabs, {onChange: this.showBody}, 
                     tabs
-                )
-                )
+                ), 
+                bodies
+            )
             )
         }
 
@@ -50674,13 +50822,14 @@ var Identities =
 module.exports = Identities;
 
 
-},{"../../actions/ext-actions":242,"../../stores/user-store":250,"./identity-body":243,"material-ui":8,"react":238}],245:[function(require,module,exports){
+},{"../../actions/ext-actions":242,"../../stores/user-store":253,"./body-shim":244,"./identity-body":245,"material-ui":8,"react":238}],247:[function(require,module,exports){
 module.exports = {
     GET_IDENTITIES: 'GET_IDENTITIES',
-    CHANGE_IDENTITY: 'CHANGE_IDENTITY'
+    SET_DEFAULT_IDENTITY: 'SET_DEFAULT_IDENTITY',
+    QUERY_CODE:'QUERY_CODE'
 };
 
-},{}],246:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 var React = require('react');
 var injectTapEventPlugin = require("react-tap-event-plugin");
 
@@ -50692,13 +50841,15 @@ injectTapEventPlugin();
 
 
 var Identity = require('./components/User/identity');
+var AddOrganization = require('./components/Organization/add-organization');
 
 var DASH =
     React.createClass({displayName: "DASH",
         render:function(){
             return (
                 React.createElement("div", null, 
-                    React.createElement(Identity, null)
+                    React.createElement(Identity, null), 
+                    React.createElement(AddOrganization, null)
                 )
             )
 
@@ -50707,7 +50858,7 @@ var DASH =
 
 module.exports = DASH;
 
-},{"./components/User/identity":244,"react":238,"react-tap-event-plugin":75}],247:[function(require,module,exports){
+},{"./components/Organization/add-organization":243,"./components/User/identity":246,"react":238,"react-tap-event-plugin":75}],249:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -50723,7 +50874,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":248,"react/lib/merge":226}],248:[function(require,module,exports){
+},{"./dispatcher":250,"react/lib/merge":226}],250:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -50781,7 +50932,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"react/lib/merge":226}],249:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":226}],251:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -50805,7 +50956,41 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":226}],250:[function(require,module,exports){
+},{"events":2,"react/lib/merge":226}],252:[function(require,module,exports){
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var AppConstants = require('../constants/dash-constants');
+var merge = require('react/lib/merge');
+var BaseStore = require('./base-store');
+var _ = require('lodash');
+
+var _foundOrg = {};
+
+var OrganizationStore = merge(BaseStore,{
+
+    foundOrg: function(){
+        return _foundOrg;
+    },
+
+    dispatcherIndex:AppDispatcher.register(function(payload){
+        var action = payload.action;
+
+        switch(action.actionType){
+            case AppConstants.QUERY_CODE:
+                console.log('QUERYCODE',payload.action);
+                _foundOrg = payload.action.organization;
+                OrganizationStore.emitChange();
+                break;
+
+        }
+
+        return true;
+    })
+});
+
+module.exports = OrganizationStore;
+
+
+},{"../constants/dash-constants":247,"../dispatchers/app-dispatcher":249,"./base-store":251,"lodash":5,"react/lib/merge":226}],253:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/dash-constants');
 var merge = require('react/lib/merge');
@@ -50843,11 +51028,6 @@ var UserStore = merge(BaseStore,{
                 UserStore.emitChange();
                 break;
 
-            case AppConstants.CHANGE_IDENTITY:
-                _changeIdentity(payload.action.identity);
-                UserStore.emitChange();
-                break;
-
         }
 
         return true;
@@ -50857,7 +51037,7 @@ var UserStore = merge(BaseStore,{
 module.exports = UserStore;
 
 
-},{"../constants/dash-constants":245,"../dispatchers/app-dispatcher":247,"./base-store":249,"lodash":5,"react/lib/merge":226}],251:[function(require,module,exports){
+},{"../constants/dash-constants":247,"../dispatchers/app-dispatcher":249,"./base-store":251,"lodash":5,"react/lib/merge":226}],254:[function(require,module,exports){
 var React = require('react');
 var mui = require('material-ui'),
     TextField = mui.TextField,
@@ -50916,7 +51096,7 @@ var CommentForm =
 module.exports = CommentForm;
 
 
-},{"../../stores/user-store":268,"material-ui":8,"react":238}],252:[function(require,module,exports){
+},{"../../stores/user-store":271,"material-ui":8,"react":238}],255:[function(require,module,exports){
 var React = require('react');
 
 var moment = require('moment');
@@ -50949,7 +51129,7 @@ var Comments =
 module.exports = Comments;
 
 
-},{"../Comments/replies":253,"moment":71,"react":238}],253:[function(require,module,exports){
+},{"../Comments/replies":256,"moment":71,"react":238}],256:[function(require,module,exports){
 var React = require('react');
 
 var Replies =
@@ -50976,7 +51156,7 @@ var Replies =
 module.exports = Replies;
 
 
-},{"react":238}],254:[function(require,module,exports){
+},{"react":238}],257:[function(require,module,exports){
 var React = require('react');
 var $ = require('jquery');
 
@@ -51045,7 +51225,7 @@ var Page =
 module.exports = Page;
 
 
-},{"../../stores/page-store":266,"../Spray/sprays":257,"jquery":4,"react":238}],255:[function(require,module,exports){
+},{"../../stores/page-store":269,"../Spray/sprays":260,"jquery":4,"react":238}],258:[function(require,module,exports){
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
@@ -51128,7 +51308,7 @@ var FreshSpray =
 module.exports = FreshSpray;
 
 
-},{"../../actions/ext-actions":240,"../../stores/page-store":266,"../../stores/user-store":268,"jquery":4,"material-ui":8,"react":238}],256:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/page-store":269,"../../stores/user-store":271,"jquery":4,"material-ui":8,"react":238}],259:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     Paper = mui.Paper;
@@ -51200,7 +51380,7 @@ var Spray =
 module.exports = Spray;
 
 
-},{"../../actions/ext-actions.js":240,"../../stores/page-store":266,"../../stores/spray-store":267,"../Comments/comment-form":251,"../Comments/comments":252,"jquery":4,"material-ui":8,"react":238}],257:[function(require,module,exports){
+},{"../../actions/ext-actions.js":240,"../../stores/page-store":269,"../../stores/spray-store":270,"../Comments/comment-form":254,"../Comments/comments":255,"jquery":4,"material-ui":8,"react":238}],260:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
@@ -51249,7 +51429,7 @@ var Sprays =
 module.exports = Sprays;
 
 
-},{"../../stores/spray-store":267,"../../stores/user-store":268,"./fresh-spray":255,"./spray":256,"react":238}],258:[function(require,module,exports){
+},{"../../stores/spray-store":270,"../../stores/user-store":271,"./fresh-spray":258,"./spray":259,"react":238}],261:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../../actions/app-actions.js');
@@ -51266,7 +51446,7 @@ var ChangeIdentity =
     });
 module.exports = ChangeIdentity;
 
-},{"../../actions/app-actions.js":239,"react":238}],259:[function(require,module,exports){
+},{"../../actions/app-actions.js":239,"react":238}],262:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     DropDownMenu = mui.DropDownMenu;
@@ -51330,7 +51510,7 @@ var Identities =
 module.exports = Identities;
 
 
-},{"../../actions/ext-actions":240,"../../stores/user-store":268,"./change-identity":258,"material-ui":8,"react":238}],260:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/user-store":271,"./change-identity":261,"material-ui":8,"react":238}],263:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Identity = require('../components/User/identity');
@@ -51357,7 +51537,7 @@ var APP =
 module.exports = APP;
 
 
-},{"../components/Page/page":254,"../components/User/identity":259,"react":238}],261:[function(require,module,exports){
+},{"../components/Page/page":257,"../components/User/identity":262,"react":238}],264:[function(require,module,exports){
 module.exports = {
     GET_IDENTITIES: 'GET_IDENTITIES',
     INITIALIZE_PAGE: 'INITIALIZE_PAGE',
@@ -51372,7 +51552,7 @@ module.exports = {
 };
 
 
-},{}],262:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -51388,7 +51568,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":263,"react/lib/merge":226}],263:[function(require,module,exports){
+},{"./dispatcher":266,"react/lib/merge":226}],266:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -51446,7 +51626,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"react/lib/merge":226}],264:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":226}],267:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var DASHBOARD = require('./app-dashboard/dashboard');
@@ -51490,7 +51670,7 @@ else{
 
 }
 
-},{"./app-dashboard/dashboard":246,"./components/app":260,"jquery":4,"react":238}],265:[function(require,module,exports){
+},{"./app-dashboard/dashboard":248,"./components/app":263,"jquery":4,"react":238}],268:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -51514,7 +51694,7 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":226}],266:[function(require,module,exports){
+},{"events":2,"react/lib/merge":226}],269:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
@@ -51586,7 +51766,7 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../actions/app-actions":239,"../actions/ext-actions":240,"../constants/app-constants":261,"../dispatchers/app-dispatcher":262,"./base-store":265,"./spray-store":267,"./user-store":268,"lodash":5,"react/lib/merge":226}],267:[function(require,module,exports){
+},{"../actions/app-actions":239,"../actions/ext-actions":240,"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"./spray-store":270,"./user-store":271,"lodash":5,"react/lib/merge":226}],270:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
@@ -51627,7 +51807,7 @@ module.exports = SprayStore;
 
 
 
-},{"../actions/ext-actions":240,"../constants/app-constants":261,"../dispatchers/app-dispatcher":262,"./base-store":265,"lodash":5,"react/lib/merge":226}],268:[function(require,module,exports){
+},{"../actions/ext-actions":240,"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"lodash":5,"react/lib/merge":226}],271:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -51648,6 +51828,16 @@ var UserStore = merge(BaseStore,{
 
     getIdentities: function(){
         return _identities;
+    },
+
+    getIdentityById: function(id){
+        var found = {};
+        _identities.forEach(function(identity){
+          if(identity.organization_id === id){
+              found = identity;
+          }
+        });
+        return found;
     },
 
     getCurrentIdentity: function(){
@@ -51679,4 +51869,4 @@ var UserStore = merge(BaseStore,{
 module.exports = UserStore;
 
 
-},{"../constants/app-constants":261,"../dispatchers/app-dispatcher":262,"./base-store":265,"lodash":5,"react/lib/merge":226}]},{},[264])
+},{"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"lodash":5,"react/lib/merge":226}]},{},[267])

@@ -8,10 +8,10 @@ var AppActions = {
             user:user
         })
     },
-    changeIdentity: function(identity){
+    queryCode:function(organization){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.CHANGE_IDENTITY,
-            identity:identity
+            actionType: AppConstants.QUERY_CODE,
+            organization:organization
         })
     }
 };

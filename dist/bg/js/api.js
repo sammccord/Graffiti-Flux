@@ -125,4 +125,27 @@ Graffiti.prototype.Comment = function() {
 
         }
     }
-}
+};
+
+Graffiti.prototype.Organization = function() {
+    var self = this;
+    return {
+        GET: function(args, callback) {
+            //args.domain
+            console.log('GETTING ORG',args);
+            $.ajax({
+                url: self.api + '/api/organizations/code/' + args.code,
+                dataType: 'json',
+                success: function(data) {
+                    console.log('GET PAGE SUCCESS',data);
+                    callback(null, data)
+                },
+                error: function(xhr, status, err) {
+                    // console.error(status, err.toString());
+                    callback(err.toString())
+                }
+            });
+
+        }
+    }
+};

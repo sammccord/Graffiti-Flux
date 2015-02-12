@@ -10,9 +10,30 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
-    changeIdentity:function(){
+    setDefaultIdentity:function(organization,name,organization_id){
         sendMessage({
-            action:'changeIdentity'
+            action:'setDefaultIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    addIdentity:function(organization,name,organization_id){
+        sendMessage({
+            action:'addIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    queryCode:function(code){
+        sendMessage({
+            action:'queryCode',
+            endpoint:'Organization',
+            method:'GET',
+            args:{
+                code:code
+            }
         })
     }
 };

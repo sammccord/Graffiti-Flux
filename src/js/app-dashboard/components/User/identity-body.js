@@ -20,24 +20,45 @@ var IdentityBody =
                 disabled:false
             })
         },
-        handleSubmit:function(){
-
+        changeName:function(e){
+            e.preventDefault();
+            var userName = document.getElementById(this.props.identity.organization_id).value;
+            if (!userName) {
+                return;
+            }
+            ExtActions.addIdentity(this.props.identity.organization,userName,this.props.identity.organization_id);
+            this.setState({
+                disabled:true
+            });
+            return;
+        },
+        setDefault:function(){
+            ExtActions.setDefaultIdentity(this.props.identity.organization,this.props.identity.name,this.props.identity.organization_id);
+            console.log(this.props.identity.organization,this.props.identity.name,this.props.identity.organization_id);
         },
         render:function(){
-            var showHideClass = this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
+            var showClass = this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
+            var hideClass = !this.state.disabled ? 'graffiti-hide' : 'graffiti-show';
 
-            return <div>
-                <form onSubmit={this.handleSubmit}>
+            var classStr = 'user-organizations';
+            if(this.props.index > 0){
+                classStr += ' graffiti-hide'
+            }
+            console.log('render body',this.props.identity.organization_id);
+            classStr += ' '+this.props.identity.organization_id;
+
+            return <div className={classStr}>
+                <form onSubmit={this.changeName}>
                     <TextField
+                        id={this.props.identity.organization_id}
                         hintText="Disabled Hint Text"
                         disabled={this.state.disabled}
                         defaultValue={this.props.identity.name}
                         floatingLabelText="Username" />
-                    <FlatButton className={showHideClass} type="submit" label="Submit" primary={true} />
-                    <Icon onClick={this.unlockUsername} icon="action-settings" />
+                    <FlatButton className={showClass} type="submit" label="Submit" primary={true} />
+                    <Icon className={hideClass} onClick={this.unlockUsername} icon="action-settings" />
                 </form>
-                <h1>{this.props.identity.organization_id}</h1>
-                <FlatButton label="Set Default" primary={true} />
+                <FlatButton onClick={this.setDefault} label="Set Default" primary={true} />
             </div>
         }
     });
