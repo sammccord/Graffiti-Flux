@@ -1,4 +1,6 @@
-var React = require('react');
+var React = require('react'),
+    mui = require('material-ui'),
+    Paper = mui.Paper;
 var $ = require('jquery');
 
 var ExtActions = require('../../actions/ext-actions.js');
@@ -52,12 +54,12 @@ var Spray =
         render: function (){
             return (
                 <li>
-                    <h4>{this.props.spray.organization}</h4>
-                    <h4>{this.props.spray.targetText}</h4>
+                    <Paper className="graffiti-comments-container" zDepth={1}>
                     <ul>
                         <Comments comments={this.state.spray.comments}/>
                     </ul>
-                    <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
+                    <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
+                    </Paper>
                 </li>
             )
         }

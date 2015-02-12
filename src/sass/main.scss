@@ -1,12 +1,75 @@
+html,iframe{
+  -webkit-transition: margin-right .45s ease-in-out;
+  margin-right:0;
+
+  &.graffiti-show{
+    -webkit-transition: margin-right .45s ease-in-out;
+    margin-right:260px;
+  }
+}
+
 #graffiti-app, .graffiti-app {
-  @import 'material-bootstrap/material';
 
+  ul,ol,li{
+    list-style-type: none;
+    padding:0;
+    margin:0;
+  }
+
+  -webkit-transition: margin-right .45s ease-in-out;
   position:fixed !important;
-  width: 320px;
+  width: 260px;
+  height: 100%;
+  overflow: hidden;
   right:0;
+  top:0;
+  bottom:0;
   z-index:99999999999;
-  background-color:rgba(255,255,255,.4);
+  background-color:rgb(255,255,255);
+  -webkit-transform:translateX(260px);
 
+  &.graffiti-show{
+    box-shadow: inset 1px -1px 10px -1px rgba(0,0,0,0.232);
+    -webkit-transition: -webkit-transform .45s ease-in-out, box-shadow .45s ease-in-out;
+    -webkit-transform:translateX(0px);
+  }
+  .graffiti-comments-container,.freshSprayContainer {
+    margin: 6px 0px;
+    .mui-paper-container{
+      padding: 20px 12px 10px 12px;
+    }
+    .mui-text-field-hint{
+      opacity:0.3;
+    }
+    .mui-text-field .mui-text-field-focus-underline {
+      border-color:rgb(255, 64, 129);
+    }
+    .mui-is-primary{
+      border: 1px solid rgb(224, 224,224);
+      left: 50%;
+      margin-left: -44px;
+    }
+    .mui-is-primary.freshSpraySubmit{
+      margin-left: -82.5px;
+    }
+    .SprayComment{
+      border-bottom: solid 1px #e0e0e0;
+      margin-bottom: 10px;
+    }
+    .SprayComment:first-child{
+      border-top: solid 0px #e0e0e0;
+    }
+  }
+
+  .overflow{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -15px;
+    overflow: auto;
+    padding: 0 15px;
+  }
 }
 
 #graffiti-spray {

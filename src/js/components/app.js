@@ -12,7 +12,7 @@ var APP =
             if (document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+') === current_page) return false;
             current_page = document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+');
            return (
-               <div>
+               <div className="overflow">
                    <Identity />
                    <Page />
                </div>

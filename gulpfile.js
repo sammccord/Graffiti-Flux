@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
+var less = require('gulp-less');
 var concat = require('gulp-concat');
 
 gulp.task('browserify', function() {
@@ -22,6 +23,12 @@ gulp.task('buildCSS', function () {
         .pipe(gulp.dest('dist/css'));
 });
 
+gulp.task('buildLESS', function () {
+    gulp.src('src/less/material.less')
+        .pipe(less())
+        .pipe(gulp.dest('dist/css'));
+});
+
 gulp.task('compress', function() {
     gulp.src('src/js/main.js')
         .pipe(browserify({transform: 'reactify'}))
@@ -30,11 +37,11 @@ gulp.task('compress', function() {
         .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('default',['browserify', 'copy', 'buildCSS']);
-gulp.task('extensionize',['compress', 'copy', 'buildCSS']);
+gulp.task('default',['browserify', 'copy', 'buildCSS','buildLESS']);
+gulp.task('extensionize',['compress', 'copy', 'buildCSS','buildLESS']);
 
 gulp.task('watch', function() {
-    gulp.watch('src/**/*.*', ['default']);
+    gulp.watch(['src/**/*.*','node_modules/material-ui/src/**/*.*'], ['default']);
 });
 
 gulp.task('ext_watch',function(){

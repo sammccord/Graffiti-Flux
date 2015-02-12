@@ -16,16 +16,30 @@ socket.on('update',function(page){
     })
 });
 
-//window.onbeforeunload = function(e) {
-//    socket.emit('leave','page/12345')
-//};
+chrome.storage.sync.clear();
 
 var user = {
-    identities:[],
-    defaultIdentity: {}
+    identities:[{
+        'organization_id':'54dbdbda085c8ae33f6ed324',
+        'organization':'Hackernews',
+        'name':'sammccord'
+    },
+        {
+            'organization_id':'54dbdbda085c8ae33f6ed323',
+            'organization':'Graffiti',
+            'name':'sammccord'
+        },
+        {
+            'organization_id':'54dbdbda085c8ae33f6ed324',
+            'organization':'Fullstack',
+            'name':'sammccord'
+        }],
+    defaultIdentity: {
+        'organization_id':'54dbdbda085c8ae33f6ed325',
+        'organization':'Fullstack',
+        'name':'sammccord'
+    }
 };
-
-//chrome.storage.sync.clear();
 
 getIdentities();
 
@@ -94,7 +108,7 @@ function addIdentity(organization,name,organization_id) {
     var newIdentity = {};
     var isNew = true;
     user.identities.forEach(function(identity){
-        if(identity.organization === organization){
+        if(identity.organization_id === organization_id){
             identity.name = name;
             isNew = false;
         }
@@ -105,18 +119,15 @@ function addIdentity(organization,name,organization_id) {
         newIdentity['organization_id'] =organization_id;
         user.identities.push(newIdentity);
     }
-
     if(!user.defaultIdentity.name){
         user.defaultIdentity = newIdentity;
     }
-    chrome.storage.sync.set({'user':JSON.stringify(user)});
 }
 
 function setDefaultIdentity(organization,name,organization_id){
     user.defaultIdentity['organization'] = organization;
     user.defaultIdentity['name'] = name;
     user.defaultIdentity['organization_id']=organization_id;
-    chrome.storage.sync.set({'user':user});
 }
 
 //chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -138,11 +149,13 @@ chrome.runtime.onMessageExternal.addListener(
             sendResponse(user);
         }
         if(request.action === 'setDefaultIdentity'){
-            setDefaultIdentity(request.organization,request.name);
+            setDefaultIdentity(request.organization,request.name,request.organization_id);
             sendResponse(user);
+            chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         if(request.action === 'addIdentity'){
             addIdentity(request.organization,request.name,request.organization_id);
             sendResponse(user);
+            chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
     });

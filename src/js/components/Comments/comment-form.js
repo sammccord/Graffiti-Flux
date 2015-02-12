@@ -1,4 +1,7 @@
 var React = require('react');
+var mui = require('material-ui'),
+    TextField = mui.TextField,
+    FlatButton = mui.FlatButton;
 
 var UserStore = require('../../stores/user-store');
 
@@ -24,10 +27,13 @@ var CommentForm =
         },
         handleSubmit: function(e){
             e.preventDefault();
-            var text = this.refs.text.getDOMNode().value.trim();
+            var _id = this.props.sprayId;
+            var text = document.getElementById(_id).value;
             if (!text) {
                 return;
             }
+            document.getElementById(_id).value = '';
+
             // TODO: send request to the server
             this.props.onCommentSubmit(this.state.current_identity.name,text);
             this.refs.text.getDOMNode().value = '';
@@ -37,8 +43,11 @@ var CommentForm =
 
             return (
                 <form onSubmit={this.handleSubmit}>
-                    <input placeholder="Leave a comment" type="text" ref="text" />
-                    <button type="submit">Submit</button>
+                    <TextField
+                        id={this.props.sprayId}
+                        hintText="Leave a comment"
+                        multiLine={true} ref="text"/>
+                    <FlatButton type="submit" label="Submit" primary={true} />
                 </form>
             )
         }

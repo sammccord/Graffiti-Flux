@@ -2,6 +2,11 @@ var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
 
+var mui = require('material-ui'),
+    TextField = mui.TextField,
+    FlatButton = mui.FlatButton,
+    Paper = mui.Paper;
+
 var PageStore = require('../../stores/page-store');
 var UserStore = require('../../stores/user-store');
 var $ = require('jquery');
@@ -39,7 +44,8 @@ var FreshSpray =
         },
         handleSubmit: function(e){
             e.preventDefault();
-            var text = this.refs.text.getDOMNode().value.trim();
+            var text = document.getElementById('freshSprayInput').value;
+            document.getElementById('freshSprayInput').value = '';
             if (!text || !$('#graffiti-spray').length) {
                 return;
             }
@@ -58,12 +64,17 @@ var FreshSpray =
         },
         render: function(){
             return (
+                <Paper className="freshSprayContainer" zDepth={1}>
                     <form onSubmit={this.handleSubmit}>
-                        <input placeholder="Initialize with a comment" type="text" ref="text" />
-                        <button className="btn btn-default" type="submit">Submit</button>
+                        <TextField
+                            id="freshSprayInput"
+                            hintText="Leave a comment"
+                            multiLine={true} ref="text"/>
+                        <FlatButton className="freshSpraySubmit" type="submit" label="Tag and Comment" primary={true} />
                     </form>
+                </Paper>
             )
         }
-    })
+    });
 
 module.exports = FreshSpray;

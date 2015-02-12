@@ -1,4 +1,8 @@
-var React = require('react');
+var React = require('react'),
+    mui = require('material-ui'),
+    DropDownMenu = mui.DropDownMenu;
+
+
 var UserStore = require('../../stores/user-store');
 var ChangeIdentity = require('./change-identity');
 var ExtActions = require('../../actions/ext-actions');
@@ -26,20 +30,29 @@ var Identities =
         componentDidUnmount:function(){
             UserStore.removeChangeListener(this._onChange)
         },
+        log:function(e,key,payload){
+            console.log(arguments);
+        },
         render: function (){
-            var identities = this.state.identities.map(function(identity){
-                return <li key={Math.random().toString()}>
-                    <b>{identity.organization}</b> - {identity.name}&nbsp;
-                    <ChangeIdentity currentIdentity={this.state.current_identity} identity={identity}>Switch</ChangeIdentity>
-                </li>
+
+            var filterOptions = this.state.identities.map(function(identity){
+                return {
+                    payload:identity.organization_id,
+                    text:identity.organization
+                }
             }.bind(this));
 
+            var selectedIndex;
+
+            filterOptions.forEach(function(identity,index){
+                if(identity.payload === this.state.current_identity.organization_id){
+                    selectedIndex = index;
+                }
+            }.bind(this));
+            console.log(filterOptions);
+
             return (
-                <div>
-                    <ul>
-                    {identities}
-                    </ul>
-                </div>
+                <DropDownMenu onChange={this.log} menuItems={filterOptions} selectedIndex={selectedIndex}/>
             )
         }
 

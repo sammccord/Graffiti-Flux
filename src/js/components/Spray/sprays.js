@@ -19,7 +19,6 @@ var Sprays =
         },
         _onChange:function(){
             this.setState(getSprays());
-            console.log(this.state.sprays);
         },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange);

@@ -34,6 +34,7 @@
     "css": [
       "css/reset.css",
       "css/bootstrap.css",
+      "css/material.css",
       "css/main.css"
     ]
   }, {
