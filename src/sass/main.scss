@@ -95,3 +95,11 @@ html,iframe{
   position:fixed;
   z-index:99999999999;
 }
+
+#graffiti-dash {
+  background-color:white;
+  .mui-tab-template{
+    box-sizing:border-box;
+    padding:20px 40px;
+  }
+}

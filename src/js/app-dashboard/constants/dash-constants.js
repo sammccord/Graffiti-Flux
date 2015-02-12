@@ -1,0 +1,4 @@
+module.exports = {
+    GET_IDENTITIES: 'GET_IDENTITIES',
+    CHANGE_IDENTITY: 'CHANGE_IDENTITY'
+};

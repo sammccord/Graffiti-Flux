@@ -67,6 +67,22 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 data:user
             });
             break;
+            case 'setDefaultIdentity':
+                setDefaultIdentity(request.organization,request.name,request.organization_id);
+                chrome.tabs.sendMessage(sender.tab.id,{
+                    action:action,
+                    data:user
+                });
+                chrome.storage.sync.set({'user':JSON.stringify(user)});
+            break;
+            case 'addIdentity':
+                addIdentity(request.organization,request.name,request.organization_id);
+                chrome.tabs.sendMessage(sender.tab.id,{
+                    action:action,
+                    data:user
+                });
+                chrome.storage.sync.set({'user':JSON.stringify(user)});
+            break;
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
                 console.log(message.endpoint+' API CALL - ',arguments);
@@ -83,7 +99,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 });
             })
     }
-})
+});
 
 //// Identity Functions /////
 
@@ -129,33 +145,3 @@ function setDefaultIdentity(organization,name,organization_id){
     user.defaultIdentity['name'] = name;
     user.defaultIdentity['organization_id']=organization_id;
 }
-
-//chrome.storage.onChanged.addListener(function(changes, namespace) {
-//    for (key in changes) {
-//        var storageChange = changes[key];
-//        console.log('Storage key "%s" in namespace "%s" changed. ' +
-//            'Old value was "%s", new value is "%s".',
-//            key,
-//            namespace,
-//            storageChange.oldValue,
-//            storageChange.newValue);
-//    }
-//});
-
-chrome.runtime.onMessageExternal.addListener(
-    function(request, sender, sendResponse) {
-        if(request.action === 'getIdentities'){
-            getIdentities();
-            sendResponse(user);
-        }
-        if(request.action === 'setDefaultIdentity'){
-            setDefaultIdentity(request.organization,request.name,request.organization_id);
-            sendResponse(user);
-            chrome.storage.sync.set({'user':JSON.stringify(user)});
-        }
-        if(request.action === 'addIdentity'){
-            addIdentity(request.organization,request.name,request.organization_id);
-            sendResponse(user);
-            chrome.storage.sync.set({'user':JSON.stringify(user)});
-        }
-    });

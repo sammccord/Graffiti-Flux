@@ -72,3 +72,9 @@ html, iframe {
 #spray-button {
   position: fixed;
   z-index: 99999999999; }
+
+#graffiti-dash {
+  background-color: white; }
+  #graffiti-dash .mui-tab-template {
+    box-sizing: border-box;
+    padding: 20px 40px; }

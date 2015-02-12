@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 var APP = require('./components/app');
+var DASHBOARD = require('./app-dashboard/dashboard');
 var React = require('react');
 var $ = require('jquery');
 
@@ -17,13 +18,25 @@ link.setAttribute('type', 'text/css')
 link.setAttribute('href', "http://fonts.googleapis.com/css?family=Roboto:400,300,500");
 document.getElementsByTagName('head')[0].appendChild(link);
 
-$('body').prepend('<div id="graffiti-app"></div>');
-$('#graffiti-app').css({
-    position:'fixed',
-    'font-family':'Roboto, sans-serif'
-});
+var location = window.location.origin;
 
-React.render(
-    <APP />,
-    document.getElementById('graffiti-app')
-);
+if(location.match(/http:\/\/192\.168\.1\.24:9000/)){
+    $('body').prepend('<div id="graffiti-dash"></div>');
+    React.render(
+        <DASHBOARD />,
+        document.getElementById('graffiti-dash')
+    )
+}
+else{
+    $('body').prepend('<div id="graffiti-app"></div>');
+    $('#graffiti-app').css({
+        position:'fixed',
+        'font-family':'Roboto, sans-serif'
+    });
+
+    React.render(
+        <APP />,
+        document.getElementById('graffiti-app')
+    );
+
+}
