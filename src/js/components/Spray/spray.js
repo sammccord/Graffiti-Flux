@@ -31,10 +31,9 @@ $(window).resize(function() {
 });
 
 function highlightSpray(spray) {
-        console.log('HEY');
         // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-        var formatted = spray.targetText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        var regex = new RegExp("(" + formatted + ")", "gm")
+        var formatted = spray.targetText.replace(/[-\/\\\-\s^:,’'$*+?.()|[\]{}<>=]/g, '\\$&');
+        var regex = new RegExp("(" + formatted + ")", "gm");
 
         $('p.graffiti-selectable:not(#graffiti-app *)').contents().filter(function () {
             return this.nodeType === 3;
@@ -51,6 +50,15 @@ var Spray =
         _onChange:function(){
             this.setState(setSprayState.bind(this)());
         },
+        expandTabs:function(){
+            $('.spray-tab').addClass('graffiti-expanded');
+            $('.graffiti-spray').addClass('graffiti-highlight');
+        },
+        shrinkTabs:function(){
+            $('.spray-tab').removeClass('graffiti-expanded graffiti-focus');
+            $('.graffiti-spray').removeClass('graffiti-highlight');
+            $('[data-graffiti-id]').removeClass('graffiti-focus');
+        },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange)
         },
@@ -60,21 +68,34 @@ var Spray =
         componentDidMount:function(){
             highlightSpray(this.state.spray);
             var offset = $('[data-graffiti-id="'+this.state.spray._id+'"]').offset().top;
-            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"></div>');
+            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab graffiti-bind" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"><span class="comment-count">'+this.state.spray.comments.length+'</span></span></div>');
 
-            $('[data-spray-container="'+this.state.spray._id+'"]').css('top',(offset-70)+'px');
+            $('[data-spray-container="'+this.state.spray._id+'"]').css({
+                'top':(offset-70)+'px',
+                'margin-top':((this.state.spray.comments.length * 20)*-1)+'px'
+            });
 
-            $('[data-spray-id="'+this.state.spray._id+'"]').on('click',function(){
+            var sprayEl = $('[data-spray-id="'+this.state.spray._id+'"]');
+
+            sprayEl.on('click',function(e){
                 $('.graffiti-comments-container').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
-            })
+            }).on('mouseenter',function(){
+                this.expandTabs();
+                sprayEl.addClass('graffiti-focus');
+                $('[data-graffiti-id="'+this.state.spray._id+'"]').addClass('graffiti-focus');
+            }.bind(this))
+                .on('mouseleave',function(){
+                    this.shrinkTabs();
+                }.bind(this));
+
         },
         handleCommentSubmit: function(user,text){
             var spray_id = this.state.spray._id;
             ExtActions.addComment(spray_id,user,text);
         },
         render: function (){
-            var containerClassName = "graffiti-comments-container";
+            var containerClassName = "graffiti-bind graffiti-comments-container";
 
             var className = 'spray-tab';
             className += ' '+this.state.spray._id;
@@ -86,7 +107,7 @@ var Spray =
             return (
                     <Paper data-spray-container={this.state.spray._id} className={containerClassName} zDepth={1}>
                         <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
-                    <ul>
+                    <ul className="graffiti-bind">
                         <Comments comments={this.state.spray.comments}/>
                     </ul>
                     </Paper>
