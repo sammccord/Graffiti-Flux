@@ -20,7 +20,7 @@ document.getElementsByTagName('head')[0].appendChild(link);
 
 var location = window.location.origin;
 
-if(location.match(/http:\/\/192\.168\.1\.24:9000/)){
+if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)/)){
     $('body').prepend('<div id="graffiti-dash"></div>');
     React.render(
         <DASHBOARD />,
@@ -30,7 +30,6 @@ if(location.match(/http:\/\/192\.168\.1\.24:9000/)){
 else{
     $('body').prepend('<div id="graffiti-app"></div>');
     $('#graffiti-app').css({
-        position:'fixed',
         'font-family':'Roboto, sans-serif'
     });
 

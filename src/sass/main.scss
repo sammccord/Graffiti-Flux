@@ -1,14 +1,7 @@
-html,iframe{
-  -webkit-transition: margin-right .45s ease-in-out;
-  margin-right:0;
-
-  &.graffiti-show{
-    -webkit-transition: margin-right .45s ease-in-out;
-    margin-right:260px;
-  }
-}
-
 #graffiti-app, .graffiti-app {
+  position:absolute;
+  z-index: 999999999;
+  right:0%;
 
   ul,ol,li{
     list-style-type: none;
@@ -16,25 +9,21 @@ html,iframe{
     margin:0;
   }
 
-  -webkit-transition: margin-right .45s ease-in-out;
-  position:fixed !important;
-  width: 260px;
-  height: 100%;
-  overflow: hidden;
-  right:0;
-  top:0;
-  bottom:0;
-  z-index:99999999999;
-  background-color:rgb(255,255,255);
-  -webkit-transform:translateX(260px);
-
-  &.graffiti-show{
-    box-shadow: inset 1px -1px 10px -1px rgba(0,0,0,0.232);
-    -webkit-transition: -webkit-transform .45s ease-in-out, box-shadow .45s ease-in-out;
-    -webkit-transform:translateX(0px);
-  }
   .graffiti-comments-container,.freshSprayContainer {
+    box-sizing:border-box;
+    position:absolute !important;
+    width: 260px;
+    overflow: hidden;
+    z-index:999999999999;
+    background-color:rgb(255,255,255);
+    -webkit-transform:translateX(18px);
     margin: 6px 0px;
+
+    &.graffiti-show{
+      -webkit-transition: -webkit-transform .45s ease-in-out;
+      -webkit-transform:translateX(-245px);
+    }
+
     .mui-paper-container{
       padding: 20px 12px 10px 12px;
     }
@@ -56,20 +45,17 @@ html,iframe{
       border-bottom: solid 1px #e0e0e0;
       margin-bottom: 10px;
     }
-    .SprayComment:first-child{
-      border-top: solid 0px #e0e0e0;
-    }
   }
 
-  .overflow{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: -15px;
-    overflow: auto;
-    padding: 0 15px;
-  }
+}
+
+.spray-tab{
+  position:absolute;
+  right: 0;
+  z-index: 9999999;
+  width: 5px;
+  height: 36px;
+  margin-top:-6px;
 }
 
 #graffiti-spray {

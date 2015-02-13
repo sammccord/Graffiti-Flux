@@ -34,9 +34,7 @@ var Sprays =
             return (
                 <div>
                         <FreshSpray />
-                        <ul>
-                            {sprays}
-                        </ul>
+                        {sprays}
                 </div>
             )
         }

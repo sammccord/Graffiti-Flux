@@ -36,6 +36,7 @@ var Identities =
         render: function (){
 
             var filterOptions = this.state.identities.map(function(identity){
+                console.log(identity);
                 return {
                     payload:identity.organization_id,
                     text:identity.organization

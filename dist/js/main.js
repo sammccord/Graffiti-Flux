@@ -51160,14 +51160,19 @@ module.exports = Replies;
 var React = require('react');
 var $ = require('jquery');
 
+var ExtActions = require('../../actions/ext-actions');
+
 var PageStore = require('../../stores/page-store');
+var UserStore = require('../../stores/user-store');
 
 var Sprays = require('../Spray/sprays');
 
 
 function getPage(){
     return {
-        page:PageStore.getPageState()
+        page:PageStore.getPageState(),
+        current_identity: UserStore.getCurrentIdentity(),
+        identities:UserStore.getIdentities()
     };
 }
 
@@ -51207,17 +51212,18 @@ var Page =
             this.setState(getPage());
         },
         componentWillMount:function(){
+            ExtActions.getIdentities();
+            UserStore.addChangeListener(this._onChange);
             PageStore.addChangeListener(this._onChange)
         },
         componentDidUnmount:function(){
+            UserStore.removeChangeListener(this._onChange);
             PageStore.removeChangeListener(this._onChange);
         },
         render: function (){
-            return (
-                React.createElement("div", null, 
-                    React.createElement(Sprays, null)
+                return (
+                    React.createElement(Sprays, {currentIdentity: this.state.current_identity, identities: this.state.identities})
                 )
-            )
         }
 
     });
@@ -51225,7 +51231,7 @@ var Page =
 module.exports = Page;
 
 
-},{"../../stores/page-store":269,"../Spray/sprays":260,"jquery":4,"react":238}],258:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/page-store":269,"../../stores/user-store":271,"../Spray/sprays":260,"jquery":4,"react":238}],258:[function(require,module,exports){
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
@@ -51247,6 +51253,7 @@ function getFormData(){
 }
 
 function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+    console.log(org_id);
     ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
 }
 
@@ -51328,6 +51335,19 @@ function setSprayState(){
     };
 }
 
+$(window).resize(function() {
+   $('[data-spray-id]').each(function(index){
+       var id = $(this).attr('data-spray-id');
+       var offset = $('[data-graffiti-id="'+id+'"]').offset().top;
+       $(this).css({
+           top:offset+'px'
+       });
+       $('[data-spray-container="'+id+'"]').css({
+           top:offset-70+'px'
+       });
+   });
+});
+
 function highlightSpray(spray) {
         console.log('HEY');
         // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -51357,21 +51377,37 @@ var Spray =
         },
         componentDidMount:function(){
             highlightSpray(this.state.spray);
+            var offset = $('[data-graffiti-id="'+this.state.spray._id+'"]').offset().top;
+            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"></div>');
+
+            $('[data-spray-container="'+this.state.spray._id+'"]').css('top',(offset-70)+'px');
+
+            $('[data-spray-id="'+this.state.spray._id+'"]').on('click',function(){
+                $('.graffiti-comments-container').removeClass('graffiti-show');
+                $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
+            })
         },
         handleCommentSubmit: function(user,text){
-            var spray_id = this.props.spray._id;
+            var spray_id = this.state.spray._id;
             ExtActions.addComment(spray_id,user,text);
         },
         render: function (){
+            var containerClassName = "graffiti-comments-container";
+
+            var className = 'spray-tab';
+            className += ' '+this.state.spray._id;
+
+            var tabStyle={
+                backgroundColor:this.state.spray.spray_color
+            };
+
             return (
-                React.createElement("li", null, 
-                    React.createElement(Paper, {className: "graffiti-comments-container", zDepth: 1}, 
+                    React.createElement(Paper, {"data-spray-container": this.state.spray._id, className: containerClassName, zDepth: 1}, 
+                        React.createElement(CommentForm, {sprayId: this.state.spray._id, onCommentSubmit: this.handleCommentSubmit}), 
                     React.createElement("ul", null, 
                         React.createElement(Comments, {comments: this.state.spray.comments})
-                    ), 
-                    React.createElement(CommentForm, {sprayId: this.state.spray._id, onCommentSubmit: this.handleCommentSubmit})
                     )
-                )
+                    )
             )
         }
 
@@ -51417,9 +51453,7 @@ var Sprays =
             return (
                 React.createElement("div", null, 
                         React.createElement(FreshSpray, null), 
-                        React.createElement("ul", null, 
-                            sprays
-                        )
+                        sprays
                 )
             )
         }
@@ -51485,6 +51519,7 @@ var Identities =
         render: function (){
 
             var filterOptions = this.state.identities.map(function(identity){
+                console.log(identity);
                 return {
                     payload:identity.organization_id,
                     text:identity.organization
@@ -51525,10 +51560,7 @@ var APP =
             if (document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+') === current_page) return false;
             current_page = document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+');
            return (
-               React.createElement("div", {className: "overflow"}, 
-                   React.createElement(Identity, null), 
                    React.createElement(Page, null)
-               )
                )
 
         }
@@ -51649,7 +51681,7 @@ document.getElementsByTagName('head')[0].appendChild(link);
 
 var location = window.location.origin;
 
-if(location.match(/http:\/\/192\.168\.1\.24:9000/)){
+if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)/)){
     $('body').prepend('<div id="graffiti-dash"></div>');
     React.render(
         React.createElement(DASHBOARD, null),
@@ -51659,7 +51691,6 @@ if(location.match(/http:\/\/192\.168\.1\.24:9000/)){
 else{
     $('body').prepend('<div id="graffiti-app"></div>');
     $('#graffiti-app').css({
-        position:'fixed',
         'font-family':'Roboto, sans-serif'
     });
 
@@ -51813,8 +51844,6 @@ var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
-
-var CHANGE_EVENT = "user";
 
 var _identities = [];
 

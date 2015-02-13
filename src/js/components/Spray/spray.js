@@ -17,6 +17,19 @@ function setSprayState(){
     };
 }
 
+$(window).resize(function() {
+   $('[data-spray-id]').each(function(index){
+       var id = $(this).attr('data-spray-id');
+       var offset = $('[data-graffiti-id="'+id+'"]').offset().top;
+       $(this).css({
+           top:offset+'px'
+       });
+       $('[data-spray-container="'+id+'"]').css({
+           top:offset-70+'px'
+       });
+   });
+});
+
 function highlightSpray(spray) {
         console.log('HEY');
         // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -46,21 +59,37 @@ var Spray =
         },
         componentDidMount:function(){
             highlightSpray(this.state.spray);
+            var offset = $('[data-graffiti-id="'+this.state.spray._id+'"]').offset().top;
+            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"></div>');
+
+            $('[data-spray-container="'+this.state.spray._id+'"]').css('top',(offset-70)+'px');
+
+            $('[data-spray-id="'+this.state.spray._id+'"]').on('click',function(){
+                $('.graffiti-comments-container').removeClass('graffiti-show');
+                $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
+            })
         },
         handleCommentSubmit: function(user,text){
-            var spray_id = this.props.spray._id;
+            var spray_id = this.state.spray._id;
             ExtActions.addComment(spray_id,user,text);
         },
         render: function (){
+            var containerClassName = "graffiti-comments-container";
+
+            var className = 'spray-tab';
+            className += ' '+this.state.spray._id;
+
+            var tabStyle={
+                backgroundColor:this.state.spray.spray_color
+            };
+
             return (
-                <li>
-                    <Paper className="graffiti-comments-container" zDepth={1}>
+                    <Paper data-spray-container={this.state.spray._id} className={containerClassName} zDepth={1}>
+                        <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
                     <ul>
                         <Comments comments={this.state.spray.comments}/>
                     </ul>
-                    <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
                     </Paper>
-                </li>
             )
         }
 

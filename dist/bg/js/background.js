@@ -94,7 +94,8 @@ function getIdentities(cb) {
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
                 organization:'Graffiti',
-                organization_id : '54dbdbda085c8ae33f6ed323'
+                organization_id : '54dd36f9ec0ebbde215e745b',
+                spray_color:'rgba(255, 64, 129,0.8)'
             };
             user.defaultIdentity = newIdentity;
             user.identities.push(newIdentity);
@@ -113,6 +114,7 @@ function addIdentity(organization,name,organization_id) {
     newIdentity['organization'] = organization;
     newIdentity['name'] = name;
     newIdentity['organization_id'] =organization_id;
+    newIdentity['spray_color'] = 'rgba(255, 64, 129,0.8)';
     user.identities.push(newIdentity);
 }
 
@@ -120,7 +122,8 @@ function setDefaultIdentity(organization,name,organization_id){
     var defaultIdentity = {
         organization:organization,
         name:name,
-        organization_id:organization_id
+        organization_id:organization_id,
+        spray_color:'rgba(255, 64, 129,0.8)'
     };
     user.defaultIdentity = defaultIdentity;
 }

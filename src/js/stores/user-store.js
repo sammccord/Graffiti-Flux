@@ -4,8 +4,6 @@ var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
 
-var CHANGE_EVENT = "user";
-
 var _identities = [];
 
 var _current_identity = {};

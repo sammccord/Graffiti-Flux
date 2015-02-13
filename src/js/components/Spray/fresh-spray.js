@@ -19,6 +19,7 @@ function getFormData(){
 }
 
 function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+    console.log(org_id);
     ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
 }
 
