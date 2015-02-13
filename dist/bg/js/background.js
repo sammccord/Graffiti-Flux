@@ -1,6 +1,6 @@
-var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://192.168.1.24:9000', {
+var socket = io.connect('http://graffiti.herokuapp.com', {
     path: '/socket.io-client',
     transports: ['websocket'],
     'force new connection': true
@@ -17,7 +17,7 @@ socket.on('update',function(page){
     })
 });
 
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
 
 var user = {
     identities:[],
@@ -94,7 +94,7 @@ function getIdentities(cb) {
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
                 organization:'Graffiti',
-                organization_id : '54dd36f9ec0ebbde215e745b',
+                organization_id : '54dd8a81900a640300d46f72',
                 spray_color:'rgba(255, 64, 129,0.8)'
             };
             user.defaultIdentity = newIdentity;
