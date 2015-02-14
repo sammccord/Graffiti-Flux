@@ -94,7 +94,7 @@ function getIdentities(cb) {
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
                 organization:'Graffiti',
-                organization_id : '54de704de86dac87203b79d7',
+                organization_id : '54dfb9992dcbc3a511c3b427',
                 spray_color:'rgb(96, 96, 96)'
             };
             user.defaultIdentity = newIdentity;

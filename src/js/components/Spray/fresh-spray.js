@@ -19,35 +19,58 @@ String.prototype.replaceCallback= function(regex,string,cb){
     return ret;  // For chaining
 };
 
+String.prototype.splice = function( idx, rem, s ) {
+    return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
+};
+
 function bindSelection(){
+    var state = this;
     $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
     $('.graffiti-selectable').on('selectstart', function(e) {
         $('.freshSprayContainer').removeClass('graffiti-visible');
         $('#graffiti-spray').contents().unwrap();
         $(document).one('mouseup', function(e) {
+            var selection = window.getSelection();
+            if(selection.type!=="Range") return false;
             console.log(window.getSelection());
             var offset = e.pageY;
-            var selection = window.getSelection();
-            if (selection.type === "Range") {
-                var string = selection.toString();
-                // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-                console.log(string);
-                var formatted = string.replace(/[-\/\\\-\s^:,’'$*+?.()|[\]{}<>=]/g, '\\$&');
-                console.log(formatted);
-                var regex = new RegExp("(" + formatted + ")", "gm");
-                $(selection.focusNode.parentNode).contents().filter(function() {
-                    console.log(this.nodeType);
-                    return this.nodeType === 3;
-                }).each(function() {
-                    $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
-                        $('.freshSprayContainer').css({
+
+            var p = $('p.graffiti-selectable');
+
+            var html = "";
+            if (typeof window.getSelection != "undefined") {
+                var sel = window.getSelection();
+                if (sel.rangeCount) {
+                    var container = document.createElement("div");
+                    for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                        container.appendChild(sel.getRangeAt(i).cloneContents());
+                    }
+                    html = container.innerHTML;
+                }
+            } else if (typeof document.selection != "undefined") {
+                if (document.selection.type == "Text") {
+                    html = document.selection.createRange().htmlText;
+                }
+            }
+
+            var index = $('p.graffiti-selectable').index(selection.baseNode.parentNode);
+
+            console.log(selection.baseNode.parentNode.innerHTML);
+            console.log(html);
+
+            state.setState({
+                targetExp:html.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm, "$&")
+            });
+
+        var regex = new RegExp(state.state.targetExp, "gm");
+            $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replaceCallback(regex,'<span id="graffiti-spray" data-graffiti-index="'+index+'">'+state.state.targetExp+'</span>',function(){
+                $('.freshSprayContainer').css({
                             top:(offset-100)+'px'
                         }).addClass('graffiti-show');
-                    }));
-                });
+                window.getSelection().removeAllRanges();
+            }));
 
 
-            }
         });
     });
 }
@@ -59,19 +82,19 @@ function getFormData(){
     };
 }
 
-function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index){
     console.log(org_id);
-    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
+    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index);
 }
 
-function addFreshSpray(page_id,targetText,user,text){
-    ExtActions.addSpray(page_id,targetText,user,text);
+function addFreshSpray(page_id,targetText,user,text,p_index){
+    ExtActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
 var FreshSpray =
     React.createClass({
         getInitialState: function(){
-            bindSelection();
+            bindSelection.bind(this)();
             return getFormData();
         },
         _onChange:function(){
@@ -92,16 +115,18 @@ var FreshSpray =
             if (!text || !$('#graffiti-spray').length) {
                 return;
             }
-            var targetText = document.getElementById('graffiti-spray').getAttribute('data-graffiti-target');
-            $('#graffiti-spray').contents().unwrap();
+            var targetText = this.state.targetExp;
+            console.log(targetText);
+
+            var index = document.getElementById('graffiti-spray').getAttribute('data-graffiti-index');
 
             if(this.state.page.fresh === true){
-                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text);
+                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text,index);
             }
             else{
-                addFreshSpray(this.state.page._id,targetText,this.state.user.name,text);
+                addFreshSpray(this.state.page._id,targetText,this.state.user.name,text,index);
             }
-
+            $('#graffiti-spray').contents().unwrap();
             $('.freshSprayContainer').removeClass('graffiti-show');
             this.refs.text.getDOMNode().value = '';
             return;
