@@ -1,3 +1,25 @@
+//
+//if (selection.type === "Range") {
+//    var string = selection.toString();
+//    // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+//    console.log(string);
+//    var formatted = string.replace(/[-\/\\\-\s^:,’'$*+?.()|[\]{}<>=]/g, '\\$&');
+//    console.log(formatted);
+//    var regex = new RegExp("(" + formatted + ")", "gm");
+//    $(selection.focusNode.parentNode).contents().filter(function() {
+//        console.log(this.nodeType);
+//        return this.nodeType === 3;
+//    }).each(function() {
+//        $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
+//            $('.freshSprayContainer').css({
+//                top:(offset-100)+'px'
+//            }).addClass('graffiti-show');
+//        }));
+//    });
+//
+//
+//}
+
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
@@ -19,6 +41,10 @@ String.prototype.replaceCallback= function(regex,string,cb){
     return ret;  // For chaining
 };
 
+String.prototype.splice = function( idx, rem, s ) {
+    return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
+};
+
 function bindSelection(){
     $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
     $('.graffiti-selectable').on('selectstart', function(e) {
@@ -28,26 +54,30 @@ function bindSelection(){
             console.log(window.getSelection());
             var offset = e.pageY;
             var selection = window.getSelection();
-            if (selection.type === "Range") {
-                var string = selection.toString();
-                // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-                console.log(string);
-                var formatted = string.replace(/[-\/\\\-\s^:,’'$*+?.()|[\]{}<>=]/g, '\\$&');
-                console.log(formatted);
-                var regex = new RegExp("(" + formatted + ")", "gm");
-                $(selection.focusNode.parentNode).contents().filter(function() {
-                    console.log(this.nodeType);
-                    return this.nodeType === 3;
-                }).each(function() {
-                    $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
-                        $('.freshSprayContainer').css({
-                            top:(offset-100)+'px'
-                        }).addClass('graffiti-show');
-                    }));
-                });
 
+            var p = $('p.graffiti-selectable');
+            var select = {
+                index:p.index(selection.baseNode.parentNode),
+                start:selection.baseOffset,
+                end:p.index(selection.baseNode.parentNode) === p.index(selection.extentNode.parentNode) ? selection.extentOffset : selection.baseNode.parentNode.innerText.length -1
+            };
+            console.log(select);
 
+            if(select.start > select.end){
+                var start = select.start;
+                var end = select.end;
+                select.start = end;
+                select.end = start;
             }
+
+            var tag = '<span id="graffiti-spray">';
+            var text = selection.baseNode.parentNode.innerText;
+            var opening = text.splice(select.start,0,tag);
+            var closing = opening.splice((select.end+tag.length),0,'</span>');
+
+            console.log(opening+closing);
+
+
         });
     });
 }
