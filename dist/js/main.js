@@ -51282,6 +51282,8 @@ function bindSelection(){
 
             $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replace(regex,'<span class="graffiti-spray" data-graffiti-target="'+selection.toString().replace(/[-[\]{}()"*+?.,\\^$|#\s]/g, "\\$&")+'">'+selection.toString()+'</span>'));
 
+            window.getSelection().removeAllRanges();
+
             //replaceWith($(selection.baseNode.parentNode).html().replace(regex,'<span class="graffiti-spray">'+selection.toString()+'</span>'));
         //
 
