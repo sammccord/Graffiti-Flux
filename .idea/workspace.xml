@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40c948ce-3618-4d60-988c-9b18e105fd82" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bg/js/background.js" afterPath="$PROJECT_DIR$/dist/bg/js/background.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/actions/ext-actions.js" afterPath="$PROJECT_DIR$/src/js/actions/ext-actions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/fresh-spray.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/fresh-spray.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/main.js" afterPath="$PROJECT_DIR$/dist/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/spray.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/spray.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sass/main.scss" afterPath="$PROJECT_DIR$/src/sass/main.scss" />
     </list>
     <ignored path="Graffiti-Flux.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,10 +38,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="spray.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="spray.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/js/components/Spray/spray.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.55984557" vertical-offset="195" max-vertical-offset="1950">
+                <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="1950">
                   <caret line="42" column="59" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="59" />
                   <folding />
                 </state>
@@ -63,11 +58,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="main.scss" pinned="false" current-in-tab="false">
+          <file leaf-file-name="main.scss" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-5.625" vertical-offset="495" max-vertical-offset="2670">
-                  <caret line="42" column="21" selection-start-line="42" selection-start-column="21" selection-end-line="42" selection-end-column="21" />
+                <state vertical-scroll-proportion="0.36437246" vertical-offset="0" max-vertical-offset="2595">
+                  <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -173,11 +168,11 @@
         <option value="$PROJECT_DIR$/src/js/components/Page/page.js" />
         <option value="$PROJECT_DIR$/src/js/components/Comments/comments.js" />
         <option value="$PROJECT_DIR$/dist/bg/js/api.js" />
-        <option value="$PROJECT_DIR$/src/sass/main.scss" />
         <option value="$PROJECT_DIR$/src/js/actions/ext-actions.js" />
         <option value="$PROJECT_DIR$/dist/bg/js/background.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/spray.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/fresh-spray.js" />
+        <option value="$PROJECT_DIR$/src/sass/main.scss" />
       </list>
     </option>
   </component>
@@ -1095,14 +1090,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.625" vertical-offset="495" max-vertical-offset="2670">
-          <caret line="42" column="21" selection-start-line="42" selection-start-column="21" selection-end-line="42" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/actions/ext-actions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1245">
@@ -1121,7 +1108,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/Spray/spray.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55984557" vertical-offset="195" max-vertical-offset="1950">
+        <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="1950">
           <caret line="42" column="59" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="59" />
           <folding />
         </state>
@@ -1131,6 +1118,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57915056" vertical-offset="525" max-vertical-offset="2340">
           <caret line="65" column="68" selection-start-line="65" selection-start-column="68" selection-end-line="65" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36437246" vertical-offset="0" max-vertical-offset="2595">
+          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
           <folding />
         </state>
       </provider>
