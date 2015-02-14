@@ -32,14 +32,19 @@ $(window).resize(function() {
 
 function highlightSpray(spray) {
         // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-        var formatted = spray.targetText.replace(/[-\/\\\-\s^:,’'$*+?.()|[\]{}<>=]/g, '\\$&');
-        var regex = new RegExp("(" + formatted + ")", "gm");
 
-        $('p.graffiti-selectable:not(#graffiti-app *)').contents().filter(function () {
-            return this.nodeType === 3;
-        }).each(function () {
-            $(this).replaceWith($(this).text().replace(regex, '<span class="graffiti-spray" data-graffiti-id="' + spray._id + '">$1</span>'));
-        });
+    var regex = new RegExp(spray.targetText, "gm");
+
+    console.log(regex);
+    console.log('AT INDEX',spray.p_index);
+    var el = $('p.graffiti-selectable').eq(parseInt(spray.p_index));
+
+    var regex = new RegExp(spray.targetText, "gm");
+    var body = spray.targetText.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm,"$&");
+
+    el.html(el.html().replaceCallback(regex,'<span class="graffiti-spray" data-graffiti-id="'+spray._id+'">'+body+'</span>',function(){
+        console.log(el)
+    }));
 }
 
 var Spray =
