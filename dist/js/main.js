@@ -51251,9 +51251,11 @@ function bindSelection(){
         $('.freshSprayContainer').removeClass('graffiti-visible');
         $('#graffiti-spray').contents().unwrap();
         $(document).one('mouseup', function(e) {
+            var selection = window.getSelection();
+            if(selection.type!=="Range") return false;
             console.log(window.getSelection());
             var offset = e.pageY;
-            var selection = window.getSelection();
+
             var p = $('p.graffiti-selectable');
 
             var html = "";
@@ -51273,8 +51275,15 @@ function bindSelection(){
             }
             console.log(html);
         var regex = new RegExp(html, "gm");
+            console.log(regex);
 
-            selection.baseNode.parentNode.innerHTML = selection.baseNode.parentNode.innerHTML.replace(regex,'<span id="graffiti-spray" data-graffiti-target="' + html + '">$1</span>');
+            console.log(selection.baseNode.parentNode.innerHTML);
+            //console.log(selection.baseNode.parentNode.innerHTML.replace(regex,'<span class="graffiti-spray" data-graffiti-target="'+html+'">'+selection.toString()+'</span>'));
+
+            $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replace(regex,'<span class="graffiti-spray" data-graffiti-target="'+selection.toString().replace(/[-[\]{}()"*+?.,\\^$|#\s]/g, "\\$&")+'">'+selection.toString()+'</span>'));
+
+            //replaceWith($(selection.baseNode.parentNode).html().replace(regex,'<span class="graffiti-spray">'+selection.toString()+'</span>'));
+        //
 
         //$(selection.baseNode.parentNode).replaceWith($(selection.baseNode.parentNode).html().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + html + '">$1</span>',function(){
         //    $('.freshSprayContainer').css({
