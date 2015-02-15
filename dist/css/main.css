@@ -91,7 +91,7 @@ body, html {
     font-family: Roboto, sans-serif !important;
     color: white;
     opacity: 0;
-    -webkit-transition: opacity .25s ease-in-out; }
+    -webkit-transition: opacity .25s ease-in-out, color .25s ease-in-out; }
   .spray-tab.graffiti-expanded {
     -webkit-transition: all .25s ease-in-out;
     -webkit-transform: translateX(0px); }
@@ -100,8 +100,9 @@ body, html {
       -webkit-transition: opacity .25s ease-in-out; }
     .spray-tab.graffiti-expanded.graffiti-focus {
       -webkit-transition: all .25s ease-in;
-      background-color: #59f0d6 !important;
-      color: black; }
+      background-color: #59f0d6 !important; }
+      .spray-tab.graffiti-expanded.graffiti-focus span.comment-count {
+        color: black !important; }
 
 #graffiti-spray {
   border: 1px solid #f06159;

@@ -129,7 +129,7 @@ body,html{
     font-family:Roboto, sans-serif !important;
     color:white;
     opacity:0;
-    -webkit-transition:opacity .25s ease-in-out
+    -webkit-transition:opacity .25s ease-in-out, color .25s ease-in-out;
   }
   &.graffiti-expanded{
     -webkit-transition:all .25s ease-in-out;
@@ -141,7 +141,9 @@ body,html{
     &.graffiti-focus {
       -webkit-transition: all .25s ease-in;
       background-color: rgba(89, 240, 214, 1) !important;
-      color: black;
+      span.comment-count{
+        color:black !important;
+      }
     }
   }
 }
