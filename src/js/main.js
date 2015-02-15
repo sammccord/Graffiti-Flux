@@ -58,8 +58,8 @@ if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(ht
 }
 else{
     $('body').prepend('<div id="graffiti-app"></div>');
-    $('#graffiti-app').css({
-        'font-family':'Roboto, sans-serif'
+    $('#graffiti-app,#graffiti-app *,.spray-tab').css({
+        'font-family':'Roboto, sans-serif !important'
     });
 
 // create an observer instance

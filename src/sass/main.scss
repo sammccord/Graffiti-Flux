@@ -39,7 +39,7 @@ body,html{
     border-left: 6px solid rgb(89, 240, 214);
     box-sizing:border-box;
     position:absolute !important;
-    width: 260px;
+    width: 320px;
     overflow: hidden;
     z-index:999999999999;
     background-color:rgb(255,255,255);
@@ -49,12 +49,33 @@ body,html{
 
     &.graffiti-show{
       -webkit-transition: -webkit-transform .45s ease-in-out;
-      -webkit-transform:translateX(-260px);
+      -webkit-transform:translateX(-320px);
+    }
+
+    form{
+      margin-bottom:12px;
+      .mui-raised-button{
+        width:100%;
+        .mui-paper-container.mui-z-depth-bottom{
+          padding:0;
+        }
+      }
     }
 
     .mui-paper-container{
-      padding: 20px 12px 10px 12px;
+      padding:10px 24px 10px 8px;
     }
+
+    .mui-text-field{
+      width:100%;
+      .mui-text-field-input{
+        width:100%;
+      }
+      .mui-text-field-textarea{
+        box-shadow:none;
+      }
+    }
+
     .mui-text-field-hint{
       opacity:0.3;
     }
@@ -70,8 +91,23 @@ body,html{
       margin-left: -82.5px;
     }
     .SprayComment{
-      border-bottom: solid 1px #e0e0e0;
-      margin-bottom: 10px;
+      padding: 12px 12px 12px 6px;
+      border-top: solid 1px #efefef;
+      margin-bottom: 16px;
+      box-sizing:border-box;
+      &:last-child{
+        margin-bottom:0px;
+      }
+      p,b span,span{
+        font-family:Roboto, sans-serif !important;
+        margin-bottom:0;
+      }
+      b{
+        font-size:14px;
+      }
+      span.muted{
+        font-size:12px;
+      }
     }
   }
 
@@ -83,15 +119,14 @@ body,html{
   overflow: visible;
   position: relative;
   left:100%;
-  height: 36px;
+  padding:12px 6px 12px 2px;
   margin-top:-6px;
-  width:12px;
   margin-left:-12px;
 
   -webkit-transform:translateX(6px);
   -webkit-transition:all .25s ease-in-out;
   .comment-count{
-    padding-top:6px;
+    font-family:Roboto, sans-serif !important;
     color:white;
     opacity:0;
     -webkit-transition:opacity .25s ease-in-out
@@ -112,8 +147,10 @@ body,html{
 }
 
 #graffiti-spray {
-  color: black;
-  background-color: #b6b6b6;
+  border: 1px solid rgb(240,97,89);
+  padding: 0px 3px;
+  border-radius: 2px;
+  background-color: transparent;
 }
 .graffiti-spray {
   cursor: pointer;
@@ -121,8 +158,8 @@ body,html{
   padding: 2px 4px;
   &.graffiti-highlight {
     -webkit-transition: all .25s ease-in;
-    background-color:#b6b6b6;
-    color:white;
+    background-color:#efefef;
+    color:black;
     &.graffiti-focus{
       background-color:rgb(89, 240, 214);
     }

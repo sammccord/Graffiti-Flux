@@ -4,7 +4,7 @@ var ExtActions = require('../../actions/ext-actions');
 
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton,
+    RaisedButton = mui.RaisedButton,
     Paper = mui.Paper;
 
 var PageStore = require('../../stores/page-store');
@@ -72,6 +72,7 @@ function bindSelection(){
                 $('.freshSprayContainer').css({
                             top:(offset-100)+'px'
                         }).addClass('graffiti-show');
+                $('.graffiti-comments-container').removeClass('graffiti-show');
                 window.getSelection().removeAllRanges();
             }));
 
@@ -145,7 +146,7 @@ var FreshSpray =
                             id="freshSprayInput"
                             hintText="Leave a comment"
                             multiLine={true} ref="text"/>
-                        <FlatButton className="graffiti-bind freshSpraySubmit" type="submit" label="Tag and Comment" primary={true} />
+                        <RaisedButton className="graffiti-bind" type="submit" label="TAG+COMMENT" />
                     </form>
                 </Paper>
             )

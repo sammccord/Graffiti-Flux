@@ -83,7 +83,7 @@ var Spray =
             var sprayEl = $('[data-spray-id="'+this.state.spray._id+'"]');
 
             sprayEl.on('click',function(e){
-                $('.graffiti-comments-container').removeClass('graffiti-show');
+                $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
             }).on('mouseenter',function(){
                 this.expandTabs();
@@ -112,9 +112,7 @@ var Spray =
             return (
                     <Paper data-spray-container={this.state.spray._id} className={containerClassName} zDepth={1}>
                         <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
-                    <ul className="graffiti-bind">
                         <Comments comments={this.state.spray.comments}/>
-                    </ul>
                     </Paper>
             )
         }

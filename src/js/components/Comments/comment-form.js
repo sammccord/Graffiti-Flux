@@ -1,7 +1,7 @@
 var React = require('react');
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton;
+    RaisedButton = mui.RaisedButton;
 
 var UserStore = require('../../stores/user-store');
 
@@ -48,7 +48,7 @@ var CommentForm =
                         id={this.props.sprayId}
                         hintText="Leave a comment"
                         multiLine={true} ref="text"/>
-                    <FlatButton className="graffiti-bind" type="submit" label="Submit" primary={true} />
+                    <RaisedButton className="graffiti-bind" type="submit" label="Send" />
                 </form>
             )
         }

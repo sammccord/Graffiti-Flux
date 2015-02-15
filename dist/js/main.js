@@ -51044,7 +51044,7 @@ module.exports = UserStore;
 var React = require('react');
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton;
+    RaisedButton = mui.RaisedButton;
 
 var UserStore = require('../../stores/user-store');
 
@@ -51091,7 +51091,7 @@ var CommentForm =
                         id: this.props.sprayId, 
                         hintText: "Leave a comment", 
                         multiLine: true, ref: "text"}), 
-                    React.createElement(FlatButton, {className: "graffiti-bind", type: "submit", label: "Submit", primary: true})
+                    React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "Send"})
                 )
             )
         }
@@ -51228,7 +51228,7 @@ var ExtActions = require('../../actions/ext-actions');
 
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton,
+    RaisedButton = mui.RaisedButton,
     Paper = mui.Paper;
 
 var PageStore = require('../../stores/page-store');
@@ -51296,6 +51296,7 @@ function bindSelection(){
                 $('.freshSprayContainer').css({
                             top:(offset-100)+'px'
                         }).addClass('graffiti-show');
+                $('.graffiti-comments-container').removeClass('graffiti-show');
                 window.getSelection().removeAllRanges();
             }));
 
@@ -51369,7 +51370,7 @@ var FreshSpray =
                             id: "freshSprayInput", 
                             hintText: "Leave a comment", 
                             multiLine: true, ref: "text"}), 
-                        React.createElement(FlatButton, {className: "graffiti-bind freshSpraySubmit", type: "submit", label: "Tag and Comment", primary: true})
+                        React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "TAG+COMMENT"})
                     )
                 )
             )
@@ -51465,7 +51466,7 @@ var Spray =
             var sprayEl = $('[data-spray-id="'+this.state.spray._id+'"]');
 
             sprayEl.on('click',function(e){
-                $('.graffiti-comments-container').removeClass('graffiti-show');
+                $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
             }).on('mouseenter',function(){
                 this.expandTabs();
@@ -51494,9 +51495,7 @@ var Spray =
             return (
                     React.createElement(Paper, {"data-spray-container": this.state.spray._id, className: containerClassName, zDepth: 1}, 
                         React.createElement(CommentForm, {sprayId: this.state.spray._id, onCommentSubmit: this.handleCommentSubmit}), 
-                    React.createElement("ul", {className: "graffiti-bind"}, 
                         React.createElement(Comments, {comments: this.state.spray.comments})
-                    )
                     )
             )
         }
@@ -51833,8 +51832,8 @@ if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(ht
 }
 else{
     $('body').prepend('<div id="graffiti-app"></div>');
-    $('#graffiti-app').css({
-        'font-family':'Roboto, sans-serif'
+    $('#graffiti-app,#graffiti-app *,.spray-tab').css({
+        'font-family':'Roboto, sans-serif !important'
     });
 
 // create an observer instance
