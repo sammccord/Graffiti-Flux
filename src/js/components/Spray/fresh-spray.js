@@ -69,11 +69,12 @@ function bindSelection(){
 
         var regex = new RegExp(state.state.targetExp, "gm");
             $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replaceCallback(regex,'<span id="graffiti-spray" data-graffiti-index="'+index+'">'+state.state.targetExp+'</span>',function(){
-                $('.freshSprayContainer').css({
-                            top:(offset-100)+'px'
-                        }).addClass('graffiti-show');
-                $('.graffiti-comments-container').removeClass('graffiti-show');
-                window.getSelection().removeAllRanges();
+                    $('.freshSprayContainer').css({
+                        top:(offset-100)+'px'
+                    }).addClass('graffiti-show');
+
+                    $('.graffiti-comments-container').removeClass('graffiti-show');
+                    window.getSelection().removeAllRanges();
             }));
 
 
@@ -90,10 +91,16 @@ function getFormData(){
 
 function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index){
     console.log(org_id);
+    if(!$('#graffiti-spray').length) {
+        return;
+    }
     ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index);
 }
 
 function addFreshSpray(page_id,targetText,user,text,p_index){
+    if(!$('#graffiti-spray').length) {
+        return;
+    }
     ExtActions.addSpray(page_id,targetText,user,text,p_index);
 }
 

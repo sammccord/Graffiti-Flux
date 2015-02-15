@@ -1,6 +1,6 @@
-var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var Graffiti = new Graffiti('http://192.168.2.3:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://192.168.1.24:9000', {
+var socket = io.connect('http://192.168.2.3:9000', {
     path: '/socket.io-client',
     transports: ['websocket'],
     'force new connection': true
@@ -94,7 +94,7 @@ function getIdentities(cb) {
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
                 organization:'Graffiti',
-                organization_id : '54dfde5b40a4d374212c9bf6',
+                organization_id : '54e11e415205262a2fe28a2c',
                 spray_color:'rgb(96, 96, 96)'
             };
             user.defaultIdentity = newIdentity;
