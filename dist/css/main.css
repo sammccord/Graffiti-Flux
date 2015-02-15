@@ -1,3 +1,7 @@
+body, html {
+  width: 100%;
+  overflow-x: hidden; }
+
 #graffiti-scrollbar-binder {
   position: fixed;
   top: 0;

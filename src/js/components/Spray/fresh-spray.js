@@ -26,6 +26,11 @@ String.prototype.splice = function( idx, rem, s ) {
 function bindSelection(){
     var state = this;
     $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
+    $('.graffiti-selectable').on('mouseenter',function(){
+       $('.graffiti-spray').addClass('graffiti-highlight')
+    }).on('mouseleave',function(){
+        $('.graffiti-spray').removeClass('graffiti-highlight')
+    });
     $('.graffiti-selectable').on('selectstart', function(e) {
         $('.freshSprayContainer').removeClass('graffiti-visible');
         $('#graffiti-spray').contents().unwrap();
