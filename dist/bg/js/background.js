@@ -1,6 +1,6 @@
-var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
+var Graffiti = new Graffiti('http://192.168.1.24:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://graffiti.herokuapp.com', {
+var socket = io.connect('http://192.168.1.24:9000', {
     path: '/socket.io-client',
     transports: ['websocket'],
     'force new connection': true
@@ -17,7 +17,7 @@ socket.on('update',function(page){
     })
 });
 
-//chrome.storage.sync.clear();
+chrome.storage.sync.clear();
 
 var user = {
     identities:[],
@@ -94,8 +94,8 @@ function getIdentities(cb) {
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
                 organization:'Graffiti',
-                organization_id : '54dd8a81900a640300d46f72',
-                spray_color:'rgba(255, 64, 129,0.8)'
+                organization_id : '54dfde5b40a4d374212c9bf6',
+                spray_color:'rgb(96, 96, 96)'
             };
             user.defaultIdentity = newIdentity;
             user.identities.push(newIdentity);
@@ -110,12 +110,23 @@ function getIdentities(cb) {
 
 function addIdentity(organization,name,organization_id) {
     var newIdentity = {};
+    var isNew = true;
 
-    newIdentity['organization'] = organization;
-    newIdentity['name'] = name;
-    newIdentity['organization_id'] =organization_id;
-    newIdentity['spray_color'] = 'rgba(255, 64, 129,0.8)';
-    user.identities.push(newIdentity);
+    user.identities.forEach(function(identity){
+        if(identity.organization_id === organization_id){
+            isNew = false;
+            identity.name = name;
+        }
+    });
+
+    if(isNew === true){
+        newIdentity['organization'] = organization;
+        newIdentity['name'] = name;
+        newIdentity['organization_id'] =organization_id;
+        newIdentity['spray_color'] = 'rgb(96, 96, 96)';
+        user.identities.push(newIdentity);
+    }
+
 }
 
 function setDefaultIdentity(organization,name,organization_id){
@@ -123,7 +134,7 @@ function setDefaultIdentity(organization,name,organization_id){
         organization:organization,
         name:name,
         organization_id:organization_id,
-        spray_color:'rgba(255, 64, 129,0.8)'
+        spray_color:'rgb(96, 96, 96)'
     };
     user.defaultIdentity = defaultIdentity;
 }

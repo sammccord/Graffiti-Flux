@@ -1,25 +1,56 @@
+body, html {
+  width: 100%;
+  overflow-x: hidden; }
+
+#graffiti-scrollbar-binder {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 2;
+  width: 26px;
+  right: 0; }
+
 #graffiti-app, .graffiti-app {
   position: absolute;
-  z-index: 999999999;
-  right: 0%; }
+  z-index: 999999999998;
+  overflow: visible;
+  position: relative;
+  left: 100%; }
   #graffiti-app ul, #graffiti-app ol, #graffiti-app li, .graffiti-app ul, .graffiti-app ol, .graffiti-app li {
     list-style-type: none;
     padding: 0;
     margin: 0; }
+  #graffiti-app .freshSprayContainer, .graffiti-app .freshSprayContainer {
+    margin-top: -60px; }
   #graffiti-app .graffiti-comments-container, #graffiti-app .freshSprayContainer, .graffiti-app .graffiti-comments-container, .graffiti-app .freshSprayContainer {
+    border-left: 6px solid #59f0d6;
     box-sizing: border-box;
     position: absolute !important;
-    width: 260px;
+    width: 320px;
     overflow: hidden;
     z-index: 999999999999;
     background-color: white;
-    -webkit-transform: translateX(18px);
+    -webkit-transition: -webkit-transform .45s ease-in-out;
+    -webkit-transform: translateX(0px);
     margin: 6px 0px; }
     #graffiti-app .graffiti-comments-container.graffiti-show, #graffiti-app .freshSprayContainer.graffiti-show, .graffiti-app .graffiti-comments-container.graffiti-show, .graffiti-app .freshSprayContainer.graffiti-show {
       -webkit-transition: -webkit-transform .45s ease-in-out;
-      -webkit-transform: translateX(-245px); }
+      -webkit-transform: translateX(-320px); }
+    #graffiti-app .graffiti-comments-container form, #graffiti-app .freshSprayContainer form, .graffiti-app .graffiti-comments-container form, .graffiti-app .freshSprayContainer form {
+      margin-bottom: 12px; }
+      #graffiti-app .graffiti-comments-container form .mui-raised-button, #graffiti-app .freshSprayContainer form .mui-raised-button, .graffiti-app .graffiti-comments-container form .mui-raised-button, .graffiti-app .freshSprayContainer form .mui-raised-button {
+        width: 100%; }
+        #graffiti-app .graffiti-comments-container form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, #graffiti-app .freshSprayContainer form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, .graffiti-app .graffiti-comments-container form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, .graffiti-app .freshSprayContainer form .mui-raised-button .mui-paper-container.mui-z-depth-bottom {
+          padding: 0; }
     #graffiti-app .graffiti-comments-container .mui-paper-container, #graffiti-app .freshSprayContainer .mui-paper-container, .graffiti-app .graffiti-comments-container .mui-paper-container, .graffiti-app .freshSprayContainer .mui-paper-container {
-      padding: 20px 12px 10px 12px; }
+      padding: 10px 24px 10px 8px; }
+    #graffiti-app .graffiti-comments-container .mui-text-field, #graffiti-app .freshSprayContainer .mui-text-field, .graffiti-app .graffiti-comments-container .mui-text-field, .graffiti-app .freshSprayContainer .mui-text-field {
+      width: 100%; }
+      #graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-input, #graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-input, .graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-input, .graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-input {
+        width: 100%; }
+      #graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-textarea, #graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-textarea, .graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-textarea, .graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-textarea {
+        box-shadow: none; }
     #graffiti-app .graffiti-comments-container .mui-text-field-hint, #graffiti-app .freshSprayContainer .mui-text-field-hint, .graffiti-app .graffiti-comments-container .mui-text-field-hint, .graffiti-app .freshSprayContainer .mui-text-field-hint {
       opacity: 0.3; }
     #graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-focus-underline, #graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-focus-underline, .graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-focus-underline, .graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-focus-underline {
@@ -31,32 +62,64 @@
     #graffiti-app .graffiti-comments-container .mui-is-primary.freshSpraySubmit, #graffiti-app .freshSprayContainer .mui-is-primary.freshSpraySubmit, .graffiti-app .graffiti-comments-container .mui-is-primary.freshSpraySubmit, .graffiti-app .freshSprayContainer .mui-is-primary.freshSpraySubmit {
       margin-left: -82.5px; }
     #graffiti-app .graffiti-comments-container .SprayComment, #graffiti-app .freshSprayContainer .SprayComment, .graffiti-app .graffiti-comments-container .SprayComment, .graffiti-app .freshSprayContainer .SprayComment {
-      border-bottom: solid 1px #e0e0e0;
-      margin-bottom: 10px; }
+      padding: 12px 12px 12px 6px;
+      border-top: solid 1px #efefef;
+      margin-bottom: 16px;
+      box-sizing: border-box; }
+      #graffiti-app .graffiti-comments-container .SprayComment:last-child, #graffiti-app .freshSprayContainer .SprayComment:last-child, .graffiti-app .graffiti-comments-container .SprayComment:last-child, .graffiti-app .freshSprayContainer .SprayComment:last-child {
+        margin-bottom: 0px; }
+      #graffiti-app .graffiti-comments-container .SprayComment p, #graffiti-app .graffiti-comments-container .SprayComment b span, #graffiti-app .graffiti-comments-container .SprayComment span, #graffiti-app .freshSprayContainer .SprayComment p, #graffiti-app .freshSprayContainer .SprayComment b span, #graffiti-app .freshSprayContainer .SprayComment span, .graffiti-app .graffiti-comments-container .SprayComment p, .graffiti-app .graffiti-comments-container .SprayComment b span, .graffiti-app .graffiti-comments-container .SprayComment span, .graffiti-app .freshSprayContainer .SprayComment p, .graffiti-app .freshSprayContainer .SprayComment b span, .graffiti-app .freshSprayContainer .SprayComment span {
+        font-family: Roboto, sans-serif !important;
+        margin-bottom: 0; }
+      #graffiti-app .graffiti-comments-container .SprayComment b, #graffiti-app .freshSprayContainer .SprayComment b, .graffiti-app .graffiti-comments-container .SprayComment b, .graffiti-app .freshSprayContainer .SprayComment b {
+        font-size: 14px; }
+      #graffiti-app .graffiti-comments-container .SprayComment span.muted, #graffiti-app .freshSprayContainer .SprayComment span.muted, .graffiti-app .graffiti-comments-container .SprayComment span.muted, .graffiti-app .freshSprayContainer .SprayComment span.muted {
+        font-size: 12px; }
 
 .spray-tab {
-  position: absolute;
-  right: 0;
+  border-radius: 2px 0px 0px 2px;
   z-index: 9999999;
-  width: 5px;
-  height: 36px;
-  margin-top: -6px; }
+  overflow: visible;
+  position: relative;
+  left: 100%;
+  padding: 12px 6px 12px 2px;
+  margin-top: -6px;
+  margin-left: -12px;
+  -webkit-transform: translateX(6px);
+  -webkit-transition: all .25s ease-in-out; }
+  .spray-tab .comment-count {
+    font-family: Roboto, sans-serif !important;
+    color: white;
+    opacity: 0;
+    -webkit-transition: opacity .25s ease-in-out, color .25s ease-in-out; }
+  .spray-tab.graffiti-expanded {
+    -webkit-transition: all .25s ease-in-out;
+    -webkit-transform: translateX(0px); }
+    .spray-tab.graffiti-expanded .comment-count {
+      opacity: 1;
+      -webkit-transition: opacity .25s ease-in-out; }
+    .spray-tab.graffiti-expanded.graffiti-focus {
+      -webkit-transition: all .25s ease-in;
+      background-color: #59f0d6 !important; }
+      .spray-tab.graffiti-expanded.graffiti-focus span.comment-count {
+        color: black !important; }
 
 #graffiti-spray {
-  color: black;
-  background-color: #e0e0e0;
-  border: 1px solid white; }
+  border: 1px solid #f06159;
+  padding: 0px 3px;
+  border-radius: 2px;
+  background-color: transparent; }
 
 .graffiti-spray {
-  background-color: #bdbdbd;
   cursor: pointer;
   -webkit-transition: all .25s ease-in;
   padding: 2px 4px; }
   .graffiti-spray.graffiti-highlight {
-    background-color: #9e9e9e; }
-  .graffiti-spray.graffiti-focus {
-    background-color: #616161;
-    color: white; }
+    -webkit-transition: all .25s ease-in;
+    background-color: #efefef;
+    color: black; }
+    .graffiti-spray.graffiti-highlight.graffiti-focus {
+      background-color: #59f0d6; }
 
 #spray-button {
   position: fixed;
@@ -70,7 +133,11 @@
 #graffiti-dash .addOrganization .mui-paper-container {
   box-sizing: border-box;
   padding: 20px; }
-#graffiti-dash .mui-tab-template {
+#graffiti-dash .mui-tabs-container .mui-tab-item-container {
+  background-color: #606060; }
+#graffiti-dash .mui-tabs-container .mui-ink-bar {
+  background-color: #59f0d6; }
+#graffiti-dash .mui-tabs-container .mui-tab-template {
   box-sizing: border-box;
   padding: 20px 40px; }
 #graffiti-dash .graffiti-hide {

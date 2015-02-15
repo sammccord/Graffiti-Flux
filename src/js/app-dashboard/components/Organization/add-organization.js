@@ -56,6 +56,7 @@ var AddOrganization =
             var hide = this.state.foundOrg.name ? 'graffiti-show' : 'graffiti-hide';
 
             return <Paper className="addOrganization" zDepth={1}>
+                <h4>Add a group</h4>
                 <form onSubmit={this.handleSubmit}>
                     <TextField
                         id="orgCode"

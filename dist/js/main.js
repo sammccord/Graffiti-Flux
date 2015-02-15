@@ -50464,7 +50464,7 @@ var ExtActions = {
             }
         })
     },
-    addSpray : function(page_id,targetText,user,text){
+    addSpray : function(page_id,targetText,user,text,index){
         console.log('ADDING COMMENT',arguments);
         sendMessage({
             action:'addSpray',
@@ -50474,11 +50474,12 @@ var ExtActions = {
                 page_id:page_id,
                 targetText:targetText,
                 user:user,
-                text:text
+                text:text,
+                p_index:index
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text){
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
         console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
             action:'initializePage',
@@ -50489,7 +50490,8 @@ var ExtActions = {
                 ref:page_ref,
                 targetText:targetText,
                 user: user,
-                text:text
+                text:text,
+                p_index:index
             }
         })
     },
@@ -50648,6 +50650,7 @@ var AddOrganization =
             var hide = this.state.foundOrg.name ? 'graffiti-show' : 'graffiti-hide';
 
             return React.createElement(Paper, {className: "addOrganization", zDepth: 1}, 
+                React.createElement("h4", null, "Add a group"), 
                 React.createElement("form", {onSubmit: this.handleSubmit}, 
                     React.createElement(TextField, {
                         id: "orgCode", 
@@ -51041,7 +51044,7 @@ module.exports = UserStore;
 var React = require('react');
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton;
+    RaisedButton = mui.RaisedButton;
 
 var UserStore = require('../../stores/user-store');
 
@@ -51082,12 +51085,13 @@ var CommentForm =
         render: function(){
 
             return (
-                React.createElement("form", {onSubmit: this.handleSubmit}, 
+                React.createElement("form", {className: "graffiti-bind", onSubmit: this.handleSubmit}, 
                     React.createElement(TextField, {
+                        className: "graffiti-bind", 
                         id: this.props.sprayId, 
                         hintText: "Leave a comment", 
                         multiLine: true, ref: "text"}), 
-                    React.createElement(FlatButton, {type: "submit", label: "Submit", primary: true})
+                    React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "Send"})
                 )
             )
         }
@@ -51108,9 +51112,7 @@ var Comments =
             var comments = this.props.comments.map(function(comment){
                 var date = new Date(comment.createdAt);
 
-                console.log(moment(date).from(new Date()));
-
-                return React.createElement("li", {className: "SprayComment", key: comment._id}, 
+                return React.createElement("li", {className: "SprayComment graffiti-bind", key: comment._id}, 
                     React.createElement("b", {className: "commentAuthor"}, comment.user, " "), 
                     React.createElement("span", {className: "muted"}, moment(date).from(new Date())), 
                     React.createElement("p", null, comment.text)
@@ -51118,7 +51120,7 @@ var Comments =
                 );
             });
             return (
-                React.createElement("ul", null, 
+                React.createElement("ul", {className: "graffiti-bind"}, 
                     comments
                 )
             )
@@ -51167,7 +51169,6 @@ var UserStore = require('../../stores/user-store');
 
 var Sprays = require('../Spray/sprays');
 
-
 function getPage(){
     return {
         page:PageStore.getPageState(),
@@ -51176,40 +51177,29 @@ function getPage(){
     };
 }
 
-function bindSelection(){
-    $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
-    $('.graffiti-selectable').on('selectstart', function() {
-        $('.createSpray').removeClass('graffiti-visible');
-        $('#graffiti-spray').contents().unwrap();
-        $(document).one('mouseup', function(e) {
-            var selection = window.getSelection();
-            if (selection.type === "Range") {
-                var string = selection.toString();
-                // var formatted = string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-                var formatted = string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                var regex = new RegExp("(" + formatted + ")", "gm");
-                $(selection.focusNode.parentNode).contents().filter(function() {
-                    return this.nodeType === 3;
-                }).each(function() {
-                    $(this).replaceWith($(this).text().replaceCallback(regex, '<span id="graffiti-spray" data-graffiti-target="' + string + '">$1</span>',function(){
-                        $('#graffiti-app,html').addClass('graffiti-show');
-                    }));
-                });
-
-
-            }
-        });
-    });
-}
-
 var Page =
     React.createClass({displayName: "Page",
         getInitialState: function(){
-            bindSelection();
             return getPage();
         },
         _onChange:function(){
             this.setState(getPage());
+        },
+        componentDidMount:function(){
+          $('body').prepend('<div id="graffiti-scrollbar-binder"></div>');
+            $('#graffiti-scrollbar-binder').on('mouseenter',function(){
+                this.expandTabs();
+            }.bind(this)).on('mouseleave',function(){
+                this.shrinkTabs();
+            }.bind(this))
+        },
+        expandTabs:function(){
+            $('.graffiti-spray').addClass('graffiti-highlight');
+            $('.spray-tab').addClass('graffiti-expanded');
+        },
+        shrinkTabs:function(){
+            $('.graffiti-spray').removeClass('graffiti-highlight');
+            $('.spray-tab').removeClass('graffiti-expanded graffiti-focus');
         },
         componentWillMount:function(){
             ExtActions.getIdentities();
@@ -51223,7 +51213,7 @@ var Page =
         render: function (){
                 return (
                     React.createElement(Sprays, {currentIdentity: this.state.current_identity, identities: this.state.identities})
-                )
+                        )
         }
 
     });
@@ -51238,12 +51228,82 @@ var ExtActions = require('../../actions/ext-actions');
 
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    FlatButton = mui.FlatButton,
+    RaisedButton = mui.RaisedButton,
     Paper = mui.Paper;
 
 var PageStore = require('../../stores/page-store');
 var UserStore = require('../../stores/user-store');
 var $ = require('jquery');
+
+String.prototype.replaceCallback= function(regex,string,cb){
+    var ret = String.prototype.replace.call(this,regex,string);
+    if(typeof cb === 'function'){
+        cb.call(ret); // Call your callback
+    }
+    return ret;  // For chaining
+};
+
+String.prototype.splice = function( idx, rem, s ) {
+    return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
+};
+
+function bindSelection(){
+    var state = this;
+    $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
+    $('.graffiti-selectable').on('mouseenter',function(){
+       $('.graffiti-spray').addClass('graffiti-highlight')
+    }).on('mouseleave',function(){
+        $('.graffiti-spray').removeClass('graffiti-highlight')
+    });
+    $('.graffiti-selectable').on('selectstart', function(e) {
+        $('.freshSprayContainer').removeClass('graffiti-visible');
+        $('#graffiti-spray').contents().unwrap();
+        $(document).one('mouseup', function(e) {
+            var selection = window.getSelection();
+            if(selection.type!=="Range") return false;
+            console.log(window.getSelection());
+            var offset = e.pageY;
+
+            var p = $('p.graffiti-selectable');
+
+            var html = "";
+            if (typeof window.getSelection != "undefined") {
+                var sel = window.getSelection();
+                if (sel.rangeCount) {
+                    var container = document.createElement("div");
+                    for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                        container.appendChild(sel.getRangeAt(i).cloneContents());
+                    }
+                    html = container.innerHTML;
+                }
+            } else if (typeof document.selection != "undefined") {
+                if (document.selection.type == "Text") {
+                    html = document.selection.createRange().htmlText;
+                }
+            }
+
+            var index = $('p.graffiti-selectable').index(selection.baseNode.parentNode);
+
+            console.log(selection.baseNode.parentNode.innerHTML);
+            console.log(html);
+
+            state.setState({
+                targetExp:html.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm, "$&")
+            });
+
+        var regex = new RegExp(state.state.targetExp, "gm");
+            $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replaceCallback(regex,'<span id="graffiti-spray" data-graffiti-index="'+index+'">'+state.state.targetExp+'</span>',function(){
+                $('.freshSprayContainer').css({
+                            top:(offset-100)+'px'
+                        }).addClass('graffiti-show');
+                $('.graffiti-comments-container').removeClass('graffiti-show');
+                window.getSelection().removeAllRanges();
+            }));
+
+
+        });
+    });
+}
 
 function getFormData(){
     return {
@@ -51252,18 +51312,19 @@ function getFormData(){
     };
 }
 
-function createPageAddFreshSpray(org_id,page_ref,targetText,name,text){
+function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index){
     console.log(org_id);
-    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text);
+    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index);
 }
 
-function addFreshSpray(page_id,targetText,user,text){
-    ExtActions.addSpray(page_id,targetText,user,text);
+function addFreshSpray(page_id,targetText,user,text,p_index){
+    ExtActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
 var FreshSpray =
     React.createClass({displayName: "FreshSpray",
         getInitialState: function(){
+            bindSelection.bind(this)();
             return getFormData();
         },
         _onChange:function(){
@@ -51284,28 +51345,32 @@ var FreshSpray =
             if (!text || !$('#graffiti-spray').length) {
                 return;
             }
-            var targetText = document.getElementById('graffiti-spray').getAttribute('data-graffiti-target');
-            $('#graffiti-spray').contents().unwrap();
+            var targetText = this.state.targetExp;
+            console.log(targetText);
+
+            var index = document.getElementById('graffiti-spray').getAttribute('data-graffiti-index');
 
             if(this.state.page.fresh === true){
-                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text);
+                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text,index);
             }
             else{
-                addFreshSpray(this.state.page._id,targetText,this.state.user.name,text);
+                addFreshSpray(this.state.page._id,targetText,this.state.user.name,text,index);
             }
-
+            $('#graffiti-spray').contents().unwrap();
+            $('.freshSprayContainer').removeClass('graffiti-show');
             this.refs.text.getDOMNode().value = '';
             return;
         },
         render: function(){
             return (
-                React.createElement(Paper, {className: "freshSprayContainer", zDepth: 1}, 
+                React.createElement(Paper, {className: "graffiti-bind freshSprayContainer", zDepth: 1}, 
                     React.createElement("form", {onSubmit: this.handleSubmit}, 
                         React.createElement(TextField, {
+                            className: "graffiti-bind", 
                             id: "freshSprayInput", 
                             hintText: "Leave a comment", 
                             multiLine: true, ref: "text"}), 
-                        React.createElement(FlatButton, {className: "freshSpraySubmit", type: "submit", label: "Tag and Comment", primary: true})
+                        React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "TAG+COMMENT"})
                     )
                 )
             )
@@ -51349,16 +51414,20 @@ $(window).resize(function() {
 });
 
 function highlightSpray(spray) {
-        console.log('HEY');
         // var formatted = spray.targetText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-        var formatted = spray.targetText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        var regex = new RegExp("(" + formatted + ")", "gm")
 
-        $('p.graffiti-selectable:not(#graffiti-app *)').contents().filter(function () {
-            return this.nodeType === 3;
-        }).each(function () {
-            $(this).replaceWith($(this).text().replace(regex, '<span class="graffiti-spray" data-graffiti-id="' + spray._id + '">$1</span>'));
-        });
+    var regex = new RegExp(spray.targetText, "gm");
+
+    console.log(regex);
+    console.log('AT INDEX',spray.p_index);
+    var el = $('p.graffiti-selectable').eq(parseInt(spray.p_index));
+
+    var regex = new RegExp(spray.targetText, "gm");
+    var body = spray.targetText.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm,"$&");
+
+    el.html(el.html().replaceCallback(regex,'<span class="graffiti-spray" data-graffiti-id="'+spray._id+'">'+body+'</span>',function(){
+        console.log(el)
+    }));
 }
 
 var Spray =
@@ -51369,6 +51438,15 @@ var Spray =
         _onChange:function(){
             this.setState(setSprayState.bind(this)());
         },
+        expandTabs:function(){
+            $('.spray-tab').addClass('graffiti-expanded');
+            $('.graffiti-spray').addClass('graffiti-highlight');
+        },
+        shrinkTabs:function(){
+            $('.spray-tab').removeClass('graffiti-expanded graffiti-focus');
+            $('.graffiti-spray').removeClass('graffiti-highlight');
+            $('[data-graffiti-id]').removeClass('graffiti-focus');
+        },
         componentWillMount:function(){
             SprayStore.addChangeListener(this._onChange)
         },
@@ -51378,21 +51456,34 @@ var Spray =
         componentDidMount:function(){
             highlightSpray(this.state.spray);
             var offset = $('[data-graffiti-id="'+this.state.spray._id+'"]').offset().top;
-            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"></div>');
+            $('body').prepend('<div data-spray-id="'+this.state.spray._id+'" class="spray-tab graffiti-bind" style="background-color:'+this.state.spray.spray_color+';top:'+offset+'px"><span class="comment-count">'+this.state.spray.comments.length+'</span></span></div>');
 
-            $('[data-spray-container="'+this.state.spray._id+'"]').css('top',(offset-70)+'px');
+            $('[data-spray-container="'+this.state.spray._id+'"]').css({
+                'top':(offset-70)+'px',
+                'margin-top':((this.state.spray.comments.length * 20)*-1)+'px'
+            });
 
-            $('[data-spray-id="'+this.state.spray._id+'"]').on('click',function(){
-                $('.graffiti-comments-container').removeClass('graffiti-show');
+            var sprayEl = $('[data-spray-id="'+this.state.spray._id+'"]');
+
+            sprayEl.on('click',function(e){
+                $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
-            })
+            }).on('mouseenter',function(){
+                this.expandTabs();
+                sprayEl.addClass('graffiti-focus');
+                $('[data-graffiti-id="'+this.state.spray._id+'"]').addClass('graffiti-focus');
+            }.bind(this))
+                .on('mouseleave',function(){
+                    this.shrinkTabs();
+                }.bind(this));
+
         },
         handleCommentSubmit: function(user,text){
             var spray_id = this.state.spray._id;
             ExtActions.addComment(spray_id,user,text);
         },
         render: function (){
-            var containerClassName = "graffiti-comments-container";
+            var containerClassName = "graffiti-bind graffiti-comments-container";
 
             var className = 'spray-tab';
             className += ' '+this.state.spray._id;
@@ -51404,9 +51495,7 @@ var Spray =
             return (
                     React.createElement(Paper, {"data-spray-container": this.state.spray._id, className: containerClassName, zDepth: 1}, 
                         React.createElement(CommentForm, {sprayId: this.state.spray._id, onCommentSubmit: this.handleCommentSubmit}), 
-                    React.createElement("ul", null, 
                         React.createElement(Comments, {comments: this.state.spray.comments})
-                    )
                     )
             )
         }
@@ -51420,10 +51509,33 @@ module.exports = Spray;
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
+var $ = require('jquery');
 
 var Spray = require('./spray');
 var FreshSpray = require('./fresh-spray');
 
+function findUpClass(el, className) {
+    while (el.parentNode) {
+        el = el.parentNode;
+        if (el.classList && el.classList.contains(className)){
+            return el;
+        }
+    }
+}
+
+function handlePageClicks (){
+    $('body').click(function(e) {
+        if(e.target.classList.contains('spray-tab')){
+            $('.graffiti-comments-container').removeClass('graffiti-show');
+            $('[data-spray-container="'+$(e.target).attr('data-spray-id')+'"]').addClass('graffiti-show');
+        }
+        else if($('.graffiti-comments-container.graffiti-show,.freshSprayContainer.graffiti-show').length){
+            if(!findUpClass(e.target,'graffiti-bind')){
+                $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
+            }
+        }
+    });
+}
 
 function getSprays(){
     return {
@@ -51434,6 +51546,7 @@ function getSprays(){
 var Sprays =
     React.createClass({displayName: "Sprays",
         getInitialState: function(){
+            handlePageClicks();
             return getSprays();
         },
         _onChange:function(){
@@ -51451,7 +51564,7 @@ var Sprays =
             });
 
             return (
-                React.createElement("div", null, 
+                React.createElement("div", {className: "graffiti-bind"}, 
                         React.createElement(FreshSpray, null), 
                         sprays
                 )
@@ -51463,7 +51576,7 @@ var Sprays =
 module.exports = Sprays;
 
 
-},{"../../stores/spray-store":270,"../../stores/user-store":271,"./fresh-spray":258,"./spray":259,"react":238}],261:[function(require,module,exports){
+},{"../../stores/spray-store":270,"../../stores/user-store":271,"./fresh-spray":258,"./spray":259,"jquery":4,"react":238}],261:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../../actions/app-actions.js');
@@ -51665,23 +51778,52 @@ var DASHBOARD = require('./app-dashboard/dashboard');
 var React = require('react');
 var $ = require('jquery');
 
-String.prototype.replaceCallback= function(regex,string,cb){
-    var ret = String.prototype.replace.call(this,regex,string);
-    if(typeof cb === 'function'){
-        cb.call(ret); // Call your callback
-    }
-    return ret;  // For chaining
-};
-
-var link = document.createElement('link')
-link.setAttribute('rel', 'stylesheet')
-link.setAttribute('type', 'text/css')
+var link = document.createElement('link');
+link.setAttribute('rel', 'stylesheet');
+link.setAttribute('type', 'text/css');
 link.setAttribute('href', "http://fonts.googleapis.com/css?family=Roboto:400,300,500");
 document.getElementsByTagName('head')[0].appendChild(link);
 
 var location = window.location.origin;
+var retries = 0;
+var injected = false;
+var observer;
+
+var target = document.querySelector('body');
+
+
+// later, you can stop observing
+//observer.disconnect();
+function injectApp(){
+    function checkForPs () {
+        if(!$('p').length){
+            if(retries === 5){
+                return false;
+            }
+            else{
+                setTimeout(function(){
+                    retries+=1;
+                    checkForPs()
+                },1000);
+            }
+        }
+        else{
+            injected = true;
+            React.render(
+                React.createElement(APP, null),
+                document.getElementById('graffiti-app')
+            );
+            setTimeout(function(){
+                injected = false;
+            },2000)
+        }
+
+    }
+    checkForPs();
+}
 
 if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(http:\/\/graffiti\.herokuapp\.com)/)){
+    $('.heroBox').detach();
     $('body').prepend('<div id="graffiti-dash"></div>');
     React.render(
         React.createElement(DASHBOARD, null),
@@ -51690,15 +51832,33 @@ if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(ht
 }
 else{
     $('body').prepend('<div id="graffiti-app"></div>');
-    $('#graffiti-app').css({
-        'font-family':'Roboto, sans-serif'
+    $('#graffiti-app,#graffiti-app *,.spray-tab').css({
+        'font-family':'Roboto, sans-serif !important'
     });
 
-    React.render(
-        React.createElement(APP, null),
-        document.getElementById('graffiti-app')
-    );
+// create an observer instance
+    if($('p').length > 1){
+        injectApp();
+    }
+    else{
+        observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                console.log(mutation.type);
+                if(mutation.type === 'childList' && injected === false){
+                    injectApp();
+                }
+            });
+        });
 
+        // configuration of the observer:
+        var config = { attributes: true, childList: true, characterData: true }
+
+// pass in the target node, as well as the observer options
+        observer.observe(target, config);
+
+// later, you can stop observing
+//    observer.disconnect();
+    }
 }
 
 },{"./app-dashboard/dashboard":248,"./components/app":263,"jquery":4,"react":238}],268:[function(require,module,exports){

@@ -22,7 +22,7 @@ var ExtActions = {
             }
         })
     },
-    addSpray : function(page_id,targetText,user,text){
+    addSpray : function(page_id,targetText,user,text,index){
         console.log('ADDING COMMENT',arguments);
         sendMessage({
             action:'addSpray',
@@ -32,11 +32,12 @@ var ExtActions = {
                 page_id:page_id,
                 targetText:targetText,
                 user:user,
-                text:text
+                text:text,
+                p_index:index
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text){
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
         console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
             action:'initializePage',
@@ -47,7 +48,8 @@ var ExtActions = {
                 ref:page_ref,
                 targetText:targetText,
                 user: user,
-                text:text
+                text:text,
+                p_index:index
             }
         })
     },

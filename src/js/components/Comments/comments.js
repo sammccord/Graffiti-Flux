@@ -9,9 +9,7 @@ var Comments =
             var comments = this.props.comments.map(function(comment){
                 var date = new Date(comment.createdAt);
 
-                console.log(moment(date).from(new Date()));
-
-                return <li className="SprayComment" key={comment._id}>
+                return <li className="SprayComment graffiti-bind" key={comment._id}>
                     <b className="commentAuthor">{comment.user} </b>
                     <span className="muted">{moment(date).from(new Date())}</span>
                     <p>{comment.text}</p>
@@ -19,7 +17,7 @@ var Comments =
                 </li>;
             });
             return (
-                <ul>
+                <ul className="graffiti-bind">
                     {comments}
                 </ul>
             )
