@@ -17,7 +17,7 @@ socket.on('update',function(page){
     })
 });
 
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
 
 var user = {
     identities:[],
