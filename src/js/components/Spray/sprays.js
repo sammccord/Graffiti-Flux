@@ -65,7 +65,7 @@ var Sprays =
                 <div className="graffiti-bind">
                         <FreshSpray />
                         {sprays}
-                {snackboxes}
+                        {snackboxes}
                 </div>
             )
         }

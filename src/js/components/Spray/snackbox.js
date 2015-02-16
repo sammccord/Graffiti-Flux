@@ -12,7 +12,7 @@ var Snackbox = React.createClass({
         $('#snack-'+this.props.target).addClass('mui-is-open');
         setTimeout(function(){
             $('.graffiti-snack').removeClass('mui-is-open');
-        },2000)
+        },3000)
     },
    render:function(){
        var style={

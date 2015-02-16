@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "description": "Paint the web red.",
+  "description": "Tag the web.",
   "homepage_url": "http://graffiti.herokuapp.com",
   "icons": {
     "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
   },
   "default_locale": "en",
   "background": {

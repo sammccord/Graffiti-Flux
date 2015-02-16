@@ -85,7 +85,7 @@ body, html {
   border-radius: 2px 0px 0px 2px;
   z-index: 9999999;
   overflow: visible;
-  position: relative;
+  position: absolute;
   left: 100%;
   padding: 12px 6px 12px 2px;
   margin-top: -6px;

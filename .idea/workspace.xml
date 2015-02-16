@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40c948ce-3618-4d60-988c-9b18e105fd82" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/js/components/Spray/snackbox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/bg/js/background.js" afterPath="$PROJECT_DIR$/dist/bg/js/background.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/main.css" afterPath="$PROJECT_DIR$/dist/css/main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/main.js" afterPath="$PROJECT_DIR$/dist/js/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sass/main.scss" afterPath="$PROJECT_DIR$/src/sass/main.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/manifest.json" afterPath="$PROJECT_DIR$/dist/manifest.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/snackbox.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/snackbox.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/js/components/Spray/sprays.js" afterPath="$PROJECT_DIR$/src/js/components/Spray/sprays.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -31,7 +31,7 @@
     <favorites_list name="Graffiti-Flux" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6648936">
+    <splitter split-orientation="horizontal" split-proportion="0.59042555">
       <split-first>
         <leaf>
           <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
@@ -48,17 +48,17 @@
             <entry file="file://$PROJECT_DIR$/src/js/components/Spray/spray.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1920">
-                  <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
+                  <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="snackbox.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/js/components/Spray/snackbox.js">
+          <file leaf-file-name="sprays.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/js/components/Spray/sprays.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7644991" vertical-offset="0" max-vertical-offset="735">
-                  <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="1215">
+                  <caret line="50" column="10" selection-start-line="50" selection-start-column="10" selection-end-line="50" selection-end-column="10" />
                   <folding />
                 </state>
               </provider>
@@ -87,8 +87,18 @@
           <file leaf-file-name="background.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/dist/bg/js/background.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="2190">
-                  <caret line="29" column="63" selection-start-line="29" selection-start-column="63" selection-end-line="29" selection-end-column="63" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2190">
+                  <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="manifest.json" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/dist/manifest.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.6605505" vertical-offset="0" max-vertical-offset="810">
+                  <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -161,8 +171,8 @@
           <file leaf-file-name="main.scss" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2596154" vertical-offset="1425" max-vertical-offset="3480">
-                  <caret line="104" column="7" selection-start-line="104" selection-start-column="7" selection-end-line="104" selection-end-column="7" />
+                <state vertical-scroll-proportion="0.6052632" vertical-offset="1831" max-vertical-offset="3480">
+                  <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -198,7 +208,6 @@
         <option value="$PROJECT_DIR$/node_modules/material-ui/src/js/menu.jsx" />
         <option value="$PROJECT_DIR$/node_modules/material-ui/src/js/paper.jsx" />
         <option value="$PROJECT_DIR$/src/js/stores/page-store.js" />
-        <option value="$PROJECT_DIR$/dist/manifest.json" />
         <option value="$PROJECT_DIR$/src/js/app-dashboard/dispatchers/app-dispatcher.js" />
         <option value="$PROJECT_DIR$/src/js/app-dashboard/dispatchers/dispatcher.js" />
         <option value="$PROJECT_DIR$/src/less/material.less" />
@@ -224,11 +233,12 @@
         <option value="$PROJECT_DIR$/src/js/components/Comments/comment-form.js" />
         <option value="$PROJECT_DIR$/src/js/main.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/fresh-spray.js" />
-        <option value="$PROJECT_DIR$/src/js/components/Spray/sprays.js" />
-        <option value="$PROJECT_DIR$/src/sass/main.scss" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/spray.js" />
         <option value="$PROJECT_DIR$/dist/bg/js/background.js" />
         <option value="$PROJECT_DIR$/src/js/components/Spray/snackbox.js" />
+        <option value="$PROJECT_DIR$/src/js/components/Spray/sprays.js" />
+        <option value="$PROJECT_DIR$/src/sass/main.scss" />
+        <option value="$PROJECT_DIR$/dist/manifest.json" />
       </list>
     </option>
   </component>
@@ -279,7 +289,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-242" />
     <option name="y" value="-925" />
-    <option name="width" value="1445" />
+    <option name="width" value="1285" />
     <option name="height" value="925" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -689,6 +699,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Graffiti-Flux" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Graffiti-Flux" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -847,7 +875,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-242" y="-925" width="1445" height="925" extended-state="0" />
+    <frame x="-242" y="-925" width="1285" height="925" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17547569" sideWeight="0.28503937" order="3" side_tool="true" content_ui="tabs" />
@@ -856,7 +884,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29009902" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24952501" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20786516" sideWeight="0.71496063" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23417722" sideWeight="0.71496063" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32970297" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -947,13 +975,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.75" vertical-offset="0" max-vertical-offset="570">
           <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/manifest.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="810">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1235,38 +1256,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/sprays.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3111111" vertical-offset="0" max-vertical-offset="1215">
-          <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2596154" vertical-offset="1425" max-vertical-offset="3480">
-          <caret line="104" column="7" selection-start-line="104" selection-start-column="7" selection-end-line="104" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/spray.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1920">
-          <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/bg/js/background.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="2190">
-          <caret line="29" column="63" selection-start-line="29" selection-start-column="63" selection-end-line="29" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/Comments/comment-form.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="945">
@@ -1285,8 +1274,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/Spray/snackbox.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7644991" vertical-offset="0" max-vertical-offset="735">
-          <caret line="29" column="62" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.21089631" vertical-offset="0" max-vertical-offset="735">
+          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/spray.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1920">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/components/Spray/sprays.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="1215">
+          <caret line="50" column="10" selection-start-line="50" selection-start-column="10" selection-end-line="50" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sass/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6052632" vertical-offset="1831" max-vertical-offset="3480">
+          <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/bg/js/background.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2190">
+          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6605505" vertical-offset="0" max-vertical-offset="810">
+          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
           <folding />
         </state>
       </provider>

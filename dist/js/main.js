@@ -51402,7 +51402,7 @@ var Snackbox = React.createClass({displayName: "Snackbox",
         $('#snack-'+this.props.target).addClass('mui-is-open');
         setTimeout(function(){
             $('.graffiti-snack').removeClass('mui-is-open');
-        },2000)
+        },3000)
     },
    render:function(){
        var style={
@@ -51626,7 +51626,7 @@ var Sprays =
                 React.createElement("div", {className: "graffiti-bind"}, 
                         React.createElement(FreshSpray, null), 
                         sprays, 
-                snackboxes
+                        snackboxes
                 )
             )
         }
