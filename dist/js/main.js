@@ -50439,7 +50439,7 @@ var AppActions = {
 module.exports = AppActions;
 
 
-},{"../constants/app-constants.js":264,"../dispatchers/app-dispatcher.js":265}],240:[function(require,module,exports){
+},{"../constants/app-constants.js":265,"../dispatchers/app-dispatcher.js":266}],240:[function(require,module,exports){
 var AppActions = require('./app-actions');
 
 function sendMessage (payload) {
@@ -51100,7 +51100,7 @@ var CommentForm =
 module.exports = CommentForm;
 
 
-},{"../../stores/user-store":271,"material-ui":8,"react":238}],255:[function(require,module,exports){
+},{"../../stores/user-store":272,"material-ui":8,"react":238}],255:[function(require,module,exports){
 var React = require('react');
 
 var moment = require('moment');
@@ -51221,7 +51221,7 @@ var Page =
 module.exports = Page;
 
 
-},{"../../actions/ext-actions":240,"../../stores/page-store":269,"../../stores/user-store":271,"../Spray/sprays":260,"jquery":4,"react":238}],258:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/page-store":270,"../../stores/user-store":272,"../Spray/sprays":261,"jquery":4,"react":238}],258:[function(require,module,exports){
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
@@ -51387,7 +51387,53 @@ var FreshSpray =
 module.exports = FreshSpray;
 
 
-},{"../../actions/ext-actions":240,"../../stores/page-store":269,"../../stores/user-store":271,"jquery":4,"material-ui":8,"react":238}],259:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/page-store":270,"../../stores/user-store":272,"jquery":4,"material-ui":8,"react":238}],259:[function(require,module,exports){
+var React = require('react');
+var $ = require('jquery');
+
+var Snackbox = React.createClass({displayName: "Snackbox",
+    handleClick:function(){
+        var id = this.props.target;
+        $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
+        $('[data-spray-container="'+id+'"]').addClass('graffiti-show');
+        $('.mui-snackbar').removeClass('mui-is-open');
+    },
+    componentDidMount:function(){
+        $('#snack-'+this.props.target).addClass('mui-is-open');
+        setTimeout(function(){
+            $('.graffiti-snack').removeClass('mui-is-open');
+        },2000)
+    },
+   render:function(){
+       var style={
+        height:"88px",
+           top:"-26px"
+       };
+       var id="snack-"+this.props.target;
+
+       return (
+           React.createElement("span", {id: id, className: "graffiti-snack mui-snackbar"}, 
+               React.createElement("span", {className: "mui-snackbar-message"}, "Tag Added"), 
+               React.createElement("button", {onClick: this.handleClick, className: "mui-snackbar-action mui-flat-button mui-enhanced-button"}, 
+                   React.createElement("div", null, 
+                       React.createElement("div", {className: "mui-touch-ripple"}, 
+                           React.createElement("div", {className: "mui-ripple-circle"}, 
+                               React.createElement("div", {className: "mui-ripple-circle-inner"})
+                           )
+                       ), React.createElement("span", {className: "mui-flat-button-label"}, "view")
+                   ), 
+                   React.createElement("div", {className: "mui-focus-ripple", style: style}, 
+                       React.createElement("div", {className: "mui-focus-ripple-inner"})
+                   )
+               )
+           )
+       )
+   }
+});
+
+module.exports = Snackbox;
+
+},{"jquery":4,"react":238}],260:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     Paper = mui.Paper;
@@ -51512,11 +51558,13 @@ var Spray =
 module.exports = Spray;
 
 
-},{"../../actions/ext-actions.js":240,"../../stores/page-store":269,"../../stores/spray-store":270,"../Comments/comment-form":254,"../Comments/comments":255,"jquery":4,"material-ui":8,"react":238}],260:[function(require,module,exports){
+},{"../../actions/ext-actions.js":240,"../../stores/page-store":270,"../../stores/spray-store":271,"../Comments/comment-form":254,"../Comments/comments":255,"jquery":4,"material-ui":8,"react":238}],261:[function(require,module,exports){
 var React = require('react');
 var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
 var $ = require('jquery');
+
+var Snackbox = require('./snackbox');
 
 var Spray = require('./spray');
 var FreshSpray = require('./fresh-spray');
@@ -51570,10 +51618,15 @@ var Sprays =
                 return React.createElement(Spray, {key: spray._id, spray: spray})
             });
 
+            var snackboxes = this.state.sprays.map(function(spray) {
+                return React.createElement(Snackbox, {target: spray._id})
+            });
+
             return (
                 React.createElement("div", {className: "graffiti-bind"}, 
                         React.createElement(FreshSpray, null), 
-                        sprays
+                        sprays, 
+                snackboxes
                 )
             )
         }
@@ -51583,7 +51636,7 @@ var Sprays =
 module.exports = Sprays;
 
 
-},{"../../stores/spray-store":270,"../../stores/user-store":271,"./fresh-spray":258,"./spray":259,"jquery":4,"react":238}],261:[function(require,module,exports){
+},{"../../stores/spray-store":271,"../../stores/user-store":272,"./fresh-spray":258,"./snackbox":259,"./spray":260,"jquery":4,"react":238}],262:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var AppActions = require('../../actions/app-actions.js');
@@ -51600,7 +51653,7 @@ var ChangeIdentity =
     });
 module.exports = ChangeIdentity;
 
-},{"../../actions/app-actions.js":239,"react":238}],262:[function(require,module,exports){
+},{"../../actions/app-actions.js":239,"react":238}],263:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     DropDownMenu = mui.DropDownMenu;
@@ -51665,7 +51718,7 @@ var Identities =
 module.exports = Identities;
 
 
-},{"../../actions/ext-actions":240,"../../stores/user-store":271,"./change-identity":261,"material-ui":8,"react":238}],263:[function(require,module,exports){
+},{"../../actions/ext-actions":240,"../../stores/user-store":272,"./change-identity":262,"material-ui":8,"react":238}],264:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var Identity = require('../components/User/identity');
@@ -51689,7 +51742,7 @@ var APP =
 module.exports = APP;
 
 
-},{"../components/Page/page":257,"../components/User/identity":262,"react":238}],264:[function(require,module,exports){
+},{"../components/Page/page":257,"../components/User/identity":263,"react":238}],265:[function(require,module,exports){
 module.exports = {
     GET_IDENTITIES: 'GET_IDENTITIES',
     INITIALIZE_PAGE: 'INITIALIZE_PAGE',
@@ -51704,7 +51757,7 @@ module.exports = {
 };
 
 
-},{}],265:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var Dispatcher = require('./dispatcher');
 
@@ -51720,7 +51773,7 @@ var AppDispatcher = merge(Dispatcher.prototype, {
 module.exports = AppDispatcher;
 
 
-},{"./dispatcher":266,"react/lib/merge":226}],266:[function(require,module,exports){
+},{"./dispatcher":267,"react/lib/merge":226}],267:[function(require,module,exports){
 var Promise = require('es6-promise').Promise;
 var merge = require('react/lib/merge');
 
@@ -51778,7 +51831,7 @@ Dispatcher.prototype = merge(Dispatcher.prototype, {
 module.exports = Dispatcher;
 
 
-},{"es6-promise":1,"react/lib/merge":226}],267:[function(require,module,exports){
+},{"es6-promise":1,"react/lib/merge":226}],268:[function(require,module,exports){
 /** @jsx React.DOM */
 var APP = require('./components/app');
 var DASHBOARD = require('./app-dashboard/dashboard');
@@ -51868,7 +51921,7 @@ else{
     }
 }
 
-},{"./app-dashboard/dashboard":248,"./components/app":263,"jquery":4,"react":238}],268:[function(require,module,exports){
+},{"./app-dashboard/dashboard":248,"./components/app":264,"jquery":4,"react":238}],269:[function(require,module,exports){
 var merge = require('react/lib/merge');
 var EventEmitter = require('events').EventEmitter;
 
@@ -51892,7 +51945,7 @@ var BaseStore = merge(EventEmitter.prototype, {
 
 module.exports = BaseStore;
 
-},{"events":2,"react/lib/merge":226}],269:[function(require,module,exports){
+},{"events":2,"react/lib/merge":226}],270:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
@@ -51964,7 +52017,7 @@ var PageStore = merge(BaseStore,{
 module.exports = PageStore;
 
 
-},{"../actions/app-actions":239,"../actions/ext-actions":240,"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"./spray-store":270,"./user-store":271,"lodash":5,"react/lib/merge":226}],270:[function(require,module,exports){
+},{"../actions/app-actions":239,"../actions/ext-actions":240,"../constants/app-constants":265,"../dispatchers/app-dispatcher":266,"./base-store":269,"./spray-store":271,"./user-store":272,"lodash":5,"react/lib/merge":226}],271:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 
@@ -52005,7 +52058,7 @@ module.exports = SprayStore;
 
 
 
-},{"../actions/ext-actions":240,"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"lodash":5,"react/lib/merge":226}],271:[function(require,module,exports){
+},{"../actions/ext-actions":240,"../constants/app-constants":265,"../dispatchers/app-dispatcher":266,"./base-store":269,"lodash":5,"react/lib/merge":226}],272:[function(require,module,exports){
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
 var merge = require('react/lib/merge');
@@ -52065,4 +52118,4 @@ var UserStore = merge(BaseStore,{
 module.exports = UserStore;
 
 
-},{"../constants/app-constants":264,"../dispatchers/app-dispatcher":265,"./base-store":268,"lodash":5,"react/lib/merge":226}]},{},[267])
+},{"../constants/app-constants":265,"../dispatchers/app-dispatcher":266,"./base-store":269,"lodash":5,"react/lib/merge":226}]},{},[268])

@@ -31,6 +31,7 @@ body,html{
     margin:0;
   }
 
+
   .freshSprayContainer{
     margin-top:-60px;
   }
@@ -109,6 +110,23 @@ body,html{
         font-size:12px;
       }
     }
+  }
+
+  .mui-snackbar.graffiti-snack,{
+    box-shadow: rgba(0, 0, 0, 0.239216) 0px 1px 4px;
+    background-color:rgba(89, 240, 214, 1);
+    *{
+      color:white !important;
+    }
+    .mui-snackbar-message {
+
+    }
+    .mui-snackbar-action{
+      .mui-flat-button-label{
+
+      }
+    }
+
   }
 
 }
