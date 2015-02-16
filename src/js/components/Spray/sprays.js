@@ -3,6 +3,8 @@ var UserStore = require('../../stores/user-store');
 var SprayStore = require('../../stores/spray-store');
 var $ = require('jquery');
 
+var Snackbox = require('./snackbox');
+
 var Spray = require('./spray');
 var FreshSpray = require('./fresh-spray');
 
@@ -55,10 +57,15 @@ var Sprays =
                 return <Spray key={spray._id} spray={spray} />
             });
 
+            var snackboxes = this.state.sprays.map(function(spray) {
+                return <Snackbox target={spray._id} />
+            });
+
             return (
                 <div className="graffiti-bind">
                         <FreshSpray />
                         {sprays}
+                        {snackboxes}
                 </div>
             )
         }
