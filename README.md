@@ -15,8 +15,11 @@ See a live version of the app [here](/).
 
 ### Screenshot
 
+#### Hovering near the sidebar highlights embedded tags.
 ![Graffiti 1](https://s3.amazonaws.com/graffiti-storage/1.png)
+#### Clicking on a tab brings out its comments.
 ![Graffiti 2](https://s3.amazonaws.com/graffiti-storage/2.png)
+#### If you start highlighting text, a form will pop out for you to create your tag
 ![Graffiti 3](https://s3.amazonaws.com/graffiti-storage/3.png)
 ![Graffiti 4](https://s3.amazonaws.com/graffiti-storage/4.png)
 _Above: An example of the working app_
