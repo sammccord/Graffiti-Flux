@@ -1,6 +1,6 @@
 ![Graffiti Logo](https://s3.amazonaws.com/graffiti-storage/logo.svg)
 > A realtime, context-centric, collaborative commenting engine in your browser. Just install the [Chrome Extension](https://s3.amazonaws.com/graffiti-storage/alpha.zip) and start highlighting text to comment on.
-> You can join and post under different profiles, and choose which profile's tags are visible. Since it's still in beta, we're limiting groups to Reddit, Hackernews, 30Weeks, and Fullstack.
+> You can join and post under different groups, and choose which group's tags are visible. Since it's still in beta, we're limiting groups to Reddit, Hackernews, 30Weeks, and Fullstack.
 
 ## Table of Contents
 
