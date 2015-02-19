@@ -9,12 +9,13 @@ body,html{
 }
 
 #graffiti-scrollbar-binder {
+  z-index:999999999997;
   position:fixed;
   top:0;
   bottom:0;
   height: 100%;
   z-index:2;
-  width:26px;
+  width:36px;
   right:0;
 }
 
@@ -133,7 +134,7 @@ body,html{
 
 .spray-tab{
   border-radius:2px 0px 0px 2px;
-  z-index: 9999999;
+  z-index: 999999999998;
   overflow: visible;
   position: absolute;
   left:100%;

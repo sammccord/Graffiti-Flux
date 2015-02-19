@@ -19,6 +19,7 @@
     "matches": ["http://localhost:9000/"]
   },
   "permissions": [
+    "contextMenus",
     "cookies",
     "tabs",
     "storage",

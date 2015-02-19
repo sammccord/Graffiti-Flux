@@ -1,6 +1,6 @@
-var Graffiti = new Graffiti('http://192.168.2.3:9000');
+var Graffiti = new Graffiti('http://192.168.1.24:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://192.168.2.3:9000', {
+var socket = io.connect('http://192.168.1.24:9000', {
     path: '/socket.io-client',
     transports: ['websocket'],
     'force new connection': true
@@ -138,3 +138,34 @@ function setDefaultIdentity(organization,name,organization_id){
     };
     user.defaultIdentity = defaultIdentity;
 }
+
+var clickHandler = function(e) {
+    var url = e.pageUrl;
+    var buzzPostUrl = "http://www.google.com/buzz/post?";
+
+    if (e.selectionText) {
+        // The user selected some text, put this in the message.
+        buzzPostUrl += "message=" + encodeURI(e.selectionText) + "&";
+    }
+
+    if (e.mediaType === "image") {
+        buzzPostUrl += "imageurl=" + encodeURI(e.srcUrl) + "&";
+    }
+
+    if (e.linkUrl) {
+        // The user wants to buzz a link.
+        url = e.linkUrl;
+    }
+
+    buzzPostUrl += "url=" + encodeURI(url);
+
+    // Open the page up.
+    chrome.tabs.create(
+        {"url" : buzzPostUrl });
+};
+
+chrome.contextMenus.create({
+    "title": "Buzz This",
+    "contexts": ["page", "selection", "image", "link"],
+    "onclick" : clickHandler
+});
