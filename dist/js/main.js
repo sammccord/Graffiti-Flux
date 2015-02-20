@@ -50428,6 +50428,17 @@ var AppActions = {
             page:page
         })
     },
+    addSpray : function(page_id,targetText,user,text,index){
+        console.log('ADDING PRE-EMPTIVE COMMENT',arguments);
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.ADD_SPRAY,
+            page_id:page_id,
+            targetText:targetText,
+            user:user,
+            text:text,
+            p_index:index
+        });
+    },
     loadSprays: function(sprays){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.LOAD_SPRAYS,
@@ -51749,6 +51760,7 @@ module.exports = {
 
     GET_PAGE: 'GET_PAGE',
 
+    ADD_SPRAY : 'ADD_SPRAY',
     LOAD_SPRAYS: 'LOAD_SPRAYS',
 
     ADD_COMMENT: 'ADD_COMMENT',
@@ -52046,6 +52058,10 @@ var SprayStore = merge(BaseStore, {
         switch(action.actionType){
             case AppConstants.LOAD_SPRAYS:
                 _sprays = action.sprays;
+                SprayStore.emitChange();
+                break;
+            case AppConstants.ADD_SPRAY:
+                _sprays.unshift();
                 SprayStore.emitChange();
                 break;
         }

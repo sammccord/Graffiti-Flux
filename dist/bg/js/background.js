@@ -8,6 +8,8 @@ var socket = io.connect('http://192.168.1.24:9000', {
 
 var _rooms = {};
 
+var _current_tag = {};
+
 socket.on('update',function(page){
     if(!page) return false;
     console.log('FROM SOCKET UPDATE',page);
@@ -17,7 +19,7 @@ socket.on('update',function(page){
     })
 });
 
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
 
 var user = {
     identities:[],
@@ -42,6 +44,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 //// Content Script Message Handling //////
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    console.log(message);
     var action = message.action;
     switch(action){
         case 'getIdentities':
@@ -66,6 +69,14 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     data:user
                 });
                 chrome.storage.sync.set({'user':JSON.stringify(user)});
+            break;
+            case 'getFeed':
+                var _ids = user.identities.reduce(function(init,next){
+                    return init.push(next.organization_id);
+                },[]);
+                Graffiti[message.endpoint]()[message.method]({org_ids:_ids}, function(err, data) {
+                    console.log(message.endpoint+' API CALL - ',arguments);
+                });
             break;
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {

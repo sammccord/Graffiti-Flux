@@ -1,0 +1,29 @@
+/* line 4, ../../app/styles/main.scss */
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+}
+
+/* line 10, ../../app/styles/main.scss */
+body {
+  height: 400px;
+  width: 280px;
+  padding: 0;
+}
+/* line 14, ../../app/styles/main.scss */
+body * {
+  font-family: 'Roboto', sans-serif;
+}
+/* line 17, ../../app/styles/main.scss */
+body .footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+}
+/* line 21, ../../app/styles/main.scss */
+body .footer .btn-group {
+  margin: 0;
+}
+
+/*# sourceMappingURL=main.css.map */

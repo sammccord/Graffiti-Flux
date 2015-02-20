@@ -26,6 +26,17 @@ var AppActions = {
             page:page
         })
     },
+    addSpray : function(page_id,targetText,user,text,index){
+        console.log('ADDING PRE-EMPTIVE COMMENT',arguments);
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.ADD_SPRAY,
+            page_id:page_id,
+            targetText:targetText,
+            user:user,
+            text:text,
+            p_index:index
+        });
+    },
     loadSprays: function(sprays){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.LOAD_SPRAYS,

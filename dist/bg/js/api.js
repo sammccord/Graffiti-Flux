@@ -79,8 +79,7 @@ Graffiti.prototype.Spray = function() {
                 },
                 error: function(xhr, status, err) {
                     console.log('POST SPRAY FAIL',arguments);
-                    console.error(status, err.toString());
-                    callback(err.toString())
+                    callback(err);
                 },
                 dataType: 'json'
             });

@@ -28,6 +28,10 @@ var SprayStore = merge(BaseStore, {
                 _sprays = action.sprays;
                 SprayStore.emitChange();
                 break;
+            case AppConstants.ADD_SPRAY:
+                _sprays.unshift();
+                SprayStore.emitChange();
+                break;
         }
 
         return true;
