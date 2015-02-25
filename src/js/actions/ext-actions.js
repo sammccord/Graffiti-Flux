@@ -40,7 +40,7 @@ var ExtActions = {
     createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
         console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
-            action:'initializePage',
+            action:'getPage',
             endpoint: 'Page',
             method: 'POST',
             args:{
@@ -70,6 +70,7 @@ var ExtActions = {
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
+        console.log(request);
         if(AppActions[request.action]) AppActions[request.action](request.data);
     });
 

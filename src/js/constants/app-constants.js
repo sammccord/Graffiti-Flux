@@ -4,7 +4,7 @@ module.exports = {
 
     GET_PAGE: 'GET_PAGE',
 
-    ADD_SPRAY : 'ADD_SPRAY',
+    ADD_SPRAY : "ADD_SPRAY",
     LOAD_SPRAYS: 'LOAD_SPRAYS',
 
     ADD_COMMENT: 'ADD_COMMENT',

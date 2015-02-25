@@ -1,25 +1,20 @@
-var Graffiti = new Graffiti('http://192.168.1.24:9000');
+var Graffiti = new Graffiti('http://192.168.2.3:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://192.168.1.24:9000', {
-    path: '/socket.io-client',
-    transports: ['websocket'],
-    'force new connection': true
-});
 
 var _rooms = {};
 
 var _current_tag = {};
 
-socket.on('update',function(page){
-    if(!page) return false;
-    console.log('FROM SOCKET UPDATE',page);
-    chrome.tabs.sendMessage(_rooms[page._id],{
-        action:'getPage',
-        data:page
-    })
-});
+//socket.on('update',function(page){
+//    if(!page) return false;
+//    console.log('FROM SOCKET UPDATE',page);
+//    chrome.tabs.sendMessage(_rooms[page._id],{
+//        action:'getPage',
+//        data:page
+//    })
+//});
 
-//chrome.storage.sync.clear();
+chrome.storage.sync.clear();
 
 var user = {
     identities:[],
@@ -81,12 +76,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         default:
             Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
                 console.log(message.endpoint+' API CALL - ',arguments);
-                if(action === 'getPage'){
-                    if(!err){
-                        _rooms[data._id] = sender.tab.id;
-                        socket.emit('join','page/'+data._id);
-                    }
-                }
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: message.action,
                     data: data,

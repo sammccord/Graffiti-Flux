@@ -50428,15 +50428,11 @@ var AppActions = {
             page:page
         })
     },
-    addSpray : function(page_id,targetText,user,text,index){
-        console.log('ADDING PRE-EMPTIVE COMMENT',arguments);
+    addSpray : function(spray){
+        console.log('APP ACTIONS, ADD SPRAY',spray);
         AppDispatcher.handleViewAction({
             actionType: AppConstants.ADD_SPRAY,
-            page_id:page_id,
-            targetText:targetText,
-            user:user,
-            text:text,
-            p_index:index
+            spray:spray
         });
     },
     loadSprays: function(sprays){
@@ -50493,7 +50489,7 @@ var ExtActions = {
     createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
         console.log('CREATING PAGE AND ADDING SPRAY',arguments);
         sendMessage({
-            action:'initializePage',
+            action:'getPage',
             endpoint: 'Page',
             method: 'POST',
             args:{
@@ -50523,6 +50519,7 @@ var ExtActions = {
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
+        console.log(request);
         if(AppActions[request.action]) AppActions[request.action](request.data);
     });
 
@@ -51236,6 +51233,7 @@ module.exports = Page;
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
+var AppActions = require('../../actions/app-actions');
 
 var mui = require('material-ui'),
     TextField = mui.TextField,
@@ -51337,6 +51335,7 @@ function addFreshSpray(page_id,targetText,user,text,p_index){
         return;
     }
     ExtActions.addSpray(page_id,targetText,user,text,p_index);
+    //AppActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
 var FreshSpray =
@@ -51398,7 +51397,7 @@ var FreshSpray =
 module.exports = FreshSpray;
 
 
-},{"../../actions/ext-actions":240,"../../stores/page-store":270,"../../stores/user-store":272,"jquery":4,"material-ui":8,"react":238}],259:[function(require,module,exports){
+},{"../../actions/app-actions":239,"../../actions/ext-actions":240,"../../stores/page-store":270,"../../stores/user-store":272,"jquery":4,"material-ui":8,"react":238}],259:[function(require,module,exports){
 var React = require('react');
 var $ = require('jquery');
 
@@ -51760,7 +51759,7 @@ module.exports = {
 
     GET_PAGE: 'GET_PAGE',
 
-    ADD_SPRAY : 'ADD_SPRAY',
+    ADD_SPRAY : "ADD_SPRAY",
     LOAD_SPRAYS: 'LOAD_SPRAYS',
 
     ADD_COMMENT: 'ADD_COMMENT',
@@ -52000,6 +51999,7 @@ var PageStore = merge(BaseStore,{
                 PageStore.emitChange();
                 break;
             case AppConstants.GET_PAGE:
+                console.log(action);
                 console.log('GETTING PAGE',action);
                 if(!action.page){
                     console.log('!!!!!!!! FRESH PAGE');
@@ -52039,8 +52039,6 @@ var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
 var _ = require('lodash');
 
-var CHANGE_EVENT = "sprays";
-
 var _sprays = [];
 
 function _addReply(index, reply){
@@ -52054,14 +52052,14 @@ var SprayStore = merge(BaseStore, {
 
     dispatcherIndex:AppDispatcher.register(function(payload){
         var action = payload.action;
-
         switch(action.actionType){
             case AppConstants.LOAD_SPRAYS:
                 _sprays = action.sprays;
                 SprayStore.emitChange();
                 break;
             case AppConstants.ADD_SPRAY:
-                _sprays.unshift();
+                console.log(action.spray);
+                Array.prototype.push.apply(_sprays,[action.spray]);
                 SprayStore.emitChange();
                 break;
         }

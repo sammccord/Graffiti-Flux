@@ -103,7 +103,7 @@ function addFreshSpray(page_id,targetText,user,text,p_index){
         return;
     }
     ExtActions.addSpray(page_id,targetText,user,text,p_index);
-    AppActions.addSpray(page_id,targetText,user,text,p_index);
+    //AppActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
 var FreshSpray =

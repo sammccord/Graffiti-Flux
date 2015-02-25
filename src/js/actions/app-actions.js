@@ -26,15 +26,11 @@ var AppActions = {
             page:page
         })
     },
-    addSpray : function(page_id,targetText,user,text,index){
-        console.log('ADDING PRE-EMPTIVE COMMENT',arguments);
+    addSpray : function(spray){
+        console.log('APP ACTIONS, ADD SPRAY',spray);
         AppDispatcher.handleViewAction({
             actionType: AppConstants.ADD_SPRAY,
-            page_id:page_id,
-            targetText:targetText,
-            user:user,
-            text:text,
-            p_index:index
+            spray:spray
         });
     },
     loadSprays: function(sprays){
