@@ -26,6 +26,12 @@ var AppActions = {
             page:page
         })
     },
+    addComment : function(data){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.ADD_COMMENT,
+            data:data
+        });
+    },
     addSpray : function(spray){
         console.log('APP ACTIONS, ADD SPRAY',spray);
         AppDispatcher.handleViewAction({

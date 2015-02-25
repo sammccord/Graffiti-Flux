@@ -30,6 +30,15 @@ var SprayStore = merge(BaseStore, {
                 Array.prototype.push.apply(_sprays,[action.spray]);
                 SprayStore.emitChange();
                 break;
+            case AppConstants.ADD_COMMENT:
+                console.log(action.data);
+                _sprays.forEach(function(spray){
+                    if(spray._id === action.data.spray_id){
+                        Array.prototype.push.apply(spray.comments,[action.data.comment]);
+                    }
+                });
+                SprayStore.emitChange();
+                break;
         }
 
         return true;
