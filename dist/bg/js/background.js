@@ -1,5 +1,5 @@
 
-var Graffiti = new Graffiti('http://192.168.2.4:9000');
+var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"]
 
 var _rooms = {};
@@ -15,7 +15,7 @@ var _current_tag = {};
 //    })
 //});
 
-//chrome.storage.sync.clear();
+chrome.storage.sync.clear();
 
 var user = {
     identities:[],
@@ -108,15 +108,15 @@ function getIdentities(cb) {
                 organization_id : '54e120556ff7f30300642e70',
                 spray_color:'rgb(96, 96, 96)'
             };
-            var other = {
-                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-                organization:'30Weeks',
-                organization_id : '54e1512170a92b0d4c2011ec',
-                spray_color:'rgb(96, 96, 96)'
-            };
+            //var other = {
+            //    name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
+            //    organization:'30Weeks',
+            //    organization_id : '54e1512170a92b0d4c2011ec',
+            //    spray_color:'rgb(96, 96, 96)'
+            //};
             user.defaultIdentity = newIdentity;
             user.identities.push(newIdentity);
-            user.identities.push(other);
+            //user.identities.push(other);
             chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{
