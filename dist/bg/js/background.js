@@ -1,4 +1,4 @@
-var Graffiti = new Graffiti('http://10.0.1.187:9000');
+var Graffiti = new Graffiti('http://192.168.2.4:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
 
 var _rooms = {};
@@ -109,7 +109,7 @@ function getIdentities(cb) {
             };
             var other = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-                organization:'3030',
+                organization:'30Weeks',
                 organization_id : '54e1512170a92b0d4c2011ec',
                 spray_color:'rgb(96, 96, 96)'
             };
