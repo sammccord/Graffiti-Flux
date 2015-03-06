@@ -46,4 +46,45 @@ gulp.task('watch', function() {
 
 gulp.task('ext_watch',function(){
     gulp.watch('dist/**/*.*', ['extensionize']);
-})
+});
+
+
+//Browser Action Tasks
+gulp.task('bg_browserify', function() {
+    gulp.src('bg_src/js/main.js')
+        .pipe(browserify({transform: 'reactify'}))
+        .pipe(concat('main.js'))
+        .pipe(gulp.dest('dist/browser_action/js'));
+});
+
+gulp.task('bg_copy', function() {
+    gulp.src('bg_src/index.html')
+        .pipe(gulp.dest('dist/browser_action'));
+});
+
+gulp.task('bg_buildCSS', function () {
+    gulp.src('bg_src/sass/main.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('dist/browser_action/css'));
+});
+
+gulp.task('bg_buildLESS', function () {
+    gulp.src('bg_src/less/material.less')
+        .pipe(less())
+        .pipe(gulp.dest('dist/browser_action/css'));
+});
+
+gulp.task('bg_compress', function() {
+    gulp.src('bg_src/js/main.js')
+        .pipe(browserify({transform: 'reactify'}))
+        .pipe(concat('main.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/browser_action/js'));
+});
+
+gulp.task('browser_action',['bg_browserify', 'bg_copy', 'bg_buildCSS','bg_buildLESS']);
+gulp.task('bg_extensionize',['bg_compress', 'bg_copy', 'bg_buildCSS','bg_buildLESS']);
+
+gulp.task('bg_watch', function() {
+    gulp.watch(['src/**/*.*','node_modules/material-ui/src/**/*.*'], ['default']);
+});

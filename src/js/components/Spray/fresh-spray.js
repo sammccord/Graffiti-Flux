@@ -1,6 +1,7 @@
 var React = require('react');
 
 var ExtActions = require('../../actions/ext-actions');
+var AppActions = require('../../actions/app-actions');
 
 var mui = require('material-ui'),
     TextField = mui.TextField,
@@ -102,6 +103,7 @@ function addFreshSpray(page_id,targetText,user,text,p_index){
         return;
     }
     ExtActions.addSpray(page_id,targetText,user,text,p_index);
+    //AppActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
 var FreshSpray =
