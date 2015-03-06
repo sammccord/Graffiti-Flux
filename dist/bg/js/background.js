@@ -1,4 +1,4 @@
-var Graffiti = new Graffiti('http://192.168.2.3:9000');
+var Graffiti = new Graffiti('http://10.0.1.187:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
 
 var _rooms = {};
@@ -66,22 +66,32 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 chrome.storage.sync.set({'user':JSON.stringify(user)});
             break;
             case 'getFeed':
-                var _ids = user.identities.reduce(function(init,next){
-                    return init.push(next.organization_id);
-                },[]);
-                Graffiti[message.endpoint]()[message.method]({org_ids:_ids}, function(err, data) {
-                    console.log(message.endpoint+' API CALL - ',arguments);
+                console.log('GETTING FEED');
+                var _ids = user.identities.map(function(el){
+                    return el.organization_id;
+                });
+                console.log(_ids);
+                Graffiti['Organization']()['getFeed']({_ids:_ids}, function(err, data) {
+                    console.log('ORGANIZATION API CALL - ',arguments);
+                    chrome.runtime.sendMessage({
+                        action:'sendFeed',
+                        data:data,
+                        err:err
+                    })
                 });
             break;
         default:
-            Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
-                console.log(message.endpoint+' API CALL - ',arguments);
-                chrome.tabs.sendMessage(sender.tab.id, {
-                    action: message.action,
-                    data: data,
-                    err: err
-                });
-            })
+            if(Graffiti[message.endpoint]){
+                Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
+                    console.log(message.endpoint+' API CALL - ',arguments);
+                    chrome.tabs.sendMessage(sender.tab.id, {
+                        action: message.action,
+                        data: data,
+                        err: err
+                    });
+                })
+            }
+            else break;
     }
 });
 
@@ -97,8 +107,15 @@ function getIdentities(cb) {
                 organization_id : '54e1512170a92b0d4c2011e8',
                 spray_color:'rgb(96, 96, 96)'
             };
+            var other = {
+                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
+                organization:'3030',
+                organization_id : '54e1512170a92b0d4c2011ec',
+                spray_color:'rgb(96, 96, 96)'
+            };
             user.defaultIdentity = newIdentity;
             user.identities.push(newIdentity);
+            user.identities.push(other);
             chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{

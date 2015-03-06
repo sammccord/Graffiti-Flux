@@ -51546,6 +51546,7 @@ var Spray =
                     this.shrinkTabs();
                 }.bind(this));
 
+
         },
         handleCommentSubmit: function(user,text){
             var spray_id = this.state.spray._id;

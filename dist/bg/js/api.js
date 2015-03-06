@@ -145,6 +145,24 @@ Graffiti.prototype.Organization = function() {
                 }
             });
 
+        },
+        getFeed:function(args,callback){
+            console.log('API',{_ids:args._ids});
+            $.ajax({
+                type: "POST",
+                url: self.api + '/api/organizations/feed',
+                data: {'_ids[]':args._ids},
+                success: function(data) {
+                    console.log('GET FEED SUCCESS',data);
+                    callback(null, data)
+                },
+                error: function(xhr, status, err) {
+                    console.error(status, err.toString());
+                    callback(err.toString())
+                },
+                dataType: 'json'
+            });
         }
+
     }
 };
