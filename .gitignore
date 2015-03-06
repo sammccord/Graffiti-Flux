@@ -4,3 +4,9 @@
 *.xml
 
 *.xml
+
+dist/js/main.js
+
+*.xml
+
+.idea/workspace.xml
