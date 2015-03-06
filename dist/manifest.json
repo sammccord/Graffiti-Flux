@@ -15,10 +15,16 @@
     "page": "bg/background.html",
     "persistent": true
   },
+//  "browser_action": {
+//    "default_icon": "icons/icon19.png",
+//    "default_title": "Graffiti",
+//    "default_popup": "browser_action/app/index.html"
+//  },
   "externally_connectable": {
     "matches": ["http://localhost:9000/"]
   },
   "permissions": [
+    "contextMenus",
     "cookies",
     "tabs",
     "storage",

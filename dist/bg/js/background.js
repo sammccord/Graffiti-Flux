@@ -1,21 +1,19 @@
-var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
-var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
-var socket = io.connect('http://graffiti.herokuapp.com', {
-    path: '/socket.io-client',
-    transports: ['websocket'],
-    'force new connection': true
-});
+
+var Graffiti = new Graffiti('http://192.168.2.4:9000');
+var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"]
 
 var _rooms = {};
 
-socket.on('update',function(page){
-    if(!page) return false;
-    console.log('FROM SOCKET UPDATE',page);
-    chrome.tabs.sendMessage(_rooms[page._id],{
-        action:'getPage',
-        data:page
-    })
-});
+var _current_tag = {};
+
+//socket.on('update',function(page){
+//    if(!page) return false;
+//    console.log('FROM SOCKET UPDATE',page);
+//    chrome.tabs.sendMessage(_rooms[page._id],{
+//        action:'getPage',
+//        data:page
+//    })
+//});
 
 //chrome.storage.sync.clear();
 
@@ -42,6 +40,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 //// Content Script Message Handling //////
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    console.log(message);
     var action = message.action;
     switch(action){
         case 'getIdentities':
@@ -67,21 +66,33 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 });
                 chrome.storage.sync.set({'user':JSON.stringify(user)});
             break;
-        default:
-            Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
-                console.log(message.endpoint+' API CALL - ',arguments);
-                if(action === 'getPage'){
-                    if(!err){
-                        _rooms[data._id] = sender.tab.id;
-                        socket.emit('join','page/'+data._id);
-                    }
-                }
-                chrome.tabs.sendMessage(sender.tab.id, {
-                    action: message.action,
-                    data: data,
-                    err: err
+            case 'getFeed':
+                console.log('GETTING FEED');
+                var _ids = user.identities.map(function(el){
+                    return el.organization_id;
                 });
-            })
+                console.log(_ids);
+                Graffiti['Organization']()['getFeed']({_ids:_ids}, function(err, data) {
+                    console.log('ORGANIZATION API CALL - ',arguments);
+                    chrome.runtime.sendMessage({
+                        action:'sendFeed',
+                        data:data,
+                        err:err
+                    })
+                });
+            break;
+        default:
+            if(Graffiti[message.endpoint]){
+                Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
+                    console.log(message.endpoint+' API CALL - ',arguments);
+                    chrome.tabs.sendMessage(sender.tab.id, {
+                        action: message.action,
+                        data: data,
+                        err: err
+                    });
+                })
+            }
+            else break;
     }
 });
 
@@ -97,8 +108,15 @@ function getIdentities(cb) {
                 organization_id : '54e120556ff7f30300642e70',
                 spray_color:'rgb(96, 96, 96)'
             };
+            var other = {
+                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
+                organization:'30Weeks',
+                organization_id : '54e1512170a92b0d4c2011ec',
+                spray_color:'rgb(96, 96, 96)'
+            };
             user.defaultIdentity = newIdentity;
             user.identities.push(newIdentity);
+            user.identities.push(other);
             chrome.storage.sync.set({'user':JSON.stringify(user)});
         }
         else{
@@ -138,3 +156,34 @@ function setDefaultIdentity(organization,name,organization_id){
     };
     user.defaultIdentity = defaultIdentity;
 }
+
+var clickHandler = function(e) {
+    var url = e.pageUrl;
+    var buzzPostUrl = "http://www.google.com/buzz/post?";
+
+    if (e.selectionText) {
+        // The user selected some text, put this in the message.
+        buzzPostUrl += "message=" + encodeURI(e.selectionText) + "&";
+    }
+
+    if (e.mediaType === "image") {
+        buzzPostUrl += "imageurl=" + encodeURI(e.srcUrl) + "&";
+    }
+
+    if (e.linkUrl) {
+        // The user wants to buzz a link.
+        url = e.linkUrl;
+    }
+
+    buzzPostUrl += "url=" + encodeURI(url);
+
+    // Open the page up.
+    chrome.tabs.create(
+        {"url" : buzzPostUrl });
+};
+
+chrome.contextMenus.create({
+    "title": "Buzz This",
+    "contexts": ["page", "selection", "image", "link"],
+    "onclick" : clickHandler
+});

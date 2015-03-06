@@ -40,6 +40,7 @@ var PageStore = merge(BaseStore,{
                 PageStore.emitChange();
                 break;
             case AppConstants.GET_PAGE:
+                console.log(action);
                 console.log('GETTING PAGE',action);
                 if(!action.page){
                     console.log('!!!!!!!! FRESH PAGE');
