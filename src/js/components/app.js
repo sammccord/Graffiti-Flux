@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
 var React = require('react');
-var Identity = require('../components/User/identity');
 var Page = require('../components/Page/page');
 var current_page = '';
 

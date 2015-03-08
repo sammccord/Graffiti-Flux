@@ -44,6 +44,16 @@ var AppActions = {
             actionType: AppConstants.LOAD_SPRAYS,
             sprays:sprays
         })
+    },
+    resetPage: function(){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.RESET_PAGE
+        })
+    },
+    resetSprays: function(){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.RESET_SPRAYS
+        })
     }
 };
 

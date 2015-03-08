@@ -13,10 +13,13 @@ var _ = require('lodash');
 var CHANGE_EVENT = "page";
 
 var _pageState = {
+    title:'',
+    url:'',
+    activated: false,
     fresh: true,
     _id: '',
     organization_id: '',
-    ref: ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+')
+    ref: ''
 };
 
 var PageStore = merge(BaseStore,{
@@ -35,6 +38,10 @@ var PageStore = merge(BaseStore,{
                     _pageState.organization_id = action.default_identity.organization_id;
                 }
 
+                _pageState.ref = ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+');
+                _pageState.url = window.location.href;
+                _pageState.title = document.querySelector('title').innerHTML;
+
                 ExtActions.getPage(_pageState.ref,_pageState.organization_id);
 
                 PageStore.emitChange();
@@ -42,8 +49,9 @@ var PageStore = merge(BaseStore,{
             case AppConstants.GET_PAGE:
                 console.log(action);
                 console.log('GETTING PAGE',action);
+                _pageState.activated = true;
                 if(!action.page){
-                    console.log('!!!!!!!! FRESH PAGE');
+                    console.log('!!!!!!!! FRESH PAGE',_pageState);
                     _pageState.fresh = true;
                     AppActions.loadSprays([]);
                 }
@@ -61,6 +69,18 @@ var PageStore = merge(BaseStore,{
                 _pageState.organization_id = action.identity.organization_id;
                 ExtActions.getPage(_pageState.ref,action.identity.organization_id);
                 break;
+            case AppConstants.RESET_PAGE:
+                    _pageState = {
+                    title:'',
+                    url:'',
+                    activated: false,
+                    fresh: true,
+                    _id: '',
+                    organization_id: '',
+                    ref: ''
+                };
+                AppActions.resetSprays();
+                PageStore.emitChange();
         }
 
         return true;

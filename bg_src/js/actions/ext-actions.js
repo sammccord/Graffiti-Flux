@@ -7,70 +7,44 @@ function sendMessage (payload) {
 var ExtActions = {
     getIdentities:function(){
         sendMessage({
-            action:'getIdentities'
+            action:'getIdentities:action'
         })
     },
-    getPage:function(url,organization_id){
-        console.log('GETTING PAGE STATE',arguments);
+    setDefaultIdentity:function(organization,name,organization_id){
         sendMessage({
-            action:'getPage',
-            endpoint: 'Page',
+            action:'setDefaultIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    addIdentity:function(organization,name,organization_id){
+        sendMessage({
+            action:'addIdentity',
+            organization:organization,
+            name:name,
+            organization_id:organization_id
+        })
+    },
+    queryCode:function(code){
+        sendMessage({
+            action:'queryCode',
+            endpoint:'Organization',
             method:'GET',
             args:{
-                page:url,
-                organization_id:organization_id
+                code:code
             }
         })
     },
-    addSpray : function(page_id,targetText,user,text,index){
-        console.log('ADDING COMMENT',arguments);
+    getFeed:function(){
         sendMessage({
-            action:'addSpray',
-            endpoint: 'Spray',
-            method: 'POST',
-            args:{
-                page_id:page_id,
-                targetText:targetText,
-                user:user,
-                text:text,
-                p_index:index
-            }
-        })
-    },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
-        console.log('CREATING PAGE AND ADDING SPRAY',arguments);
-        sendMessage({
-            action:'getPage',
-            endpoint: 'Page',
-            method: 'POST',
-            args:{
-                org_id:org_id,
-                ref:page_ref,
-                targetText:targetText,
-                user: user,
-                text:text,
-                p_index:index
-            }
-        })
-    },
-    addComment : function(spray_id,user,text){
-        console.log('ADDING COMMENT',arguments);
-        sendMessage({
-            action:'addComment',
-            endpoint: 'Comment',
-            method: 'POST',
-            args:{
-                spray_id:spray_id,
-                user: user,
-                text:text
-            }
+            action:'getFeed'
         })
     }
 };
 
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log(request);
         if(AppActions[request.action]) AppActions[request.action](request.data);
     });
 

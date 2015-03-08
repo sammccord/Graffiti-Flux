@@ -24,64 +24,71 @@ String.prototype.splice = function( idx, rem, s ) {
     return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
 };
 
-function bindSelection(){
-    var state = this;
-    $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
-    $('.graffiti-selectable').on('mouseenter',function(){
-       $('.graffiti-spray').addClass('graffiti-highlight')
-    }).on('mouseleave',function(){
-        $('.graffiti-spray').removeClass('graffiti-highlight')
-    });
-    $('.graffiti-selectable').on('selectstart', function(e) {
-        $('.freshSprayContainer').removeClass('graffiti-visible');
-        $('#graffiti-spray').contents().unwrap();
-        $(document).one('mouseup', function(e) {
-            var selection = window.getSelection();
-            if(selection.type!=="Range") return false;
-            console.log(window.getSelection());
-            var offset = e.pageY;
+var bindSelection = (function(that) {
+    var executed = false;
+    return function (that) {
+        if (!executed) {
+            executed = true;
+            var state = that;
 
-            var p = $('p.graffiti-selectable');
-
-            var html = "";
-            if (typeof window.getSelection != "undefined") {
-                var sel = window.getSelection();
-                if (sel.rangeCount) {
-                    var container = document.createElement("div");
-                    for (var i = 0, len = sel.rangeCount; i < len; ++i) {
-                        container.appendChild(sel.getRangeAt(i).cloneContents());
-                    }
-                    html = container.innerHTML;
-                }
-            } else if (typeof document.selection != "undefined") {
-                if (document.selection.type == "Text") {
-                    html = document.selection.createRange().htmlText;
-                }
-            }
-
-            var index = $('p.graffiti-selectable').index(selection.baseNode.parentNode);
-
-            console.log(selection.baseNode.parentNode.innerHTML);
-            console.log(html);
-
-            state.setState({
-                targetExp:html.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm, "$&")
+            $('p:not(#graffiti-app *)').addClass('graffiti-selectable');
+            $('.graffiti-selectable').on('mouseenter',function(){
+                $('.graffiti-spray').addClass('graffiti-highlight')
+            }).on('mouseleave',function(){
+                $('.graffiti-spray').removeClass('graffiti-highlight')
             });
+            $('.graffiti-selectable').on('selectstart', function(e) {
+                $('.freshSprayContainer').removeClass('graffiti-visible');
+                $('#graffiti-spray').contents().unwrap();
+                $(document).one('mouseup', function(e) {
+                    var selection = window.getSelection();
+                    if(selection.type!=="Range") return false;
+                    console.log(window.getSelection());
+                    var offset = e.pageY;
 
-        var regex = new RegExp(state.state.targetExp, "gm");
-            $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replaceCallback(regex,'<span id="graffiti-spray" data-graffiti-index="'+index+'">'+state.state.targetExp+'</span>',function(){
-                    $('.freshSprayContainer').css({
-                        top:(offset-100)+'px'
-                    }).addClass('graffiti-show');
+                    var p = $('p.graffiti-selectable');
 
-                    $('.graffiti-comments-container').removeClass('graffiti-show');
-                    window.getSelection().removeAllRanges();
-            }));
+                    var html = "";
+                    if (typeof window.getSelection != "undefined") {
+                        var sel = window.getSelection();
+                        if (sel.rangeCount) {
+                            var container = document.createElement("div");
+                            for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                                container.appendChild(sel.getRangeAt(i).cloneContents());
+                            }
+                            html = container.innerHTML;
+                        }
+                    } else if (typeof document.selection != "undefined") {
+                        if (document.selection.type == "Text") {
+                            html = document.selection.createRange().htmlText;
+                        }
+                    }
+
+                    var index = $('p.graffiti-selectable').index(selection.baseNode.parentNode);
+
+                    console.log(selection.baseNode.parentNode.innerHTML);
+                    console.log(html);
+
+                    state.setState({
+                        targetExp:html.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm, "$&")
+                    });
+
+                    var regex = new RegExp(state.state.targetExp, "gm");
+                    $(selection.baseNode.parentNode).html($(selection.baseNode.parentNode).html().replaceCallback(regex,'<span id="graffiti-spray" data-graffiti-index="'+index+'">'+state.state.targetExp+'</span>',function(){
+                        $('.freshSprayContainer').css({
+                            top:(offset-100)+'px'
+                        }).addClass('graffiti-show');
+
+                        $('.graffiti-comments-container').removeClass('graffiti-show');
+                        window.getSelection().removeAllRanges();
+                    }));
 
 
-        });
-    });
-}
+                });
+            });
+        }
+    };
+})();
 
 function getFormData(){
     return {
@@ -90,12 +97,12 @@ function getFormData(){
     };
 }
 
-function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index){
+function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index,url,title){
     console.log(org_id);
     if(!$('#graffiti-spray').length) {
         return;
     }
-    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index);
+    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index,url,title);
 }
 
 function addFreshSpray(page_id,targetText,user,text,p_index){
@@ -109,11 +116,11 @@ function addFreshSpray(page_id,targetText,user,text,p_index){
 var FreshSpray =
     React.createClass({
         getInitialState: function(){
-            bindSelection.bind(this)();
             return getFormData();
         },
         _onChange:function(){
             this.setState(getFormData());
+            bindSelection(this);
         },
         componentWillMount:function(){
             PageStore.addChangeListener(this._onChange);
@@ -136,7 +143,8 @@ var FreshSpray =
             var index = document.getElementById('graffiti-spray').getAttribute('data-graffiti-index');
 
             if(this.state.page.fresh === true){
-                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text,index);
+                console.log(this.state.page.title);
+                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text,index,this.state.page.url,this.state.page.title);
             }
             else{
                 addFreshSpray(this.state.page._id,targetText,this.state.user.name,text,index);
@@ -147,8 +155,11 @@ var FreshSpray =
             return;
         },
         render: function(){
+            var className = 'graffiti-bind freshSprayContainer ';
+            if(!this.state.page.activated) className+='graffiti-hide';
+
             return (
-                <Paper className="graffiti-bind freshSprayContainer" zDepth={1}>
+                <Paper className={className} zDepth={1}>
                     <form onSubmit={this.handleSubmit}>
                         <TextField
                             className="graffiti-bind"

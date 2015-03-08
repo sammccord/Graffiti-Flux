@@ -37,13 +37,15 @@ var ExtActions = {
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index){
-        console.log('CREATING PAGE AND ADDING SPRAY',arguments);
+    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index,url,title){
+        console.log('CREATING PAGE AND ADDING SPRAY',url);
         sendMessage({
             action:'getPage',
             endpoint: 'Page',
             method: 'POST',
             args:{
+                url:url,
+                title:title,
                 org_id:org_id,
                 ref:page_ref,
                 targetText:targetText,

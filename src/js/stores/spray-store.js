@@ -5,6 +5,7 @@ var ExtActions = require('../actions/ext-actions');
 
 var merge = require('react/lib/merge');
 var BaseStore = require('./base-store');
+var $ = require('jquery');
 var _ = require('lodash');
 
 var _sprays = [];
@@ -37,6 +38,11 @@ var SprayStore = merge(BaseStore, {
                         Array.prototype.push.apply(spray.comments,[action.data.comment]);
                     }
                 });
+                SprayStore.emitChange();
+                break;
+            case AppConstants.RESET_SPRAYS:
+                _sprays = [];
+                $('.spray-tab').remove();
                 SprayStore.emitChange();
                 break;
         }

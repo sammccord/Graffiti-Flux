@@ -118,7 +118,7 @@ body, html {
   -webkit-transition: all .25s ease-in; }
   .graffiti-spray.graffiti-highlight {
     -webkit-transition: all .25s ease-in;
-    background-color: #efefef;
+    background-color: #d0d0d0;
     color: black; }
     .graffiti-spray.graffiti-highlight.graffiti-focus {
       background-color: #59f0d6; }

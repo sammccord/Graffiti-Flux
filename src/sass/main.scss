@@ -175,7 +175,7 @@ body,html{
   -webkit-transition: all .25s ease-in;
   &.graffiti-highlight {
     -webkit-transition: all .25s ease-in;
-    background-color:#efefef;
+    background-color:rgb(208, 208, 208);
     color:black;
     &.graffiti-focus{
       background-color:rgb(89, 240, 214);
@@ -218,8 +218,8 @@ body,html{
   }
 
   .graffiti-hide{
-    display:none;
-  }
+       display:none;
+     }
   .addOrganization {
     margin-top:40px;
   }

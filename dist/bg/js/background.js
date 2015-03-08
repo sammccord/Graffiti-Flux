@@ -23,19 +23,6 @@ var user = {
 
 getIdentities();
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status && changeInfo.status == 'complete') {
-        chrome.tabs.sendMessage(tabId, {
-            //message
-            action: 'initializePage',
-            err: null,
-            data: user.defaultIdentity
-        }, function(response) {
-            //if (response) console.log(response);
-        });
-    }
-});
-
 //// Content Script Message Handling //////
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
@@ -47,6 +34,12 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 action:action,
                 data:user
             });
+            break;
+            case 'getIdentities:action':
+                chrome.runtime.sendMessage({
+                    action:'sendIdentities',
+                    data:user
+                });
             break;
             case 'setDefaultIdentity':
                 setDefaultIdentity(message.organization,message.name,message.organization_id);
@@ -72,7 +65,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 });
                 console.log(_ids);
                 Graffiti['Organization']()['getFeed']({_ids:_ids}, function(err, data) {
-                    console.log('ORGANIZATION API CALL - ',arguments);
                     chrome.runtime.sendMessage({
                         action:'sendFeed',
                         data:data,
@@ -157,32 +149,24 @@ function setDefaultIdentity(organization,name,organization_id){
 }
 
 var clickHandler = function(e) {
-    var url = e.pageUrl;
-    var buzzPostUrl = "http://www.google.com/buzz/post?";
-
-    if (e.selectionText) {
-        // The user selected some text, put this in the message.
-        buzzPostUrl += "message=" + encodeURI(e.selectionText) + "&";
-    }
-
-    if (e.mediaType === "image") {
-        buzzPostUrl += "imageurl=" + encodeURI(e.srcUrl) + "&";
-    }
-
-    if (e.linkUrl) {
-        // The user wants to buzz a link.
-        url = e.linkUrl;
-    }
-
-    buzzPostUrl += "url=" + encodeURI(url);
-
-    // Open the page up.
-    chrome.tabs.create(
-        {"url" : buzzPostUrl });
+        chrome.tabs.query(
+            { currentWindow: true, active: true },
+            function (tabArray) {
+                chrome.tabs.sendMessage(tabArray[0].id, {
+                    //message
+                    action: 'initializePage',
+                    err: null,
+                    data: user.defaultIdentity
+                }, function(response) {
+                    //if (response) console.log(response);
+                });
+            }
+        );
 };
 
 chrome.contextMenus.create({
-    "title": "Buzz This",
+    "title": "See Tags",
+    //"contexts": ["page"],
     "contexts": ["page", "selection", "image", "link"],
     "onclick" : clickHandler
 });
