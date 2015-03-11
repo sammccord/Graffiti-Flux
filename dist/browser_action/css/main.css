@@ -37,7 +37,17 @@ body, html {
   margin-bottom: 14px; }
   .action-tabs .mui-paper .mui-paper-container {
     box-sizing: border-box;
-    padding: 0px 10px; }
+    padding: 6px 10px; }
+    .action-tabs .mui-paper .mui-paper-container .group-toggle {
+      margin-bottom: 4px; }
+      .action-tabs .mui-paper .mui-paper-container .group-toggle h2 {
+        margin-bottom: 0; }
+      .action-tabs .mui-paper .mui-paper-container .group-toggle .toggle-icon span {
+        font-size: 32px;
+        padding-left: 11px;
+        padding-top: 13px; }
+    .action-tabs .mui-paper .mui-paper-container span.muted {
+      color: gray; }
     .action-tabs .mui-paper .mui-paper-container h3.action-icon {
       padding-top: 0;
       margin-bottom: 0;

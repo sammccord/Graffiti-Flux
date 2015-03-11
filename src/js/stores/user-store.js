@@ -18,20 +18,6 @@ var UserStore = merge(BaseStore,{
         return _identities;
     },
 
-    getIdentityById: function(id){
-        var found = {};
-        _identities.forEach(function(identity){
-          if(identity.organization_id === id){
-              found = identity;
-          }
-        });
-        return found;
-    },
-
-    getCurrentIdentity: function(){
-        return _current_identity;
-    },
-
     dispatcherIndex:AppDispatcher.register(function(payload){
         var action = payload.action;
 
@@ -39,7 +25,6 @@ var UserStore = merge(BaseStore,{
             case AppConstants.GET_IDENTITIES:
                 console.log('IDENTITIES DISPATCHED',payload.action);
                 _identities = payload.action.user.identities;
-                _current_identity = payload.action.user.defaultIdentity;
                 UserStore.emitChange();
                 break;
 

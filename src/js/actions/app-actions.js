@@ -14,10 +14,10 @@ var AppActions = {
             identity:identity
         })
     },
-    initializePage:function(default_identity){
+    initializePage:function(user){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.INITIALIZE_PAGE,
-            default_identity:default_identity
+            user:user
         })
     },
     getPage:function(page){

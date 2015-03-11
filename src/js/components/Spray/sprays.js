@@ -44,6 +44,7 @@ var Sprays =
             return getSprays();
         },
         _onChange:function(){
+            console.log(getSprays());
             this.setState(getSprays());
         },
         componentWillMount:function(){
@@ -54,7 +55,7 @@ var Sprays =
         },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
-                return <Spray key={spray._id} spray={spray} />
+                return <Spray spray={spray} />
             });
 
             var snackboxes = this.state.sprays.map(function(spray) {

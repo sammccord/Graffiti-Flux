@@ -43,7 +43,6 @@ var bindSelection = (function(that) {
                 $(document).one('mouseup', function(e) {
                     var selection = window.getSelection();
                     if(selection.type!=="Range") return false;
-                    console.log(window.getSelection());
                     var offset = e.pageY;
 
                     var p = $('p.graffiti-selectable');
@@ -65,9 +64,6 @@ var bindSelection = (function(that) {
                     }
 
                     var index = $('p.graffiti-selectable').index(selection.baseNode.parentNode);
-
-                    console.log(selection.baseNode.parentNode.innerHTML);
-                    console.log(html);
 
                     state.setState({
                         targetExp:html.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/gm, "$&")
@@ -93,23 +89,28 @@ var bindSelection = (function(that) {
 function getFormData(){
     return {
         page: PageStore.getPageState(),
-        user: UserStore.getCurrentIdentity()
+        _ids: UserStore.getIdentities().map(function(identity){
+            return identity.organization_id;
+        }),
+        names: UserStore.getIdentities().map(function(identity){
+            return identity.name;
+        })
     };
 }
 
-function createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index,url,title){
-    console.log(org_id);
-    if(!$('#graffiti-spray').length) {
+function createPageAddFreshSpray(_ids,names,page_ref,targetText,text,p_index,url,title){
+    console.log(names);
+    if(!$('#graffiti-spray').length || $('#graffiti-spray').length > 1) {
         return;
     }
-    ExtActions.createPageAddFreshSpray(org_id,page_ref,targetText,name,text,p_index,url,title);
+    ExtActions.createPageAddFreshSpray(_ids,names,page_ref,targetText,text,p_index,url,title);
 }
 
-function addFreshSpray(page_id,targetText,user,text,p_index){
+function addFreshSpray(_ids,names,ref,targetText,text,index){
     if(!$('#graffiti-spray').length) {
         return;
     }
-    ExtActions.addSpray(page_id,targetText,user,text,p_index);
+    ExtActions.addSpray(_ids,names,ref,targetText,text,index);
     //AppActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
@@ -144,10 +145,10 @@ var FreshSpray =
 
             if(this.state.page.fresh === true){
                 console.log(this.state.page.title);
-                createPageAddFreshSpray(this.state.user.organization_id,this.state.page.ref,targetText,this.state.user.name,text,index,this.state.page.url,this.state.page.title);
+                createPageAddFreshSpray(this.state._ids,this.state.names,this.state.page.ref,targetText,text,index,this.state.page.url,this.state.page.title);
             }
             else{
-                addFreshSpray(this.state.page._id,targetText,this.state.user.name,text,index);
+                addFreshSpray(this.state._ids,this.state.names,this.state.page.ref,targetText,text,index);
             }
             $('#graffiti-spray').contents().unwrap();
             $('.freshSprayContainer').removeClass('graffiti-show');

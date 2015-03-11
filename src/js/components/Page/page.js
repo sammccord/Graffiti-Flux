@@ -11,7 +11,6 @@ var Sprays = require('../Spray/sprays');
 function getPage(){
     return {
         page:PageStore.getPageState(),
-        current_identity: UserStore.getCurrentIdentity(),
         identities:UserStore.getIdentities()
     };
 }
@@ -51,7 +50,7 @@ var Page =
         },
         render: function (){
                 return (
-                    <Sprays currentIdentity={this.state.current_identity} identities={this.state.identities} />
+                    <Sprays />
                         )
         }
 

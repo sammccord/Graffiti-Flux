@@ -10,8 +10,18 @@ var ExtActions = {
             action:'getIdentities'
         })
     },
+    getAggregate: function(ref,_ids){
+        sendMessage({
+            action:'getPage',
+            endpoint: 'Page',
+            method:'getAggregate',
+            args:{
+                ref:ref,
+                _ids:_ids
+            }
+        })
+    },
     getPage:function(url,organization_id){
-        console.log('GETTING PAGE STATE',arguments);
         sendMessage({
             action:'getPage',
             endpoint: 'Page',
@@ -22,41 +32,40 @@ var ExtActions = {
             }
         })
     },
-    addSpray : function(page_id,targetText,user,text,index){
-        console.log('ADDING COMMENT',arguments);
+    addSpray : function(_ids,names,ref,targetText,text,index){
+        console.log(arguments);
         sendMessage({
             action:'addSpray',
             endpoint: 'Spray',
             method: 'POST',
             args:{
-                page_id:page_id,
+                _ids:_ids,
+                names:names,
+                ref:ref,
                 targetText:targetText,
-                user:user,
                 text:text,
                 p_index:index
             }
         })
     },
-    createPageAddFreshSpray: function(org_id,page_ref,targetText,user,text,index,url,title){
-        console.log('CREATING PAGE AND ADDING SPRAY',url);
+    createPageAddFreshSpray: function(_ids,names,page_ref,targetText,text,index,url,title){
         sendMessage({
             action:'getPage',
             endpoint: 'Page',
             method: 'POST',
             args:{
+                _ids:_ids,
                 url:url,
                 title:title,
-                org_id:org_id,
+                names:names,
                 ref:page_ref,
                 targetText:targetText,
-                user: user,
                 text:text,
                 p_index:index
             }
         })
     },
     addComment : function(spray_id,user,text){
-        console.log('ADDING COMMENT',arguments);
         sendMessage({
             action:'addComment',
             endpoint: 'Comment',

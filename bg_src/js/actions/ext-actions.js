@@ -40,6 +40,12 @@ var ExtActions = {
         sendMessage({
             action:'getFeed'
         })
+    },
+    toggleGroup:function(_id){
+        sendMessage({
+            action:'toggleGroup',
+            _id:_id
+        })
     }
 };
 

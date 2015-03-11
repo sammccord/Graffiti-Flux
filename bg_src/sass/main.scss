@@ -54,7 +54,22 @@ body,html{
     margin-bottom:14px;
     .mui-paper-container{
       box-sizing:border-box;
-      padding:0px 10px;
+      padding:6px 10px;
+      .group-toggle{
+        margin-bottom:4px;
+        h2{
+          margin-bottom:0;
+        }
+        .toggle-icon span{
+          font-size: 32px;
+          padding-left: 11px;
+          padding-top: 13px;
+        }
+      }
+
+      span.muted{
+        color:gray;
+      }
 
       h3.action-icon{
         padding-top:0;
