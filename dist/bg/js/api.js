@@ -6,6 +6,23 @@ var Graffiti = function(api) {
 Graffiti.prototype.Page = function() {
     var self = this;
     return {
+        getAggregate:function(args,callback){
+            console.log('API',{_ids:args._ids});
+            $.ajax({
+                type: "POST",
+                url: self.api + '/api/g/'+args.ref,
+                data: {'_ids[]':args._ids},
+                success: function(data) {
+                    console.log('GET FEED SUCCESS',data);
+                    callback(null, data)
+                },
+                error: function(xhr, status, err) {
+                    console.error(status, err.toString());
+                    callback(err.toString())
+                },
+                dataType: 'json'
+            });
+        },
         GET: function(args, callback) {
             //args.domain
             console.log('GETTING PAGE',args);
@@ -29,6 +46,8 @@ Graffiti.prototype.Page = function() {
         },
         POST: function POST(args,callback) {
             console.log(args);
+            //args['_ids[]'] = args._ids;
+            //args['names[]'] = args.names;
             $.ajax({
                 type: "POST",
                 url: self.api + '/api/pages/',

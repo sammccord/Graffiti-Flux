@@ -86,5 +86,5 @@ gulp.task('browser_action',['bg_browserify', 'bg_copy', 'bg_buildCSS','bg_buildL
 gulp.task('bg_extensionize',['bg_compress', 'bg_copy', 'bg_buildCSS','bg_buildLESS']);
 
 gulp.task('bg_watch', function() {
-    gulp.watch(['src/**/*.*','node_modules/material-ui/src/**/*.*'], ['default']);
+    gulp.watch(['bg_src/**/*.*','node_modules/material-ui/src/**/*.*'], ['browser_action']);
 });

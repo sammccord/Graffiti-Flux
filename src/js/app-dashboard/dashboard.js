@@ -9,7 +9,6 @@ injectTapEventPlugin();
 
 
 var Identity = require('./components/User/identity');
-var AddOrganization = require('./components/Organization/add-organization');
 
 var DASH =
     React.createClass({
@@ -17,7 +16,6 @@ var DASH =
             return (
                 <div>
                     <Identity />
-                    <AddOrganization />
                 </div>
             )
 

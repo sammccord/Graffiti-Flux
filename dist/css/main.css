@@ -45,7 +45,14 @@ body, html {
         #graffiti-app .graffiti-comments-container form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, #graffiti-app .freshSprayContainer form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, .graffiti-app .graffiti-comments-container form .mui-raised-button .mui-paper-container.mui-z-depth-bottom, .graffiti-app .freshSprayContainer form .mui-raised-button .mui-paper-container.mui-z-depth-bottom {
           padding: 0; }
     #graffiti-app .graffiti-comments-container .mui-paper-container, #graffiti-app .freshSprayContainer .mui-paper-container, .graffiti-app .graffiti-comments-container .mui-paper-container, .graffiti-app .freshSprayContainer .mui-paper-container {
-      padding: 10px 24px 10px 8px; }
+      padding: 0; }
+      #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs form, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs form, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs form, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs form {
+        padding-right: 20px;
+        padding-left: 6px; }
+      #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs ul, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs ul, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs ul, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs ul {
+        padding: 4px 20px 4px 4px; }
+      #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs.graffiti-hide, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs.graffiti-hide {
+        display: none; }
     #graffiti-app .graffiti-comments-container .mui-text-field, #graffiti-app .freshSprayContainer .mui-text-field, .graffiti-app .graffiti-comments-container .mui-text-field, .graffiti-app .freshSprayContainer .mui-text-field {
       width: 100%; }
       #graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-input, #graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-input, .graffiti-app .graffiti-comments-container .mui-text-field .mui-text-field-input, .graffiti-app .freshSprayContainer .mui-text-field .mui-text-field-input {
@@ -118,7 +125,7 @@ body, html {
   -webkit-transition: all .25s ease-in; }
   .graffiti-spray.graffiti-highlight {
     -webkit-transition: all .25s ease-in;
-    background-color: #efefef;
+    background-color: #d0d0d0;
     color: black; }
     .graffiti-spray.graffiti-highlight.graffiti-focus {
       background-color: #59f0d6; }

@@ -26,6 +26,11 @@ var ExtActions = {
             organization_id:organization_id
         })
     },
+    getFeed:function(){
+        sendMessage({
+            action:'getFeed'
+        })
+    },
     queryCode:function(code){
         sendMessage({
             action:'queryCode',

@@ -13,10 +13,11 @@ var _ = require('lodash');
 var CHANGE_EVENT = "page";
 
 var _pageState = {
+    title:'',
+    url:'',
+    activated: false,
     fresh: true,
-    _id: '',
-    organization_id: '',
-    ref: ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+')
+    ref: ''
 };
 
 var PageStore = merge(BaseStore,{
@@ -30,36 +31,55 @@ var PageStore = merge(BaseStore,{
 
         switch(action.actionType){
             case AppConstants.INITIALIZE_PAGE:
-                if(action.default_identity){
-                    _pageState.organization = action.default_identity.organization;
-                    _pageState.organization_id = action.default_identity.organization_id;
-                }
+                console.log(action);
 
-                ExtActions.getPage(_pageState.ref,_pageState.organization_id);
+                _pageState.ref = ''+document.domain.replace(/\./g, '+') + window.location.pathname.replace(/\//g, '+');
+                _pageState.url = window.location.href;
+                _pageState.title = document.querySelector('title').innerHTML;
+
+                console.log(action.user.identities);
+                var _ids = action.user.identities.filter(function(identity){
+                    return identity.active;
+                }).map(function(identity){
+                    console.log(identity);
+                    return identity.organization_id;
+                });
+
+                //ExtActions.getPage(_pageState.ref,_pageState.organization_id);
+                ExtActions.getAggregate(_pageState.ref,_ids);
 
                 PageStore.emitChange();
                 break;
             case AppConstants.GET_PAGE:
                 console.log(action);
                 console.log('GETTING PAGE',action);
+                _pageState.activated = true;
                 if(!action.page){
-                    console.log('!!!!!!!! FRESH PAGE');
+                    console.log('!!!!!!!! FRESH PAGE',_pageState);
                     _pageState.fresh = true;
                     AppActions.loadSprays([]);
                 }
                 else{
                     console.log('LOADING NEW SPRAYS',action.page);
                     _pageState.fresh = false;
-                    _pageState._id = action.page._id;
 
                     AppActions.loadSprays(action.page.sprays);
                 }
                 PageStore.emitChange();
 
                 break;
-            case AppConstants.CHANGE_IDENTITY:
-                _pageState.organization_id = action.identity.organization_id;
-                ExtActions.getPage(_pageState.ref,action.identity.organization_id);
+            case AppConstants.RESET_PAGE:
+                    _pageState = {
+                    title:'',
+                    url:'',
+                    activated: false,
+                    fresh: true,
+                    _id: '',
+                    organization_id: '',
+                    ref: ''
+                };
+                AppActions.resetSprays();
+                PageStore.emitChange();
                 break;
         }
 

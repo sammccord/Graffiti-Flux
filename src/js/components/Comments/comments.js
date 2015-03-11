@@ -3,8 +3,15 @@ var React = require('react');
 var moment = require('moment');
 var Replies = require('../Comments/replies');
 
+var CommentForm = require('./comment-form');
+
+var ExtActions = require('../../actions/ext-actions');
+
 var Comments =
     React.createClass({
+        handleCommentSubmit: function(text){
+            ExtActions.addComment(this.props.sprayId,this.props.name,text);
+        },
         render: function (){
             var comments = this.props.comments.map(function(comment){
                 var date = new Date(comment.createdAt);
@@ -16,10 +23,20 @@ var Comments =
 
                 </li>;
             });
+
+            var classStr = 'graffiti-bind action-tabs';
+            if(this.props.index > 0){
+                classStr += ' graffiti-hide'
+            }
+            classStr += ' tab-'+this.props.index;
+
             return (
-                <ul className="graffiti-bind">
+                <div className={classStr}>
+                    <CommentForm sprayId={this.props.sprayId} onCommentSubmit={this.handleCommentSubmit}/>
+                    <ul>
                     {comments}
-                </ul>
+                    </ul>
+                </div>
             )
         }
 

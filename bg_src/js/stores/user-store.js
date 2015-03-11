@@ -6,12 +6,6 @@ var _ = require('lodash');
 
 var _identities = [];
 
-var _current_identity = {};
-
-var _changeIdentity = function(newIdentity){
-    _current_identity =  newIdentity;
-};
-
 var UserStore = merge(BaseStore,{
 
     getIdentities: function(){
@@ -25,11 +19,6 @@ var UserStore = merge(BaseStore,{
             case AppConstants.GET_IDENTITIES:
                 console.log('IDENTITIES DISPATCHED',payload.action);
                 _identities = payload.action.user.identities;
-                UserStore.emitChange();
-                break;
-
-            case AppConstants.CHANGE_IDENTITY:
-                _changeIdentity(payload.action.identity);
                 UserStore.emitChange();
                 break;
 
