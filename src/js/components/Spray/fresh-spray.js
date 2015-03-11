@@ -6,6 +6,8 @@ var AppActions = require('../../actions/app-actions');
 var mui = require('material-ui'),
     TextField = mui.TextField,
     RaisedButton = mui.RaisedButton,
+    FlatButton = mui.FlatButton,
+    Icon = mui.Icon,
     Paper = mui.Paper;
 
 var PageStore = require('../../stores/page-store');
@@ -89,12 +91,20 @@ var bindSelection = (function(that) {
 function getFormData(){
     return {
         page: PageStore.getPageState(),
+        org_names: UserStore.getIdentities().map(function(identity){
+            return identity.organization;
+        }),
         _ids: UserStore.getIdentities().map(function(identity){
             return identity.organization_id;
         }),
         names: UserStore.getIdentities().map(function(identity){
             return identity.name;
-        })
+        }),
+        active: UserStore.getIdentities().map(function(identity){
+            return identity.active;
+        }),
+        identities: UserStore.getIdentities(),
+        postTo:[]
     };
 }
 
@@ -143,21 +153,67 @@ var FreshSpray =
 
             var index = document.getElementById('graffiti-spray').getAttribute('data-graffiti-index');
 
+            var names = this.state.postTo.map(function(id){
+                var i;
+                this.state.identities.forEach(function(identity){
+                    if(identity.organization_id === id){
+                        i = identity.name;
+                    }
+                });
+                return i;
+            }.bind(this));
+
             if(this.state.page.fresh === true){
                 console.log(this.state.page.title);
-                createPageAddFreshSpray(this.state._ids,this.state.names,this.state.page.ref,targetText,text,index,this.state.page.url,this.state.page.title);
+                createPageAddFreshSpray(this.state.postTo,names,this.state.page.ref,targetText,text,index,this.state.page.url,this.state.page.title);
             }
             else{
-                addFreshSpray(this.state._ids,this.state.names,this.state.page.ref,targetText,text,index);
+                addFreshSpray(this.state.postTo,names,this.state.page.ref,targetText,text,index);
             }
             $('#graffiti-spray').contents().unwrap();
             $('.freshSprayContainer').removeClass('graffiti-show');
             this.refs.text.getDOMNode().value = '';
             return;
         },
+        modifyPostTo:function(_id){
+            console.log(_id);
+            var arr;
+            if(this.state.postTo.indexOf(_id) < 0){
+                arr = this.state.postTo;
+                arr.push(_id);
+                console.log(arr);
+                this.setState({postTo:arr});
+            }
+            else{
+                arr = this.state.postTo.filter(function(id){
+                    console.log(id,_id);
+                    return id !== _id;
+                });
+                this.setState({postTo:arr});
+            }
+            console.log(this.state.postTo);
+        },
         render: function(){
             var className = 'graffiti-bind freshSprayContainer ';
             if(!this.state.page.activated) className+='graffiti-hide';
+
+            var buttons = this.state._ids.map(function(_id,i) {
+                var name = this.state.org_names[i];
+                var icon = this.state.postTo.indexOf(_id) > -1 ? <Icon icon="toggle-check-box" /> : <Icon icon="toggle-check-box-outline-blank" />;
+                var classes = 'col-xs-6 group-toggle ';
+
+                var boundClick = this.modifyPostTo.bind(this,_id);
+
+                if (!this.state.postTo.indexOf(_id)) classes += 'disabled';
+
+                return <div onClick={boundClick} className={classes}>
+                    <h4 className="group-toggle-label">
+                    {icon}
+                    {name}
+                    </h4>
+                </div>
+
+            }.bind(this));
 
             return (
                 <Paper className={className} zDepth={1}>
@@ -167,8 +223,9 @@ var FreshSpray =
                             id="freshSprayInput"
                             hintText="Leave a comment"
                             multiLine={true} ref="text"/>
-                        <RaisedButton className="graffiti-bind" type="submit" label="TAG+COMMENT" />
+                        <RaisedButton className="graffiti-bind" type="submit" label="TAG + COMMENT" />
                     </form>
+                    {buttons}
                 </Paper>
             )
         }

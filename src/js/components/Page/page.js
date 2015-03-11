@@ -18,6 +18,9 @@ function getPage(){
 var Page =
     React.createClass({
         getInitialState: function(){
+            $('#graffiti-app,#graffiti-app *,.spray-tab').css({
+                'font-family':'Roboto, sans-serif !important'
+            });
             return getPage();
         },
         _onChange:function(){

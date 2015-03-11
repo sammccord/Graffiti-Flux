@@ -19,7 +19,11 @@ body,html{
   right:0;
 }
 
-#graffiti-app, .graffiti-app {
+#graffiti-app, .graffiti-app,.graffiti-fonted {
+  font-family:Roboto, Helvetica Neue, sans-serif;
+  *{
+    font-family:Roboto, Helvetica Neue, sans-serif;
+  }
   position:absolute;
   z-index: 999999999998;
   overflow: visible;
@@ -35,6 +39,29 @@ body,html{
 
   .freshSprayContainer{
     margin-top:-60px;
+    .mui-paper-container{
+      padding-right: 20px !important;
+      padding-left: 6px !important;
+      .group-toggle{
+        cursor:pointer;
+        padding-top: 4px;
+        .mui-icon{
+          top: 4px;
+          margin-right: 4px;
+        }
+        h4{
+          .mui-icon{
+            top: 4px;
+            margin-right: 4px;
+          }
+          font-size:18px;
+          padding-top:9px;
+        }
+        span.group-toggle-label{
+          font-size:21px;
+        }
+      }
+    }
   }
 
   .graffiti-comments-container,.freshSprayContainer {
@@ -67,7 +94,21 @@ body,html{
     .mui-paper-container{
       padding:0;
       .mui-tabs-container{
-
+        .mui-tab-item-container{
+          border-bottom:1px solid rgba(89, 240, 214, .8);
+          height:28px;
+          background-color:white;
+          .mui-tab-item{
+            line-height:2;
+            font-size:13px;
+            &.mui-tab-is-active{
+              color:red;
+            }
+          }
+        }
+        .mui-ink-bar{
+          background-color:rgba(89, 240, 214, 1);
+        }
       }
       div{
         .action-tabs{
@@ -87,13 +128,27 @@ body,html{
       }
     }
 
+    .mui-enhanced-button{
+      font-family:Roboto, Helvetica Neue, sans-serif;
+      span.mui-raised-button-label{
+        font-family:Roboto, Helvetica Neue, sans-serif;
+      }
+    }
+
     .mui-text-field{
       width:100%;
+      font-family:Roboto, Helvetica Neue, sans-serif;
+      .mui-text-field-hint{
+        font-size:12px;
+        font-family:Roboto, Helvetica Neue, sans-serif;
+      }
       .mui-text-field-input{
         width:100%;
+        font-family:Roboto, Helvetica Neue, sans-serif;
       }
       .mui-text-field-textarea{
         box-shadow:none;
+        font-family:Roboto, Helvetica Neue, sans-serif;
       }
     }
 
@@ -120,7 +175,7 @@ body,html{
         margin-bottom:0px;
       }
       p,b span,span{
-        font-family:Roboto, sans-serif !important;
+        font-family:Roboto, sans-serif;
         margin-bottom:0;
       }
       b{
@@ -164,7 +219,7 @@ body,html{
   -webkit-transform:translateX(6px);
   -webkit-transition:all .25s ease-in-out;
   .comment-count{
-    font-family:Roboto, sans-serif !important;
+    font-family:Roboto, sans-serif;
     color:white;
     opacity:0;
     -webkit-transition:opacity .25s ease-in-out, color .25s ease-in-out;

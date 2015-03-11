@@ -1,5 +1,17 @@
 var React = require('react');
 
+var marked = require('marked');
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: false,
+    breaks: true,
+    pedantic: false,
+    sanitize: true,
+    smartLists: true,
+    smartypants: false
+});
+
 var moment = require('moment');
 var Replies = require('../Comments/replies');
 
@@ -13,13 +25,15 @@ var Comments =
             ExtActions.addComment(this.props.sprayId,this.props.name,text);
         },
         render: function (){
+
             var comments = this.props.comments.map(function(comment){
                 var date = new Date(comment.createdAt);
+                var rawMarkup = marked(comment.text);
 
                 return <li className="SprayComment graffiti-bind" key={comment._id}>
                     <b className="commentAuthor">{comment.user} </b>
                     <span className="muted">{moment(date).from(new Date())}</span>
-                    <p>{comment.text}</p>
+                    <span className="commentText" dangerouslySetInnerHTML={{__html: rawMarkup}}></span>
 
                 </li>;
             });

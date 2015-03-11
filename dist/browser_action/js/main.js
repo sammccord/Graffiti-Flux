@@ -25774,6 +25774,10 @@ var RaisedButton = React.createClass({displayName: "RaisedButton",
   },
 
   render: function() {
+    var style={
+      fontFamily:'Roboto, Helvetica Neue, sans-serif !important'
+    }
+
     var $__0=
       
       
@@ -25793,7 +25797,7 @@ var RaisedButton = React.createClass({displayName: "RaisedButton",
           onMouseOut: this._handleMouseOut, 
           onTouchStart: this._handleTouchStart, 
           onTouchEnd: this._handleTouchEnd}), 
-          React.createElement("span", {className: "mui-raised-button-label"}, label)
+          React.createElement("span", {className: "mui-raised-button-label", style: style}, label)
         )
       )
     );
@@ -25830,6 +25834,7 @@ var RaisedButton = React.createClass({displayName: "RaisedButton",
 });
 
 module.exports = RaisedButton;
+
 
 },{"./enhanced-button.jsx":39,"./mixins/classable.js":52,"./paper.jsx":57,"react":253}],61:[function(require,module,exports){
 var React = require('react');
@@ -26755,6 +26760,7 @@ var TextField = React.createClass({displayName: "TextField",
 
   clearValue: function() {
     this.setValue('');
+    this._handleTextAreaHeightChange(null,24);
   },
 
   focus: function() {
@@ -26816,6 +26822,7 @@ var TextField = React.createClass({displayName: "TextField",
 });
 
 module.exports = TextField;
+
 
 },{"./enhanced-textarea.jsx":41,"./mixins/classable.js":52,"./mixins/dom-idable.js":54,"react":253}],76:[function(require,module,exports){
 var React = require('react');
