@@ -43,9 +43,9 @@ body, html {
       .action-tabs .mui-paper .mui-paper-container .group-toggle h2 {
         margin-bottom: 0; }
       .action-tabs .mui-paper .mui-paper-container .group-toggle .toggle-icon span {
-        font-size: 32px;
+        font-size: 28px;
         padding-left: 11px;
-        padding-top: 13px; }
+        padding-top: 18px; }
     .action-tabs .mui-paper .mui-paper-container span.muted {
       color: gray; }
     .action-tabs .mui-paper .mui-paper-container h3.action-icon {

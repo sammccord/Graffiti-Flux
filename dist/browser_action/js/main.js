@@ -234,7 +234,7 @@ var GroupItem =
                             )
                         ), 
                         React.createElement("div", {className: "col-xs-9"}, 
-                            React.createElement("h2", null, this.props.group.organization), 
+                            React.createElement("h3", null, this.props.group.organization), 
                             React.createElement("span", {className: "muted"}, this.props.group.name)
                         )
                     )

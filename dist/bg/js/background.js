@@ -59,7 +59,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     return el.organization_id;
                 });
                 console.log(_ids);
-                Graffiti['Organization']()['getFeed']({_ids:_ids}, function(err, data) {
+                Graffiti['Organization'](user.token)['getFeed']({_ids:_ids}, function(err, data) {
                     chrome.runtime.sendMessage({
                         action:'sendFeed',
                         data:data,
@@ -69,7 +69,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             break;
             case 'getPublic':
                 console.log(_ids);
-                Graffiti['Organization']()['getPublic'](null, function(err, data) {
+                Graffiti['Organization'](user.token)['getPublic'](null, function(err, data) {
                     chrome.runtime.sendMessage({
                         action:'sendPublic',
                         data:data,
@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                 break;
         default:
             if(Graffiti[message.endpoint]){
-                Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
+                Graffiti[message.endpoint](user.token)[message.method](message.args, function(err, data) {
                     console.log(message.endpoint+' API CALL - ',arguments);
                     chrome.tabs.sendMessage(sender.tab.id, {
                         action: message.action,

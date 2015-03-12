@@ -35,7 +35,7 @@ var GroupItem =
                             </h1>
                         </div>
                         <div className="col-xs-9">
-                            <h2>{this.props.group.organization}</h2>
+                            <h3>{this.props.group.organization}</h3>
                             <span className="muted">{this.props.group.name}</span>
                         </div>
                     </div>
