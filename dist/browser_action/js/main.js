@@ -327,20 +327,49 @@ var mui = require('material-ui');
 var ExtActions = require('../../actions/ext-actions');
 
 var Paper = mui.Paper;
-var FlatButton = mui.FlatButton;
+var RaisedButton = mui.RaisedButton;
 var TextField = mui.TextField;
 var Icon = mui.Icon;
 
 var ProfileItem =
     React.createClass({displayName: "ProfileItem",
+        getInitialState:function(){
+          return {visible:false}
+        },
+        showJoin:function(){
+            this.setState({visible:true});
+        },
+        addIdentity:function(e){
+            var name = document.getElementById(this.props.group._id).value;
+            document.getElementById(this.props.group._id).value = '';
+            if (!name) {
+                return;
+            }
+            ExtActions.addIdentity(this.props.group.name,name,this.props.group._id);
+        },
         render:function(){
+            var icon = React.createElement(Icon, {icon: "navigation-check"})
+            var className = "row ";
+            if(this.state.visible !== true) className+='graffiti-hide';
             return (
-                React.createElement(Paper, {zDepth: 1}, 
+                React.createElement(Paper, {className: "profileItem", zDepth: 1}, 
                     React.createElement("div", {className: "row"}, 
-                        React.createElement("div", {className: "col-xs-8"}, 
-                            React.createElement("h5", null, this.props.group.name)
+                        React.createElement("div", {className: "col-xs-6"}, 
+                            React.createElement("h4", null, this.props.group.name)
                         ), 
-                        React.createElement("div", {className: "col-xs-4"}
+                        React.createElement("div", {className: "col-xs-6"}, 
+                            React.createElement(RaisedButton, {onClick: this.showJoin, className: "pull-right"+(!this.state.visible?'':' graffiti-hide'), label: "Join", secondary: true})
+                        )
+                    ), 
+                    React.createElement("div", {className: className}, 
+                        React.createElement("div", {className: "col-xs-6"}, 
+                            React.createElement(TextField, {
+                                id: this.props.group._id, 
+                                hintText: "Join as", 
+                                multiLine: false, ref: "text"})
+                        ), 
+                        React.createElement("div", {className: "col-xs-6"}, 
+                            React.createElement(RaisedButton, {className: "pull-right", onClick: this.addIdentity, label: icon})
                         )
                     )
                 )
@@ -398,7 +427,13 @@ var Profile =
             }
             classStr += ' tab-'+this.props.index;
 
-            var gs = this.state.groups.map(function(g){
+            var gs = this.state.groups.filter(function(g){
+                var flag = true;
+                this.state.identities.forEach(function(id){
+                   if(id.organization_id === g._id) flag = false;
+                });
+                return flag;
+            }.bind(this)).map(function(g){
                 return React.createElement(ProfileItem, {group: g});
             });
 

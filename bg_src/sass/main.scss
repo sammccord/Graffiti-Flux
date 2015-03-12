@@ -55,6 +55,7 @@ body,html{
     .mui-paper-container{
       box-sizing:border-box;
       padding:6px 10px;
+
       .group-toggle{
         margin-bottom:4px;
         h2{
@@ -78,6 +79,18 @@ body,html{
         &:first-child{
           padding-top:8px;
         }
+      }
+    }
+
+  }
+  .profileItem{
+    h4{
+      padding-top:4px;
+    }
+    .mui-raised-button{
+      padding:0;
+      .mui-paper-container{
+        padding:0;
       }
     }
   }

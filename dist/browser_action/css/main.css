@@ -54,6 +54,12 @@ body, html {
       padding: 6px 0px; }
       .action-tabs .mui-paper .mui-paper-container h3.action-icon:first-child {
         padding-top: 8px; }
+.action-tabs .profileItem h4 {
+  padding-top: 4px; }
+.action-tabs .profileItem .mui-raised-button {
+  padding: 0; }
+  .action-tabs .profileItem .mui-raised-button .mui-paper-container {
+    padding: 0; }
 
 .graffiti-hide {
   display: none; }

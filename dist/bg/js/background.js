@@ -1,7 +1,7 @@
 var Graffiti = new Graffiti('http://192.168.2.4:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"];
 
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
 
 var user = {
     token:'',
@@ -47,8 +47,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             case 'addIdentity':
                 addIdentity(message.organization,message.name,message.organization_id);
                 console.log(user);
-                chrome.tabs.sendMessage(sender.tab.id,{
-                    action:'getIdentities',
+                chrome.runtime.sendMessage({
+                    action:'sendIdentities',
                     data:user
                 });
                 chrome.storage.sync.set({'user':JSON.stringify(user)});

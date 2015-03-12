@@ -32,7 +32,7 @@ var ExtActions = {
             }
         })
     },
-    addSpray : function(_ids,names,ref,targetText,text,index){
+    addSpray : function(_ids,names,ref,targetText,text,index,url,title){
         console.log(arguments);
         sendMessage({
             action:'addSpray',
@@ -44,7 +44,9 @@ var ExtActions = {
                 ref:ref,
                 targetText:targetText,
                 text:text,
-                p_index:index
+                p_index:index,
+                title:title,
+                url:url
             }
         })
     },

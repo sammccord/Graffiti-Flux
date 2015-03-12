@@ -46,7 +46,13 @@ var Profile =
             }
             classStr += ' tab-'+this.props.index;
 
-            var gs = this.state.groups.map(function(g){
+            var gs = this.state.groups.filter(function(g){
+                var flag = true;
+                this.state.identities.forEach(function(id){
+                   if(id.organization_id === g._id) flag = false;
+                });
+                return flag;
+            }.bind(this)).map(function(g){
                 return <ProfileItem group={g}/>;
             });
 

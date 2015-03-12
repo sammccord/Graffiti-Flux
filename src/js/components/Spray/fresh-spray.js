@@ -116,11 +116,11 @@ function createPageAddFreshSpray(_ids,names,page_ref,targetText,text,p_index,url
     ExtActions.createPageAddFreshSpray(_ids,names,page_ref,targetText,text,p_index,url,title);
 }
 
-function addFreshSpray(_ids,names,ref,targetText,text,index){
+function addFreshSpray(_ids,names,ref,targetText,text,index,url,title){
     if(!$('#graffiti-spray').length) {
         return;
     }
-    ExtActions.addSpray(_ids,names,ref,targetText,text,index);
+    ExtActions.addSpray(_ids,names,ref,targetText,text,index,url,title);
     //AppActions.addSpray(page_id,targetText,user,text,p_index);
 }
 
@@ -168,7 +168,7 @@ var FreshSpray =
                 createPageAddFreshSpray(this.state.postTo,names,this.state.page.ref,targetText,text,index,this.state.page.url,this.state.page.title);
             }
             else{
-                addFreshSpray(this.state.postTo,names,this.state.page.ref,targetText,text,index);
+                addFreshSpray(this.state.postTo,names,this.state.page.ref,targetText,text,index,this.state.page.url,this.state.page.title);
             }
             $('#graffiti-spray').contents().unwrap();
             $('.freshSprayContainer').removeClass('graffiti-show');
