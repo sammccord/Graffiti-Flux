@@ -26,6 +26,7 @@
 ![Graffiti 1](https://s3.amazonaws.com/graffiti-storage/groups.png)
 #### Join new groups.
 ![Graffiti 1](https://s3.amazonaws.com/graffiti-storage/profile.png)
+
 _Above: An example of the working app_
 
 
