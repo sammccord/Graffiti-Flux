@@ -369,7 +369,7 @@ var ProfileItem =
                                 multiLine: false, ref: "text"})
                         ), 
                         React.createElement("div", {className: "col-xs-6"}, 
-                            React.createElement(RaisedButton, {className: "pull-right", onClick: this.addIdentity, label: icon})
+                            React.createElement(RaisedButton, {className: "pull-right join-btn", onClick: this.addIdentity, label: icon})
                         )
                     )
                 )

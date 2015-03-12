@@ -60,6 +60,8 @@ body, html {
   padding: 0; }
   .action-tabs .profileItem .mui-raised-button .mui-paper-container {
     padding: 0; }
+.action-tabs .profileItem .join-btn .mui-raised-button-label {
+  top: 4px; }
 
 .graffiti-hide {
   display: none; }

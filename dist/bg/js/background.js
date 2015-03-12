@@ -1,8 +1,9 @@
 
-var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
+//var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
+var Graffiti = new Graffiti('http://10.0.1.187:9000');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"]
 
-//chrome.storage.sync.clear();
+chrome.storage.sync.clear();
 
 var user = {
     token:'',
