@@ -10,6 +10,7 @@ Graffiti.prototype.Page = function(token) {
         getAggregate:function(args,callback){
             console.log('API',{_ids:args._ids});
             $.ajax({
+                beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer '+token);},
                 type: "POST",
                 url: self.api + '/api/g/'+args.ref,
                 data: {'_ids[]':args._ids},
