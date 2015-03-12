@@ -47,7 +47,7 @@ var ProfileItem =
                                 multiLine={false} ref="text"/>
                         </div>
                         <div className="col-xs-6">
-                            <RaisedButton className="pull-right" onClick={this.addIdentity} label={icon} />
+                            <RaisedButton className="pull-right join-btn" onClick={this.addIdentity} label={icon} />
                         </div>
                     </div>
                 </Paper>

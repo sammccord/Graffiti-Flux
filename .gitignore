@@ -5,8 +5,8 @@
 
 *.xml
 
-*.xml
+dist/js/main.js
 
-.idea/workspace.xml
+*.xml
 
 .idea/workspace.xml
