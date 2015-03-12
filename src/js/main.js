@@ -17,21 +17,21 @@ var observer;
 
 var target = document.querySelector('body');
 
-if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(http:\/\/graffiti\.herokuapp\.com)/)){
-    $('.heroBox').detach();
-    $('body').prepend('<div id="graffiti-dash"></div>');
-    React.render(
-        <DASHBOARD />,
-        document.getElementById('graffiti-dash')
-    )
-}
-else{
+//if(location.match(/(http:\/\/192\.168\.1\.24:9000)|(http:\/\/localhost:9000)|(http:\/\/graffiti\.herokuapp\.com)/)){
+//    $('.heroBox').detach();
+//    $('body').prepend('<div id="graffiti-dash"></div>');
+//    React.render(
+//        <DASHBOARD />,
+//        document.getElementById('graffiti-dash')
+//    )
+//}
+//else{
     $('body').prepend('<div id="graffiti-app"></div>');
     React.render(
         <APP />,
         document.getElementById('graffiti-app')
     );
-}
+//}
 
 
 //// later, you can stop observing
