@@ -98,25 +98,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 function getIdentities(cb) {
     chrome.storage.sync.get('user', function(data) {
         if(!data.user){
-<<<<<<< HEAD
-            console.log('no data user');
-            var newIdentity = {
-                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-                organization:'Graffiti',
-                organization_id : '54e120556ff7f30300642e70',
-                spray_color:'rgb(96, 96, 96)'
-            };
-            //var other = {
-            //    name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-            //    organization:'30Weeks',
-            //    organization_id : '54e1512170a92b0d4c2011ec',
-            //    spray_color:'rgb(96, 96, 96)'
-            //};
-            user.defaultIdentity = newIdentity;
-            user.identities.push(newIdentity);
-            //user.identities.push(other);
-            chrome.storage.sync.set({'user':JSON.stringify(user)});
-=======
             Graffiti.User().POST({
                     password: new Date().getTime()
                 },
@@ -142,7 +123,6 @@ function getIdentities(cb) {
                     chrome.storage.sync.set({'user':JSON.stringify(user)});
                 });
 
->>>>>>> master
         }
         else{
             user = JSON.parse(data.user);
