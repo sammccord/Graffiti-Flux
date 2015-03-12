@@ -25,7 +25,9 @@ function handlePageClicks (){
         }
         else if($('.graffiti-comments-container.graffiti-show,.freshSprayContainer.graffiti-show').length){
             if(!findUpClass(e.target,'graffiti-bind')){
+                $('.graffiti-spray').removeClass('graffiti-lock');
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
+
             }
         }
     });
@@ -44,6 +46,7 @@ var Sprays =
             return getSprays();
         },
         _onChange:function(){
+            console.log(getSprays());
             this.setState(getSprays());
         },
         componentWillMount:function(){
@@ -54,7 +57,7 @@ var Sprays =
         },
         render: function (){
             var sprays = this.state.sprays.map(function(spray){
-                return <Spray key={spray._id} spray={spray} />
+                return <Spray spray={spray} />
             });
 
             var snackboxes = this.state.sprays.map(function(spray) {

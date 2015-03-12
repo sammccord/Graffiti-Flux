@@ -2,7 +2,7 @@ var AppConstants = require('../constants/app-constants.js');
 var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var AppActions = {
-    getIdentities:function(user){
+    sendIdentities:function(user){
         AppDispatcher.handleViewAction({
             actionType: AppConstants.GET_IDENTITIES,
             user:user
@@ -14,35 +14,16 @@ var AppActions = {
             identity:identity
         })
     },
-    initializePage:function(default_identity){
+    sendFeed: function(feed){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.INITIALIZE_PAGE,
-            default_identity:default_identity
+            actionType: AppConstants.GET_FEED,
+            feed:feed
         })
     },
-    getPage:function(page){
+    sendPublic:function(groups){
         AppDispatcher.handleViewAction({
-            actionType: AppConstants.GET_PAGE,
-            page:page
-        })
-    },
-    addComment : function(data){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.ADD_COMMENT,
-            data:data
-        });
-    },
-    addSpray : function(spray){
-        console.log('APP ACTIONS, ADD SPRAY',spray);
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.ADD_SPRAY,
-            spray:spray
-        });
-    },
-    loadSprays: function(sprays){
-        AppDispatcher.handleViewAction({
-            actionType: AppConstants.LOAD_SPRAYS,
-            sprays:sprays
+            actionType: AppConstants.GET_PUBLIC,
+            groups:groups
         })
     }
 };

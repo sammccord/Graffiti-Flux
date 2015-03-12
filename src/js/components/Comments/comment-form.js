@@ -1,54 +1,47 @@
 var React = require('react');
+var $ = require('jquery');
 var mui = require('material-ui'),
     TextField = mui.TextField,
-    RaisedButton = mui.RaisedButton;
+    RaisedButton = mui.RaisedButton,
+    Icon = mui.Icon;
 
-var UserStore = require('../../stores/user-store');
-
-function getCurrentIdentity(){
-    return {
-        current_identity: UserStore.getCurrentIdentity()
-    };
-}
 
 var CommentForm =
     React.createClass({
-        getInitialState: function(){
-            return getCurrentIdentity();
-        },
-        _onChange:function(){
-            this.setState(getCurrentIdentity());
-        },
-        componentWillMount:function(){
-            UserStore.addChangeListener(this._onChange);
-        },
-        componentDidUnmount:function(){
-            UserStore.removeChangeListener(this._onChange);
-        },
         handleSubmit: function(e){
             e.preventDefault();
             var _id = this.props.sprayId;
             var text = document.getElementById(_id).value;
+            $( "#"+_id ).trigger( "change" );
             if (!text) {
                 return;
             }
-            document.getElementById(_id).value = '';
 
             // TODO: send request to the server
-            this.props.onCommentSubmit(this.state.current_identity.name,text);
-            this.refs.text.getDOMNode().value = '';
+            this.props.onCommentSubmit(text);
+            //this.refs.text.getDOMNode().value = '';
+            //this.refs.tf.getDOMNode().clearValue();
+            this.refs.text.clearValue();
+            $('textarea#'+_id).css('height','24px');
             return;
         },
         render: function(){
-
+            var quote = ">quote";
             return (
                 <form className="graffiti-bind" onSubmit={this.handleSubmit}>
                     <TextField
+                        ref="tf"
                         className="graffiti-bind"
                         id={this.props.sprayId}
                         hintText="Leave a comment"
                         multiLine={true} ref="text"/>
-                    <RaisedButton className="graffiti-bind" type="submit" label="Send" />
+                    <span className="pull-right muted markdown">
+                        <b>*bold*</b>
+                        <i>_italics_</i>
+                        <code>`code`</code>
+                        <blockquote>{quote}</blockquote>
+                    </span>
+                    <RaisedButton className="graffiti-bind" type="submit" label="Reply" />
                 </form>
             )
         }

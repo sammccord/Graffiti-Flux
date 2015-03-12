@@ -19,7 +19,11 @@ body,html{
   right:0;
 }
 
-#graffiti-app, .graffiti-app {
+#graffiti-app, .graffiti-app,.graffiti-fonted {
+  font-family:Roboto, Helvetica Neue, sans-serif;
+  *{
+    font-family:Roboto, Helvetica Neue, sans-serif;
+  }
   position:absolute;
   z-index: 999999999998;
   overflow: visible;
@@ -35,6 +39,34 @@ body,html{
 
   .freshSprayContainer{
     margin-top:-60px;
+    .mui-paper-container{
+      padding:0px 20px 0px 6px;
+
+      form{
+        padding-right: 20px;
+        padding-left: 6px;
+      }
+
+      .group-toggle{
+        cursor:pointer;
+        padding-top: 4px;
+        .mui-icon{
+          top: 4px;
+          margin-right: 4px;
+        }
+        h4{
+          .mui-icon{
+            top: 4px;
+            margin-right: 4px;
+          }
+          font-size:14px;
+          padding-top:9px;
+        }
+        span.group-toggle-label{
+          font-size:21px;
+        }
+      }
+    }
   }
 
   .graffiti-comments-container,.freshSprayContainer {
@@ -65,16 +97,68 @@ body,html{
     }
 
     .mui-paper-container{
-      padding:10px 24px 10px 8px;
+      padding:0;
+      .mui-tabs-container{
+        .mui-tab-item-container{
+          border-bottom:1px solid rgba(89, 240, 214, .8);
+          height:32px;
+          background-color:white;
+          .mui-tab-item{
+            -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            line-height:2.4;
+            font-size:13px;
+            &.mui-tab-is-active{
+              -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+              background-color:rgb(89, 240, 214) !important;
+            }
+          }
+        }
+        .mui-ink-bar{
+          background-color:rgba(89, 240, 214, 1);
+        }
+      }
+      div{
+        .action-tabs{
+
+          form{
+            padding-right:20px;
+            padding-left:6px;
+          }
+          ul{
+            -webkit-box-shadow: rgba(50, 50, 50, 0.23) 0px 4px 3px -3px inset;
+            max-height: 260px;
+            overflow-y:scroll;
+            padding: 4px 20px 4px 4px;
+          }
+
+          &.graffiti-hide{
+            display:none;
+          }
+        }
+      }
+    }
+
+    .mui-enhanced-button{
+      font-family:Roboto, Helvetica Neue, sans-serif;
+      span.mui-raised-button-label{
+        font-family:Roboto, Helvetica Neue, sans-serif;
+      }
     }
 
     .mui-text-field{
       width:100%;
+      font-family:Roboto, Helvetica Neue, sans-serif;
+      .mui-text-field-hint{
+        font-size:12px;
+        font-family:Roboto, Helvetica Neue, sans-serif;
+      }
       .mui-text-field-input{
         width:100%;
+        font-family:Roboto, Helvetica Neue, sans-serif;
       }
       .mui-text-field-textarea{
         box-shadow:none;
+        font-family:Roboto, Helvetica Neue, sans-serif;
       }
     }
 
@@ -97,11 +181,14 @@ body,html{
       border-top: solid 1px #efefef;
       margin-bottom: 16px;
       box-sizing:border-box;
+      &:first-child{
+        border-top: solid 0px #efefef;
+      }
       &:last-child{
         margin-bottom:0px;
       }
       p,b span,span{
-        font-family:Roboto, sans-serif !important;
+        font-family:Roboto, sans-serif;
         margin-bottom:0;
       }
       b{
@@ -129,7 +216,16 @@ body,html{
     }
 
   }
-
+  span.markdown{
+    padding-bottom:6px;
+    *{
+      font-size:10px;
+      margin: 0 4px;
+    }
+    blockquote{
+      float:right;
+    }
+  }
 }
 
 .spray-tab{
@@ -140,19 +236,19 @@ body,html{
   left:100%;
   padding:12px 6px 12px 2px;
   margin-top:-6px;
-  margin-left:-12px;
+  margin-left:-16px;
 
-  -webkit-transform:translateX(6px);
+  -webkit-transform:translateX(8px);
   -webkit-transition:all .25s ease-in-out;
   .comment-count{
-    font-family:Roboto, sans-serif !important;
+    font-family:Roboto, sans-serif;
     color:white;
     opacity:0;
     -webkit-transition:opacity .25s ease-in-out, color .25s ease-in-out;
   }
   &.graffiti-expanded{
     -webkit-transition:all .25s ease-in-out;
-    -webkit-transform:translateX(0px);
+    -webkit-transform:translateX(2px);
     .comment-count{
       opacity:1;
       -webkit-transition:opacity .25s ease-in-out
@@ -175,11 +271,14 @@ body,html{
   -webkit-transition: all .25s ease-in;
   &.graffiti-highlight {
     -webkit-transition: all .25s ease-in;
-    background-color:#efefef;
+    background-color:rgb(208, 208, 208);
     color:black;
     &.graffiti-focus{
       background-color:rgb(89, 240, 214);
     }
+  }
+  &.graffiti-lock{
+    background-color:rgb(89, 240, 214);
   }
 }
 
@@ -218,8 +317,8 @@ body,html{
   }
 
   .graffiti-hide{
-    display:none;
-  }
+       display:none;
+     }
   .addOrganization {
     margin-top:40px;
   }

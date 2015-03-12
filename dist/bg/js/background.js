@@ -2,66 +2,54 @@
 var Graffiti = new Graffiti('http://graffiti.herokuapp.com');
 var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "Leminux", "Seal", "Antelope", "Liger", "Pengiun", "Narwhal", "Bear", "Panther", "Goose", "Goat", "Lion", "Whale", "Clam", "Jellyfish", "Manowar", "Unicorn", "Albatross", "Sasquatch", "Gorilla", "Lemur", "Chinchilla", "Badger", "Mustang", "Shrimp", "Lobster", "Jellyfish", "Guppy", "Tuna", "Carp", "Rooster", "Pollyp", "Octopus", "Pteradacty", "Chicken", "Komodo Dragon", "Wolf", "Bison", "Mastodon", "Mosquito", "Tarantula", "Hippopotamus", "Anaconda"]
 
-var _rooms = {};
-
-var _current_tag = {};
-
-//socket.on('update',function(page){
-//    if(!page) return false;
-//    console.log('FROM SOCKET UPDATE',page);
-//    chrome.tabs.sendMessage(_rooms[page._id],{
-//        action:'getPage',
-//        data:page
-//    })
-//});
-
-chrome.storage.sync.clear();
+//chrome.storage.sync.clear();
 
 var user = {
-    identities:[],
-    defaultIdentity: {}
+    token:'',
+    ip:'',
+    _id:'',
+    groups:[],
+    identities:[]
 };
 
 getIdentities();
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status && changeInfo.status == 'complete') {
-        chrome.tabs.sendMessage(tabId, {
-            //message
-            action: 'initializePage',
-            err: null,
-            data: user.defaultIdentity
-        }, function(response) {
-            //if (response) console.log(response);
-        });
-    }
-});
-
 //// Content Script Message Handling //////
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     console.log(message);
     var action = message.action;
     switch(action){
         case 'getIdentities':
+            console.log(user);
             chrome.tabs.sendMessage(sender.tab.id,{
                 action:action,
                 data:user
             });
             break;
-            case 'setDefaultIdentity':
-                setDefaultIdentity(message.organization,message.name,message.organization_id);
-                chrome.tabs.sendMessage(sender.tab.id,{
-                    action:'getIdentities',
+            case 'toggleGroup':
+                user.identities.forEach(function(identity){
+                    console.log(message);
+                    console.log(message._id,identity.organization_id);
+                    if(message._id === identity.organization_id){
+                        identity.active = !identity.active;
+                    }
+                });
+                chrome.runtime.sendMessage({
+                    action:'sendIdentities',
                     data:user
                 });
-                chrome.storage.sync.set({'user':JSON.stringify(user)});
+            break;
+            case 'getIdentities:action':
+                chrome.runtime.sendMessage({
+                    action:'sendIdentities',
+                    data:user
+                });
             break;
             case 'addIdentity':
                 addIdentity(message.organization,message.name,message.organization_id);
                 console.log(user);
-                chrome.tabs.sendMessage(sender.tab.id,{
-                    action:'getIdentities',
+                chrome.runtime.sendMessage({
+                    action:'sendIdentities',
                     data:user
                 });
                 chrome.storage.sync.set({'user':JSON.stringify(user)});
@@ -72,8 +60,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     return el.organization_id;
                 });
                 console.log(_ids);
-                Graffiti['Organization']()['getFeed']({_ids:_ids}, function(err, data) {
-                    console.log('ORGANIZATION API CALL - ',arguments);
+                Graffiti['Organization'](user.token)['getFeed']({_ids:_ids}, function(err, data) {
                     chrome.runtime.sendMessage({
                         action:'sendFeed',
                         data:data,
@@ -81,9 +68,19 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     })
                 });
             break;
+            case 'getPublic':
+                console.log(_ids);
+                Graffiti['Organization'](user.token)['getPublic'](null, function(err, data) {
+                    chrome.runtime.sendMessage({
+                        action:'sendPublic',
+                        data:data,
+                        err:err
+                    })
+                });
+                break;
         default:
             if(Graffiti[message.endpoint]){
-                Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
+                Graffiti[message.endpoint](user.token)[message.method](message.args, function(err, data) {
                     console.log(message.endpoint+' API CALL - ',arguments);
                     chrome.tabs.sendMessage(sender.tab.id, {
                         action: message.action,
@@ -101,6 +98,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 function getIdentities(cb) {
     chrome.storage.sync.get('user', function(data) {
         if(!data.user){
+<<<<<<< HEAD
             console.log('no data user');
             var newIdentity = {
                 name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
@@ -118,6 +116,33 @@ function getIdentities(cb) {
             user.identities.push(newIdentity);
             //user.identities.push(other);
             chrome.storage.sync.set({'user':JSON.stringify(user)});
+=======
+            Graffiti.User().POST({
+                    password: new Date().getTime()
+                },
+                function(err,data){
+                    console.log(err);
+                    if(!err){
+                        console.log(data);
+                        user.fresh = true;
+                        user.ip = data.user.ip;
+                        user._id = data.user._id;
+                        user.token = data.token;
+                    }
+
+                    var newIdentity = {
+                        active: true,
+                        name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
+                        organization:'Graffiti',
+                        organization_id : '54e1512170a92b0d4c2011e8',
+                        spray_color:'rgb(96, 96, 96)'
+                    };
+
+                    user.identities.push(newIdentity);
+                    chrome.storage.sync.set({'user':JSON.stringify(user)});
+                });
+
+>>>>>>> master
         }
         else{
             user = JSON.parse(data.user);
@@ -138,6 +163,7 @@ function addIdentity(organization,name,organization_id) {
     });
 
     if(isNew === true){
+        newIdentity['active'] = true;
         newIdentity['organization'] = organization;
         newIdentity['name'] = name;
         newIdentity['organization_id'] =organization_id;
@@ -147,43 +173,25 @@ function addIdentity(organization,name,organization_id) {
 
 }
 
-function setDefaultIdentity(organization,name,organization_id){
-    var defaultIdentity = {
-        organization:organization,
-        name:name,
-        organization_id:organization_id,
-        spray_color:'rgb(96, 96, 96)'
-    };
-    user.defaultIdentity = defaultIdentity;
-}
-
 var clickHandler = function(e) {
-    var url = e.pageUrl;
-    var buzzPostUrl = "http://www.google.com/buzz/post?";
-
-    if (e.selectionText) {
-        // The user selected some text, put this in the message.
-        buzzPostUrl += "message=" + encodeURI(e.selectionText) + "&";
-    }
-
-    if (e.mediaType === "image") {
-        buzzPostUrl += "imageurl=" + encodeURI(e.srcUrl) + "&";
-    }
-
-    if (e.linkUrl) {
-        // The user wants to buzz a link.
-        url = e.linkUrl;
-    }
-
-    buzzPostUrl += "url=" + encodeURI(url);
-
-    // Open the page up.
-    chrome.tabs.create(
-        {"url" : buzzPostUrl });
+        chrome.tabs.query(
+            { currentWindow: true, active: true },
+            function (tabArray) {
+                chrome.tabs.sendMessage(tabArray[0].id, {
+                    //message
+                    action: 'initializePage',
+                    err: null,
+                    data: user
+                }, function(response) {
+                    //if (response) console.log(response);
+                });
+            }
+        );
 };
 
 chrome.contextMenus.create({
-    "title": "Buzz This",
+    "title": "See Tags",
+    //"contexts": ["page"],
     "contexts": ["page", "selection", "image", "link"],
     "onclick" : clickHandler
 });

@@ -49,7 +49,6 @@ _Above: An example of the working app_
 -	React apps communicating through a Chrome background process.
 -	Material UI
 -	HTML and Special characters recognized in highlight
--	Socket-enabled, by page live updating
 
 #### Known bugs
 

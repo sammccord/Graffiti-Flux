@@ -11,7 +11,6 @@ var Sprays = require('../Spray/sprays');
 function getPage(){
     return {
         page:PageStore.getPageState(),
-        current_identity: UserStore.getCurrentIdentity(),
         identities:UserStore.getIdentities()
     };
 }
@@ -19,6 +18,9 @@ function getPage(){
 var Page =
     React.createClass({
         getInitialState: function(){
+            $('#graffiti-app,#graffiti-app *,.spray-tab').css({
+                'font-family':'Roboto, sans-serif !important'
+            });
             return getPage();
         },
         _onChange:function(){
@@ -51,7 +53,7 @@ var Page =
         },
         render: function (){
                 return (
-                    <Sprays currentIdentity={this.state.current_identity} identities={this.state.identities} />
+                    <Sprays />
                         )
         }
 

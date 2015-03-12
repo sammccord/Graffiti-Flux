@@ -5,15 +5,12 @@ var $ = require('jquery');
 
 var ExtActions = require('../../actions/ext-actions.js');
 
-var SprayStore = require('../../stores/spray-store');
-var PageStore = require('../../stores/page-store');
-
-var Comments = require('../Comments/comments');
-var CommentForm = require('../Comments/comment-form');
+var CommentPanels = require('../Comments/comment-panels');
 
 function setSprayState(){
     return {
-        spray:this.props.spray
+        spray:this.props.spray[0],
+        sprays: this.props.spray
     };
 }
 
@@ -52,9 +49,6 @@ var Spray =
         getInitialState: function(){
             return setSprayState.bind(this)();
         },
-        _onChange:function(){
-            this.setState(setSprayState.bind(this)());
-        },
         expandTabs:function(){
             $('.spray-tab').addClass('graffiti-expanded');
             $('.graffiti-spray').addClass('graffiti-highlight');
@@ -63,12 +57,6 @@ var Spray =
             $('.spray-tab').removeClass('graffiti-expanded graffiti-focus');
             $('.graffiti-spray').removeClass('graffiti-highlight');
             $('[data-graffiti-id]').removeClass('graffiti-focus');
-        },
-        componentWillMount:function(){
-            SprayStore.addChangeListener(this._onChange)
-        },
-        componentDidUnmount:function(){
-            SprayStore.removeChangeListener(this._onChange);
         },
         componentDidMount:function(){
             highlightSpray(this.state.spray);
@@ -85,6 +73,7 @@ var Spray =
             sprayEl.on('click',function(e){
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
+                $('[data-graffiti-id="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-lock');
             }).on('mouseenter',function(){
                 this.expandTabs();
                 sprayEl.addClass('graffiti-focus');
@@ -96,11 +85,8 @@ var Spray =
 
 
         },
-        handleCommentSubmit: function(user,text){
-            var spray_id = this.state.spray._id;
-            ExtActions.addComment(spray_id,user,text);
-        },
         render: function (){
+            console.log('SPRAY COMP ',this.props.spray);
             var containerClassName = "graffiti-bind graffiti-comments-container";
 
             var className = 'spray-tab';
@@ -111,10 +97,9 @@ var Spray =
             };
 
             return (
-                    <Paper data-spray-container={this.state.spray._id} className={containerClassName} zDepth={1}>
-                        <CommentForm sprayId={this.state.spray._id} onCommentSubmit={this.handleCommentSubmit}/>
-                        <Comments comments={this.state.spray.comments}/>
-                    </Paper>
+                <Paper data-spray-container={this.state.spray._id} className={containerClassName} zDepth={1}>
+                    <CommentPanels sprays={this.state.sprays} />
+                </Paper>
             )
         }
 
