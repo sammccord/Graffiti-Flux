@@ -4,13 +4,16 @@ var animals= ["Horse", "Cat", "Dog", "Mouse", "Aardvark", "Platypus", "Koala", "
 chrome.storage.sync.clear();
 
 var user = {
+    token:'',
+    ip:'',
+    _id:'',
+    groups:[],
     identities:[]
 };
 
 getIdentities();
 
 //// Content Script Message Handling //////
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     console.log(message);
     var action = message.action;
@@ -64,6 +67,16 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
                     })
                 });
             break;
+            case 'getPublic':
+                console.log(_ids);
+                Graffiti['Organization']()['getPublic'](null, function(err, data) {
+                    chrome.runtime.sendMessage({
+                        action:'sendPublic',
+                        data:data,
+                        err:err
+                    })
+                });
+                break;
         default:
             if(Graffiti[message.endpoint]){
                 Graffiti[message.endpoint]()[message.method](message.args, function(err, data) {
@@ -84,24 +97,31 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 function getIdentities(cb) {
     chrome.storage.sync.get('user', function(data) {
         if(!data.user){
-            console.log('no data user');
-            var newIdentity = {
-                active: true,
-                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-                organization:'Graffiti',
-                organization_id : '54e1512170a92b0d4c2011e8',
-                spray_color:'rgb(96, 96, 96)'
-            };
-            var other = {
-                active:false,
-                name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
-                organization:'30Weeks',
-                organization_id : '54e1512170a92b0d4c2011ec',
-                spray_color:'rgb(96, 96, 96)'
-            };
-            user.identities.push(newIdentity);
-            user.identities.push(other);
-            chrome.storage.sync.set({'user':JSON.stringify(user)});
+            Graffiti.User().POST({
+                    password: new Date().getTime()
+                },
+                function(err,data){
+                    console.log(err);
+                    if(!err){
+                        console.log(data);
+                        user.fresh = true;
+                        user.ip = data.user.ip;
+                        user._id = data.user._id;
+                        user.token = data.token;
+                    }
+
+                    var newIdentity = {
+                        active: true,
+                        name: "Anonymous "+animals[Math.floor(Math.random()*animals.length)],
+                        organization:'Graffiti',
+                        organization_id : '54e1512170a92b0d4c2011e8',
+                        spray_color:'rgb(96, 96, 96)'
+                    };
+
+                    user.identities.push(newIdentity);
+                    chrome.storage.sync.set({'user':JSON.stringify(user)});
+                });
+
         }
         else{
             user = JSON.parse(data.user);

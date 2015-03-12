@@ -19,6 +19,12 @@ var AppActions = {
             actionType: AppConstants.GET_FEED,
             feed:feed
         })
+    },
+    sendPublic:function(groups){
+        AppDispatcher.handleViewAction({
+            actionType: AppConstants.GET_PUBLIC,
+            groups:groups
+        })
     }
 };
 

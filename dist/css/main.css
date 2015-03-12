@@ -28,8 +28,7 @@ body, html {
   #graffiti-app .freshSprayContainer, .graffiti-app .freshSprayContainer, .graffiti-fonted .freshSprayContainer {
     margin-top: -60px; }
     #graffiti-app .freshSprayContainer .mui-paper-container, .graffiti-app .freshSprayContainer .mui-paper-container, .graffiti-fonted .freshSprayContainer .mui-paper-container {
-      padding-right: 20px !important;
-      padding-left: 6px !important; }
+      padding: 0px 20px 0px 6px; }
       #graffiti-app .freshSprayContainer .mui-paper-container .group-toggle, .graffiti-app .freshSprayContainer .mui-paper-container .group-toggle, .graffiti-fonted .freshSprayContainer .mui-paper-container .group-toggle {
         cursor: pointer;
         padding-top: 4px; }
@@ -68,19 +67,24 @@ body, html {
       padding: 0; }
       #graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container, #graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container, .graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container, .graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container, .graffiti-fonted .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container, .graffiti-fonted .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container {
         border-bottom: 1px solid rgba(89, 240, 214, 0.8);
-        height: 28px;
+        height: 32px;
         background-color: white; }
         #graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item, #graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item, .graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item, .graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item, .graffiti-fonted .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item, .graffiti-fonted .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item {
-          line-height: 2;
+          -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+          line-height: 2.4;
           font-size: 13px; }
           #graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active, #graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active, .graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active, .graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active, .graffiti-fonted .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active, .graffiti-fonted .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-tab-item-container .mui-tab-item.mui-tab-is-active {
-            color: red; }
+            -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            background-color: #59f0d6 !important; }
       #graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-ink-bar, #graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-ink-bar, .graffiti-app .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-ink-bar, .graffiti-app .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-ink-bar, .graffiti-fonted .graffiti-comments-container .mui-paper-container .mui-tabs-container .mui-ink-bar, .graffiti-fonted .freshSprayContainer .mui-paper-container .mui-tabs-container .mui-ink-bar {
         background-color: #59f0d6; }
       #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs form, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs form, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs form, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs form, .graffiti-fonted .graffiti-comments-container .mui-paper-container div .action-tabs form, .graffiti-fonted .freshSprayContainer .mui-paper-container div .action-tabs form {
         padding-right: 20px;
         padding-left: 6px; }
       #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs ul, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs ul, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs ul, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs ul, .graffiti-fonted .graffiti-comments-container .mui-paper-container div .action-tabs ul, .graffiti-fonted .freshSprayContainer .mui-paper-container div .action-tabs ul {
+        -webkit-box-shadow: rgba(50, 50, 50, 0.23) 0px 4px 3px -3px inset;
+        max-height: 260px;
+        overflow-y: scroll;
         padding: 4px 20px 4px 4px; }
       #graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs.graffiti-hide, #graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-app .graffiti-comments-container .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-app .freshSprayContainer .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-fonted .graffiti-comments-container .mui-paper-container div .action-tabs.graffiti-hide, .graffiti-fonted .freshSprayContainer .mui-paper-container div .action-tabs.graffiti-hide {
         display: none; }
@@ -115,6 +119,8 @@ body, html {
       border-top: solid 1px #efefef;
       margin-bottom: 16px;
       box-sizing: border-box; }
+      #graffiti-app .graffiti-comments-container .SprayComment:first-child, #graffiti-app .freshSprayContainer .SprayComment:first-child, .graffiti-app .graffiti-comments-container .SprayComment:first-child, .graffiti-app .freshSprayContainer .SprayComment:first-child, .graffiti-fonted .graffiti-comments-container .SprayComment:first-child, .graffiti-fonted .freshSprayContainer .SprayComment:first-child {
+        border-top: solid 0px #efefef; }
       #graffiti-app .graffiti-comments-container .SprayComment:last-child, #graffiti-app .freshSprayContainer .SprayComment:last-child, .graffiti-app .graffiti-comments-container .SprayComment:last-child, .graffiti-app .freshSprayContainer .SprayComment:last-child, .graffiti-fonted .graffiti-comments-container .SprayComment:last-child, .graffiti-fonted .freshSprayContainer .SprayComment:last-child {
         margin-bottom: 0px; }
       #graffiti-app .graffiti-comments-container .SprayComment p, #graffiti-app .graffiti-comments-container .SprayComment b span, #graffiti-app .graffiti-comments-container .SprayComment span, #graffiti-app .freshSprayContainer .SprayComment p, #graffiti-app .freshSprayContainer .SprayComment b span, #graffiti-app .freshSprayContainer .SprayComment span, .graffiti-app .graffiti-comments-container .SprayComment p, .graffiti-app .graffiti-comments-container .SprayComment b span, .graffiti-app .graffiti-comments-container .SprayComment span, .graffiti-app .freshSprayContainer .SprayComment p, .graffiti-app .freshSprayContainer .SprayComment b span, .graffiti-app .freshSprayContainer .SprayComment span, .graffiti-fonted .graffiti-comments-container .SprayComment p, .graffiti-fonted .graffiti-comments-container .SprayComment b span, .graffiti-fonted .graffiti-comments-container .SprayComment span, .graffiti-fonted .freshSprayContainer .SprayComment p, .graffiti-fonted .freshSprayContainer .SprayComment b span, .graffiti-fonted .freshSprayContainer .SprayComment span {
@@ -129,6 +135,13 @@ body, html {
     background-color: #59f0d6; }
     #graffiti-app .mui-snackbar.graffiti-snack *, .graffiti-app .mui-snackbar.graffiti-snack *, .graffiti-fonted .mui-snackbar.graffiti-snack * {
       color: white !important; }
+  #graffiti-app span.markdown, .graffiti-app span.markdown, .graffiti-fonted span.markdown {
+    padding-bottom: 6px; }
+    #graffiti-app span.markdown *, .graffiti-app span.markdown *, .graffiti-fonted span.markdown * {
+      font-size: 10px;
+      margin: 0 4px; }
+    #graffiti-app span.markdown blockquote, .graffiti-app span.markdown blockquote, .graffiti-fonted span.markdown blockquote {
+      float: right; }
 
 .spray-tab {
   border-radius: 2px 0px 0px 2px;
@@ -138,8 +151,8 @@ body, html {
   left: 100%;
   padding: 12px 6px 12px 2px;
   margin-top: -6px;
-  margin-left: -12px;
-  -webkit-transform: translateX(6px);
+  margin-left: -16px;
+  -webkit-transform: translateX(8px);
   -webkit-transition: all .25s ease-in-out; }
   .spray-tab .comment-count {
     font-family: Roboto, sans-serif;
@@ -148,7 +161,7 @@ body, html {
     -webkit-transition: opacity .25s ease-in-out, color .25s ease-in-out; }
   .spray-tab.graffiti-expanded {
     -webkit-transition: all .25s ease-in-out;
-    -webkit-transform: translateX(0px); }
+    -webkit-transform: translateX(2px); }
     .spray-tab.graffiti-expanded .comment-count {
       opacity: 1;
       -webkit-transition: opacity .25s ease-in-out; }
@@ -170,6 +183,8 @@ body, html {
     color: black; }
     .graffiti-spray.graffiti-highlight.graffiti-focus {
       background-color: #59f0d6; }
+  .graffiti-spray.graffiti-lock {
+    background-color: #59f0d6; }
 
 #spray-button {
   position: fixed;

@@ -16,7 +16,7 @@ var FeedItem =
             var domain = page.url.split('//');
             domain.shift();
             domain = domain[0].split('/')[0];
-            var iconStr = 'image-filter-'+(page.sprays.length > 9 ? 9 : page.sprays.length);
+            var iconStr = 'image-filter-'+(page.sprays.length > 9 ? '9-plus' : page.sprays.length);
 
             return (
                 <Paper zDepth={1}>

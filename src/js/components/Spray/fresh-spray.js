@@ -145,7 +145,7 @@ var FreshSpray =
             e.preventDefault();
             var text = document.getElementById('freshSprayInput').value;
             document.getElementById('freshSprayInput').value = '';
-            if (!text || !$('#graffiti-spray').length) {
+            if (!text || !$('#graffiti-spray').length || this.state.postTo.length === 0) {
                 return;
             }
             var targetText = this.state.targetExp;
@@ -194,6 +194,7 @@ var FreshSpray =
             console.log(this.state.postTo);
         },
         render: function(){
+            var quote = ">quote";
             var className = 'graffiti-bind freshSprayContainer ';
             if(!this.state.page.activated) className+='graffiti-hide';
 
@@ -223,6 +224,12 @@ var FreshSpray =
                             id="freshSprayInput"
                             hintText="Leave a comment"
                             multiLine={true} ref="text"/>
+                        <span className="pull-right muted markdown">
+                            <b>*bold*</b>
+                            <i>_italics_</i>
+                            <code>`code`</code>
+                            <blockquote>{quote}</blockquote>
+                        </span>
                         <RaisedButton className="graffiti-bind" type="submit" label="TAG + COMMENT" />
                     </form>
                     {buttons}

@@ -25,7 +25,9 @@ function handlePageClicks (){
         }
         else if($('.graffiti-comments-container.graffiti-show,.freshSprayContainer.graffiti-show').length){
             if(!findUpClass(e.target,'graffiti-bind')){
+                $('.graffiti-spray').removeClass('graffiti-lock');
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
+
             }
         }
     });

@@ -46,6 +46,11 @@ var ExtActions = {
             action:'toggleGroup',
             _id:_id
         })
+    },
+    getPublic:function(){
+        sendMessage({
+            action:'getPublic'
+        })
     }
 };
 

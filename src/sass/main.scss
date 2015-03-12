@@ -40,8 +40,7 @@ body,html{
   .freshSprayContainer{
     margin-top:-60px;
     .mui-paper-container{
-      padding-right: 20px !important;
-      padding-left: 6px !important;
+      padding:0px 20px 0px 6px;
       .group-toggle{
         cursor:pointer;
         padding-top: 4px;
@@ -96,13 +95,15 @@ body,html{
       .mui-tabs-container{
         .mui-tab-item-container{
           border-bottom:1px solid rgba(89, 240, 214, .8);
-          height:28px;
+          height:32px;
           background-color:white;
           .mui-tab-item{
-            line-height:2;
+            -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+            line-height:2.4;
             font-size:13px;
             &.mui-tab-is-active{
-              color:red;
+              -webkit-transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+              background-color:rgb(89, 240, 214) !important;
             }
           }
         }
@@ -118,6 +119,9 @@ body,html{
             padding-left:6px;
           }
           ul{
+            -webkit-box-shadow: rgba(50, 50, 50, 0.23) 0px 4px 3px -3px inset;
+            max-height: 260px;
+            overflow-y:scroll;
             padding: 4px 20px 4px 4px;
           }
 
@@ -171,6 +175,9 @@ body,html{
       border-top: solid 1px #efefef;
       margin-bottom: 16px;
       box-sizing:border-box;
+      &:first-child{
+        border-top: solid 0px #efefef;
+      }
       &:last-child{
         margin-bottom:0px;
       }
@@ -203,7 +210,16 @@ body,html{
     }
 
   }
-
+  span.markdown{
+    padding-bottom:6px;
+    *{
+      font-size:10px;
+      margin: 0 4px;
+    }
+    blockquote{
+      float:right;
+    }
+  }
 }
 
 .spray-tab{
@@ -214,9 +230,9 @@ body,html{
   left:100%;
   padding:12px 6px 12px 2px;
   margin-top:-6px;
-  margin-left:-12px;
+  margin-left:-16px;
 
-  -webkit-transform:translateX(6px);
+  -webkit-transform:translateX(8px);
   -webkit-transition:all .25s ease-in-out;
   .comment-count{
     font-family:Roboto, sans-serif;
@@ -226,7 +242,7 @@ body,html{
   }
   &.graffiti-expanded{
     -webkit-transition:all .25s ease-in-out;
-    -webkit-transform:translateX(0px);
+    -webkit-transform:translateX(2px);
     .comment-count{
       opacity:1;
       -webkit-transition:opacity .25s ease-in-out
@@ -254,6 +270,9 @@ body,html{
     &.graffiti-focus{
       background-color:rgb(89, 240, 214);
     }
+  }
+  &.graffiti-lock{
+    background-color:rgb(89, 240, 214);
   }
 }
 

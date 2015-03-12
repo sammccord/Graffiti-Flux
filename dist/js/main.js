@@ -52292,6 +52292,7 @@ var CommentForm =
             return;
         },
         render: function(){
+            var quote = ">quote";
             return (
                 React.createElement("form", {className: "graffiti-bind", onSubmit: this.handleSubmit}, 
                     React.createElement(TextField, {
@@ -52300,6 +52301,12 @@ var CommentForm =
                         id: this.props.sprayId, 
                         hintText: "Leave a comment", 
                         multiLine: true, ref: "text"}), 
+                    React.createElement("span", {className: "pull-right muted markdown"}, 
+                        React.createElement("b", null, "*bold*"), 
+                        React.createElement("i", null, "_italics_"), 
+                        React.createElement("code", null, "`code`"), 
+                        React.createElement("blockquote", null, quote)
+                    ), 
                     React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "Reply"})
                 )
             )
@@ -52358,14 +52365,13 @@ var APP =
             var tabs = groups.map(function(group,index){
                 var body = React.createElement(BodyShim, {index: index});
 
-
                 return React.createElement(Tab, {label: group, children: body}
                 )
             }.bind(this));
 
             return (
                 React.createElement("div", null, 
-                    React.createElement(Tabs, null, 
+                    React.createElement(Tabs, {className: this.state.groups.length > 1 ? '':'graffiti-hide'}, 
                     tabs
                     ), 
                     React.createElement("div", null, 
@@ -52682,7 +52688,7 @@ var FreshSpray =
             e.preventDefault();
             var text = document.getElementById('freshSprayInput').value;
             document.getElementById('freshSprayInput').value = '';
-            if (!text || !$('#graffiti-spray').length) {
+            if (!text || !$('#graffiti-spray').length || this.state.postTo.length === 0) {
                 return;
             }
             var targetText = this.state.targetExp;
@@ -52731,6 +52737,7 @@ var FreshSpray =
             console.log(this.state.postTo);
         },
         render: function(){
+            var quote = ">quote";
             var className = 'graffiti-bind freshSprayContainer ';
             if(!this.state.page.activated) className+='graffiti-hide';
 
@@ -52760,6 +52767,12 @@ var FreshSpray =
                             id: "freshSprayInput", 
                             hintText: "Leave a comment", 
                             multiLine: true, ref: "text"}), 
+                        React.createElement("span", {className: "pull-right muted markdown"}, 
+                            React.createElement("b", null, "*bold*"), 
+                            React.createElement("i", null, "_italics_"), 
+                            React.createElement("code", null, "`code`"), 
+                            React.createElement("blockquote", null, quote)
+                        ), 
                         React.createElement(RaisedButton, {className: "graffiti-bind", type: "submit", label: "TAG + COMMENT"})
                     ), 
                     buttons
@@ -52893,6 +52906,7 @@ var Spray =
             sprayEl.on('click',function(e){
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
+                $('[data-graffiti-id="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-lock');
             }).on('mouseenter',function(){
                 this.expandTabs();
                 sprayEl.addClass('graffiti-focus');
@@ -52955,7 +52969,9 @@ function handlePageClicks (){
         }
         else if($('.graffiti-comments-container.graffiti-show,.freshSprayContainer.graffiti-show').length){
             if(!findUpClass(e.target,'graffiti-bind')){
+                $('.graffiti-spray').removeClass('graffiti-lock');
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
+
             }
         }
     });

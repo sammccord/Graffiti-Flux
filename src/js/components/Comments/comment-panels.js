@@ -46,14 +46,13 @@ var APP =
             var tabs = groups.map(function(group,index){
                 var body = <BodyShim index={index}/>;
 
-
                 return <Tab label={group} children={body}>
                 </Tab>
             }.bind(this));
 
             return (
                 <div>
-                    <Tabs>
+                    <Tabs className={this.state.groups.length > 1 ? '':'graffiti-hide'}>
                     {tabs}
                     </Tabs>
                     <div >

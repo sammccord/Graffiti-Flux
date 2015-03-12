@@ -26,6 +26,7 @@ var CommentForm =
             return;
         },
         render: function(){
+            var quote = ">quote";
             return (
                 <form className="graffiti-bind" onSubmit={this.handleSubmit}>
                     <TextField
@@ -34,6 +35,12 @@ var CommentForm =
                         id={this.props.sprayId}
                         hintText="Leave a comment"
                         multiLine={true} ref="text"/>
+                    <span className="pull-right muted markdown">
+                        <b>*bold*</b>
+                        <i>_italics_</i>
+                        <code>`code`</code>
+                        <blockquote>{quote}</blockquote>
+                    </span>
                     <RaisedButton className="graffiti-bind" type="submit" label="Reply" />
                 </form>
             )

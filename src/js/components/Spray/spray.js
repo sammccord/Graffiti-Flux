@@ -73,6 +73,7 @@ var Spray =
             sprayEl.on('click',function(e){
                 $('.graffiti-comments-container,.freshSprayContainer').removeClass('graffiti-show');
                 $('[data-spray-container="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-show');
+                $('[data-graffiti-id="'+$(this).attr('data-spray-id')+'"]').addClass('graffiti-lock');
             }).on('mouseenter',function(){
                 this.expandTabs();
                 sprayEl.addClass('graffiti-focus');
